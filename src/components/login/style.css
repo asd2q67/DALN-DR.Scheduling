@@ -1,0 +1,217 @@
+/* style.css */
+
+:root {
+    --headline-6-bold-font-family: "Poppins-Bold", Helvetica;
+    --headline-6-bold-font-size: 28px;
+    --headline-6-bold-font-style: normal;
+    --headline-6-bold-font-weight: 700;
+    --headline-6-bold-letter-spacing: 0px;
+    --headline-6-bold-line-height: 36px;
+    --headline-7-medium-font-family: "Poppins-Medium", Helvetica;
+    --headline-7-medium-font-size: 24px;
+    --headline-7-medium-font-style: normal;
+    --headline-7-medium-font-weight: 500;
+    --headline-7-medium-letter-spacing: 0px;
+    --headline-7-medium-line-height: 32px;
+    --neutral-dark1: rgba(17, 17, 17, 1);
+    --neutral-dark2: rgba(47, 58, 76, 1);
+    --neutral-light3: rgba(203, 203, 203, 1);
+    --neutral-light6: rgba(255, 255, 254, 1);
+    --paragraph-1-medium-font-family: "Poppins-Medium", Helvetica;
+    --paragraph-1-medium-font-size: 20px;
+    --paragraph-1-medium-font-style: normal;
+    --paragraph-1-medium-font-weight: 500;
+    --paragraph-1-medium-letter-spacing: 0px;
+    --paragraph-1-medium-line-height: 28px;
+    --paragraph-3-bold-font-family: "Poppins-Bold", Helvetica;
+    --paragraph-3-bold-font-size: 16px;
+    --paragraph-3-bold-font-style: normal;
+    --paragraph-3-bold-font-weight: 700;
+    --paragraph-3-bold-letter-spacing: 0px;
+    --paragraph-3-bold-line-height: 24px;
+    --paragraph-3-medium-font-family: "Poppins-Medium", Helvetica;
+    --paragraph-3-medium-font-size: 16px;
+    --paragraph-3-medium-font-style: normal;
+    --paragraph-3-medium-font-weight: 500;
+    --paragraph-3-medium-letter-spacing: 0px;
+    --paragraph-3-medium-line-height: 24px;
+    --primary-2: rgba(128, 94, 223, 1);
+  }
+  
+
+.login {
+    background-color: rgba(255, 255, 255, 1);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .login .div {
+    background: linear-gradient(180deg, rgba(66.3, 0, 255, 0.4) 0%, rgba(11.17, 104.58, 134.07, 0) 100%);
+    background-color: rgba(255, 255, 255, 1);
+    height: 90vh;
+    position: relative;
+    width: 100vw;
+  }
+  
+  .login .logo {
+    height: 173px;
+    left: 50px;
+    object-fit: cover;
+    position: absolute;
+    top: 50px;
+    width: 169px;
+  }
+  
+  .login .container {
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0px 4px 55px #00000012;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 64px;
+    justify-content: center;
+    left: 50%;
+    padding: 32px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+  }
+  
+  .login .text {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .login .text-wrapper {
+    color: var(--neutral-dark1);
+    font-family: var(--headline-6-bold-font-family);
+    font-size: var(--headline-6-bold-font-size);
+    font-style: var(--headline-6-bold-font-style);
+    font-weight: var(--headline-6-bold-font-weight);
+    letter-spacing: var(--headline-6-bold-letter-spacing);
+    line-height: var(--headline-6-bold-line-height);
+    margin-top: -1px;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
+  }
+  
+  .login .p {
+    color: var(--neutral-dark2);
+    font-family: var(--paragraph-1-medium-font-family);
+    font-size: var(--paragraph-1-medium-font-size);
+    font-style: var(--paragraph-1-medium-font-style);
+    font-weight: var(--paragraph-1-medium-font-weight);
+    letter-spacing: var(--paragraph-1-medium-letter-spacing);
+    line-height: var(--paragraph-1-medium-line-height);
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
+  }
+  
+  .login .box {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 32px;
+    position: relative;
+  }
+  
+  .login .input {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+  }
+  
+  .login .div-2 {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+  }
+  
+  .login .text-wrapper-2 {
+    color: var(--neutral-dark1);
+    font-family: var(--headline-7-medium-font-family);
+    font-size: var(--headline-7-medium-font-size);
+    font-style: var(--headline-7-medium-font-style);
+    font-weight: var(--headline-7-medium-font-weight);
+    letter-spacing: var(--headline-7-medium-letter-spacing);
+    line-height: var(--headline-7-medium-line-height);
+    margin-top: -1px;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
+  }
+  
+  .login .input-bar {
+    align-items: flex-start;
+    background-color: #ffffff;
+    border: 1px solid;
+    border-color: var(--neutral-light3);
+    border-radius: 8px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    margin-bottom: -1px;
+    margin-left: -1px;
+    margin-right: -1px;
+    padding: 16px;
+    position: relative;
+    width: 392px;
+  }
+  
+  .login .text-wrapper-4 {
+    color: #000000;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative;
+    width: fit-content;
+  }
+  
+  .login .button {
+    all: unset;
+    align-items: flex-start;
+    background-color: var(--primary-2);
+    border-radius: 8px;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    padding: 16px;
+    position: relative;
+  }
+  
+  .login .text-wrapper-5 {
+    color: var(--neutral-light6);
+    font-family: var(--paragraph-3-bold-font-family);
+    font-size: var(--paragraph-3-bold-font-size);
+    font-style: var(--paragraph-3-bold-font-style);
+    font-weight: var(--paragraph-3-bold-font-weight);
+    letter-spacing: var(--paragraph-3-bold-letter-spacing);
+    line-height: var(--paragraph-3-bold-line-height);
+    margin-top: -0.5px;
+    position: relative;
+    text-align: center;
+    width: 392px;
+  }
+  
