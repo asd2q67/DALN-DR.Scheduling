@@ -17,31 +17,15 @@ schedule_day = 7
 doctor_name = list(string.ascii_uppercase)
 room_list = ['r{}'.format(i) for i in range (num_rooms)]
 
-
-
 '-- DATA'
-
-# class Room :
-#     def __init__(self, id : int, important : bool, priority : int, demand_type0 : int, demand_type1 : int, demand_type2 : int  ) :
-#         self.room_id = id
-#         self.demand_type0 = demand_type0
-#         self.demand_type1 = demand_type1
-#         self.demand_type2 = demand_type2
-#         #Heavy work-load or not
-#         self.important = important
-#         self.priority = priority
-
-# class Doctor :
-#     def __init__(self, id : int, skill_type1 : List[int], skill_type2 : List[int]) :
-#         self.doctor_id = id
-#         self.skill_type1 = skill_type1
-#         self.skill_type2 = skill_type2
 
 class Map :
     def __init__(self) :
         self.total = 0
         self.num_skills  = num_skills
         self.skill_list = [i for i in range (num_skills)]
+        self.list_day_ol = []
+        self.list_day_off = []
         # self.doctor_list = self.gen_doctor_list()
         # self.room_list = self.gen_room_list()
 
@@ -102,29 +86,31 @@ class Map :
 
     def gen_day_off (self):
 
-        list_day_off = []
-        list_day_ol = []
-        A = []
         for i in range (num_doctors):
-            days = []
-            day_off = random.randint(-1, schedule_day)
-            while (list_day_off.count(day_off) >= 2):
-                day_off = random.randint(0, schedule_day)
+            day_off = random.randint(-1, schedule_day-1)
+            while (self.list_day_off.count(day_off) >= 2):
+                day_off = random.randint(0, schedule_day-1)
             
-            days.append(day_off)
-            list_day_off.append(day_off)
+            # days.append(day_off)
+            self.list_day_off.append(day_off)
 
-            day_ol = random.randint(-1, schedule_day)
-            while (list_day_ol.count(day_ol) >= 2 or day_ol == day_off):
-                day_ol = random.randint(0, schedule_day)
+            with open('instance-generator/Day-off.csv', 'a') as f:
+                f.write("{}\n".format(day_off))
 
-            days.append(day_ol)
-            list_day_ol.append(day_ol)
-            A.append(days)
+    def gen_day_work (self):
+        for i in range (num_doctors):
+            day_ol = random.randint(-1, schedule_day-1)
+            while (self.list_day_ol.count(day_ol) >= 2 or day_ol == self.list_day_off[i]):
+                day_ol = random.randint(0, schedule_day-1)
 
-        with open('instance-generator/Day-off.csv', 'w') as f:
-            write = csv.writer(f)
-            write.writerows(A)
+            room = random.randint(0, num_rooms - 1)
+    
+            with open('instance-generator/Day-ol.csv', 'a') as f:
+                f.write("{},{}\n".format(day_ol, room))
+
+
+        
+
                 
 if __name__ == '__main__':
     # m = Map(num_rooms, simulation_length, arrival_rate)
@@ -134,6 +120,7 @@ if __name__ == '__main__':
     # m.gen_doctor_list()
     # m.gen_room_list()
     m.gen_day_off()
+    m.gen_day_work()
 
 
 

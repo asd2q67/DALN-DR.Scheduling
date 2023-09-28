@@ -12,6 +12,7 @@ def read_input () -> Data:
     l_rooms = []
     day_off = []
     day_ol = []
+    room_ol = []
 
     path1 = "instance-generator/Doctor.csv"
 
@@ -38,7 +39,7 @@ def read_input () -> Data:
             l_doctors.append(d)
     
     'ROOM INFO'
-    path2 = "instance-generator/Doctor.csv"
+    path2 = "instance-generator/Room.csv"
     with open(path2, 'r') as file2:
         reader = csv.reader(file2)
         next(reader, None)
@@ -53,8 +54,15 @@ def read_input () -> Data:
     with open(path3, 'r') as file3:
         reader = csv.reader(file3)
         for row in reader:
+            day_off.append(int (row[0]))
+
+    path3 = "instance-generator/Day-ol.csv"
+
+    with open(path3, 'r') as file3:
+        reader = csv.reader(file3)
+        for row in reader:
             day_ol.append(int (row[0]))
-            day_off.append(int (row[1]))
+            room_ol.append(int (row[1]))
         
 
-    return Data(l_doctors, l_rooms, day_off, day_ol)
+    return Data(l_doctors, l_rooms, day_off, day_ol, room_ol)

@@ -8,4 +8,5 @@ class Doctor :
         self.level1 = level1
         'list of rooms doctor can work as level 2'
         self.level2 = level2
+
         
