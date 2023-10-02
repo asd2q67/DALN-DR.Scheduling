@@ -1,0 +1,16 @@
+/* Thay đổi màu cuộc cuộn */
+::-webkit-scrollbar {
+    width: 10px; /* Kích thước của thanh cuộn */
+  }
+  
+  /* Thay đổi màu của phần cuộn */
+  ::-webkit-scrollbar-thumb {
+    width: 6px;
+    background-color: #4cceac; /* Đặt màu cuộn ở đây */
+  }
+  
+  /* Thay đổi màu nền của phần cuộn khi di chuột qua */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #6870fa; /* Đặt màu khi di chuột qua ở đây */
+  }
+  
