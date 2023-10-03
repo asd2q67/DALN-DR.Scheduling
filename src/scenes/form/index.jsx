@@ -10,8 +10,9 @@ import { Formik } from "formik";
 import { tokens } from "../../theme";
 import * as yup from "yup";
 import Header from "../../components/Header";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
+import "./style.css";
 
 const initialValues = {
   Name: "",
@@ -34,16 +35,43 @@ const checkoutSchema = yup.object().shape({
 });
 
 const MyForm = () => {
+  const [isSuccess, setIsSuccess] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const handleFormSubmit = (values) => {
+  const handleFormSubmit = (values, { resetForm }) => {
     console.log(values);
+    setIsSuccess(true);
+
+    // Reset input and radio buttons after 5 seconds
+    setTimeout(() => {
+      setIsSuccess(false);
+      resetForm(); // Reset form values
+    }, 5000);
   };
+
+  useEffect(() => {
+    let timer;
+    if (isSuccess) {
+      // Hide the alert after 5 seconds
+      timer = setTimeout(() => {
+        setIsSuccess(false);
+      }, 5000);
+    }
+
+    // Clear the timer if the component unmounts or if isSuccess becomes false
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isSuccess]);
 
   return (
     <Box m="20px">
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
+
+      <div className={`custom-alert ${isSuccess ? "" : "hide-alert"}`}>
+        Form submitted successfully!
+      </div>
 
       <Formik
         onSubmit={handleFormSubmit}
