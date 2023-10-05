@@ -2,7 +2,7 @@
 $dbserver ="localhost";
 $dbuser = "root";
 $dbpass = "";
-$dbname = "daln-dr.scheduling";
+$dbname = "daln_dr.scheduling";
 
 if(isset($_POST['submit'])){
 	$name = $_POST['name'];
