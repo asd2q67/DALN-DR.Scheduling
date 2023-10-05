@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 05, 2023 at 10:09 AM
+-- Generation Time: Oct 05, 2023 at 10:51 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -24,13 +24,32 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `demand`
+--
+
+CREATE TABLE `demand` (
+  `id` int(11) NOT NULL,
+  `room-id` int(11) NOT NULL,
+  `doctor-num` int(11) NOT NULL,
+  `demand` int(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `dr_detail`
 --
 
 CREATE TABLE `dr_detail` (
   `id` int(11) NOT NULL,
   `Name` varchar(100) NOT NULL,
-  `Skill` text NOT NULL,
+  `R1` int(2) NOT NULL,
+  `R2` int(2) NOT NULL,
+  `R3` int(2) NOT NULL,
+  `R4` int(2) NOT NULL,
+  `R5` int(2) NOT NULL,
+  `R6` int(2) NOT NULL,
+  `R7` int(2) NOT NULL,
   `note` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -38,13 +57,13 @@ CREATE TABLE `dr_detail` (
 -- Dumping data for table `dr_detail`
 --
 
-INSERT INTO `dr_detail` (`id`, `Name`, `Skill`, `note`) VALUES
-(1, 'Lê Tiến Hưng', 'nya', 'nya'),
-(2, 'Dương Thành Công', 'Looking pretty', 'nya'),
-(3, 'Dương Thành Công', 'Looking pretty', 'nya'),
-(4, 'Dương Thành Công', 'Looking pretty', 'nya'),
-(5, 'Dương Thành Công', 'Looking pretty', 'nya'),
-(6, 'Lê Tiến Hưng', 'gì đó', 'không có');
+INSERT INTO `dr_detail` (`id`, `Name`, `R1`, `R2`, `R3`, `R4`, `R5`, `R6`, `R7`, `note`) VALUES
+(1, 'Lê Tiến Hưng', 0, 0, 0, 0, 0, 0, 0, 'nya'),
+(2, 'Dương Thành Công', 0, 0, 0, 0, 0, 0, 0, 'nya'),
+(3, 'Dương Thành Công', 0, 0, 0, 0, 0, 0, 0, 'nya'),
+(4, 'Dương Thành Công', 0, 0, 0, 0, 0, 0, 0, 'nya'),
+(5, 'Dương Thành Công', 0, 0, 0, 0, 0, 0, 0, 'nya'),
+(6, 'Lê Tiến Hưng', 0, 0, 0, 0, 0, 0, 0, 'không có');
 
 -- --------------------------------------------------------
 
@@ -55,7 +74,7 @@ INSERT INTO `dr_detail` (`id`, `Name`, `Skill`, `note`) VALUES
 CREATE TABLE `room_detail` (
   `id` int(11) NOT NULL,
   `Name` text NOT NULL,
-  `Work-load` int(1) NOT NULL,
+  `Load` int(1) NOT NULL,
   `Priority` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -78,6 +97,12 @@ CREATE TABLE `work_assign` (
 --
 
 --
+-- Indexes for table `demand`
+--
+ALTER TABLE `demand`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `dr_detail`
 --
 ALTER TABLE `dr_detail`
@@ -98,6 +123,12 @@ ALTER TABLE `work_assign`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `demand`
+--
+ALTER TABLE `demand`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `dr_detail`
