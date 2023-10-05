@@ -12,8 +12,8 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 if ($result = $mysqli-> query("SELECT * FROM dr_detail")) {
 
-if(mysqli_num_rows($result)>0){	
-
+if(mysqli_num_rows($result)>0){
+	
 if ($method == 'GET') {
 	if (!$id) echo '[';
 	for ($i=0 ; $i < mysqli_num_rows($result) ; $i++){
