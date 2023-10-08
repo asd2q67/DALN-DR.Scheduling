@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 05, 2023 at 10:51 AM
+-- Generation Time: Oct 08, 2023 at 09:47 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -31,7 +31,9 @@ CREATE TABLE `demand` (
   `id` int(11) NOT NULL,
   `room-id` int(11) NOT NULL,
   `doctor-num` int(11) NOT NULL,
-  `demand` int(2) NOT NULL
+  `demand0` int(1) NOT NULL,
+  `demand1` int(1) NOT NULL,
+  `demand2` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -50,20 +52,16 @@ CREATE TABLE `dr_detail` (
   `R5` int(2) NOT NULL,
   `R6` int(2) NOT NULL,
   `R7` int(2) NOT NULL,
-  `note` text NOT NULL
+  `workload` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `dr_detail`
 --
 
-INSERT INTO `dr_detail` (`id`, `Name`, `R1`, `R2`, `R3`, `R4`, `R5`, `R6`, `R7`, `note`) VALUES
-(1, 'Lê Tiến Hưng', 0, 0, 0, 0, 0, 0, 0, 'nya'),
-(2, 'Dương Thành Công', 0, 0, 0, 0, 0, 0, 0, 'nya'),
-(3, 'Dương Thành Công', 0, 0, 0, 0, 0, 0, 0, 'nya'),
-(4, 'Dương Thành Công', 0, 0, 0, 0, 0, 0, 0, 'nya'),
-(5, 'Dương Thành Công', 0, 0, 0, 0, 0, 0, 0, 'nya'),
-(6, 'Lê Tiến Hưng', 0, 0, 0, 0, 0, 0, 0, 'không có');
+INSERT INTO `dr_detail` (`id`, `Name`, `R1`, `R2`, `R3`, `R4`, `R5`, `R6`, `R7`, `workload`) VALUES
+(1, 'Lê Tiến Hưng', 0, 0, 0, 0, 0, 0, 0, 0),
+(6, 'Lê Tiến Hưng', 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
