@@ -45,11 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $r5 = $mysqli->real_escape_string($data['R5']);
         $r6 = $mysqli->real_escape_string($data['R6']);
         $r7 = $mysqli->real_escape_string($data['R7']);
-        $note = $mysqli->real_escape_string($data['note']);
 
         // Prepare and execute SQL query
-        $query = "INSERT INTO dr_detail (Name, R1, R2, R3, R4, R5, R6, R7, note) 
-                  VALUES ('$name', '$r1', '$r2', '$r3', '$r4', '$r5', '$r6', '$r7', '$note')";
+        $query = "INSERT INTO dr_detail (Name, R1, R2, R3, R4, R5, R6, R7) 
+                  VALUES ('$name', '$r1', '$r2', '$r3', '$r4', '$r5', '$r6', '$r7')";
         $result = $mysqli->query($query);
 
         // Check for errors
