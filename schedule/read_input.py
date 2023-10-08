@@ -1,9 +1,10 @@
 import sys
-sys.path.insert(0,'/home/toto/Code/Doctor_scheduling/schedule')
+sys.path.insert(0,'F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\schedule')
 from Data import Data
 import csv
 from Doctor import Doctor
 from Room import Room
+from Demand import Demand
 
 
 def read_input () -> Data:
@@ -13,8 +14,9 @@ def read_input () -> Data:
     day_off = []
     day_ol = []
     room_ol = []
+    l_demands = []
 
-    path1 = "instance-generator/Doctor.csv"
+    path1 = "F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\instance-generator\Doctor.csv"
 
 
     'DOCTOR INFO'
@@ -35,34 +37,45 @@ def read_input () -> Data:
                 elif (int(row[i]) == 2):
                     level2.append(i - 2)
         
-            d = Doctor(int(row[0]), row[1], int (row[2]), level1, level2 )
+            d = Doctor(int(row[0]), row[1], level1, level2 )
             l_doctors.append(d)
     
     'ROOM INFO'
-    path2 = "instance-generator/Room.csv"
+    path2 = "F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\instance-generator\Room.csv"
     with open(path2, 'r') as file2:
         reader = csv.reader(file2)
         next(reader, None)
         for row in reader :
 
-            r = Room (int (row[0]), row[1], int(row[2]), int (row[3]), int (row[4]), int(row[5]))
+            r = Room (int (row[0]), int (row[1]), int(row[2]))
 
             l_rooms.append(r)
 
-    path3 = "instance-generator/Day-off.csv"
+    path3 = "F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\instance-generator\Day-off.csv"
 
     with open(path3, 'r') as file3:
         reader = csv.reader(file3)
         for row in reader:
             day_off.append(int (row[0]))
 
-    path3 = "instance-generator/Day-ol.csv"
+    path3 = "F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\instance-generator\Day-ol.csv"
 
     with open(path3, 'r') as file3:
         reader = csv.reader(file3)
         for row in reader:
             day_ol.append(int (row[0]))
             room_ol.append(int (row[1]))
-        
 
-    return Data(l_doctors, l_rooms, day_off, day_ol, room_ol)
+    path4 = "F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\instance-generator\demand.csv"
+
+    with open(path4,'r') as file4:
+        reader = csv.reader(file4)
+        next(reader, None)
+        for row in reader:
+
+            demand = Demand(int (row[0]),int (row[1]),int (row[2]), int (row[3]))
+
+            l_demands.append(demand)
+            
+
+    return Data(l_doctors, l_rooms, day_off, day_ol, room_ol, l_demands)

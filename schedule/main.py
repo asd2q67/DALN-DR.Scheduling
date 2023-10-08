@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'/home/toto/Code/Doctor_scheduling/schedule')
+sys.path.insert(0,'F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\schedule')
 from Data import Data
 from read_input import read_input
 import csv
@@ -12,14 +12,21 @@ if __name__ == '__main__':
     data = read_input()
     solver = Solver (data)
     
-    print (data.get_num_doctors())
-    print (data.get_num_rooms())
-    print (solver.solution.schedule_matrix)
+    # print (data.get_num_doctors())
+    # print (data.get_num_rooms())
+    # print (data.get_num_demands())
+    # print (data.l_doctors[0].name)
+    # print (solver.solution.schedule_matrix)
     solver.init_matrix()
 
-    # solver.run()
-    print (solver.solution.schedule_matrix)
+    solver.run1()
+    print(solver.solution.schedule_matrix)
 
-    print (data.l_doctors[0].level1)
+    # print (data.l_doctors[0].level1)
+    # for i in solver.sort_doc(data.l_doctors):
+    #     print(i.doctorId , ' - ', i.work_load)
+    # for i in solver.sort_dict(data.l_doctors[0].work_load):
+    #     print(i)
+
 
 

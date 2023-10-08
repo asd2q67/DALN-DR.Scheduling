@@ -1,11 +1,12 @@
 import sys
-sys.path.insert(0,'/home/toto/Code/Doctor_scheduling/schedule')
+sys.path.insert(0,'F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\schedule')
 
 from Data import Data
 from read_input import read_input
 import csv
 from Doctor import Doctor
 from Room import Room
+from Demand import Demand
 from solution import Solution
 from typing import List
 
@@ -81,6 +82,133 @@ class Solver:
             return 1
         else :
             return 0
+        
+    def sort_doc(self,doc_list):
+        a = doc_list
+        a = sorted(a,key = lambda x : x.workload_sum())
+        return a
+
+    def sort_dict(self,my_dict):
+       sorted_dict = dict(sorted(my_dict.items(), key=lambda item: item[1]))
+
+       return sorted_dict
+
+    def check_skill(self,doctor,roomId):
+        if roomId in doctor.level1:
+            return 1
+        elif roomId in doctor.level2:
+            return 2
+        else:
+            return 0
+        
+    def check_demand1(self,roomID):
+        d = self.data.l_demands[roomID].demand1
+        if d>0:
+            return True
+        elif d == 0:
+            return False
+    
+    def check_demand2(self,roomID,demand):
+        d = self.data.l_demands[roomID].demand2
+        if d>0:
+            return True
+        elif d == 0:
+            return False
+        
+    def search_index(self,lst,value):
+            for j in range (len(lst)):
+                if lst[j].doctorId == value:
+                    return j
+            return -1
+        
+    def choose_bs(self,doc,roomID,d):
+        self.solution.update_matrix(doc.doctorId,d,roomID)
+        doc.work_load[roomID] += self.data.l_rooms[roomID].heavy
+
+    def run1(self):
+        for d in range (self.data.horizon):
+
+            a= []
+            for dr in self.data.l_doctors:
+                a.append(dr)
+            r_demand1 = []
+            r_demand2 = []
+            demand1 = []
+            for dm in self.data.l_demands:
+                demand1.append(0)
+                r_demand1.append(0)
+
+            demand2 = []
+            for dm in self.data.l_demands:
+                demand2.append(0)
+                r_demand2.append(0)
+
+            
+            for i in range(len(self.data.l_rooms)):
+                for j in range(len(self.solution.schedule_matrix[i][d])):
+                    if self.check_skill(self.data.l_doctors[j],i) == 1:
+                        r_demand1[i] +=1
+                        a.pop(self.search_index(a,self.solution.schedule_matrix[i][d][j]))
+                    if self.check_skill(self.data.l_doctors[j],i) == 2:
+                        r_demand2[i] +=1
+                        a.pop(self.search_index(a,self.solution.schedule_matrix[i][d][j]))
+            
+            sorted_doc_list = self.sort_doc(a)
+            for i in a:
+                print(i.doctorId)
+            print('---------------------')
+
+            
+            
+
+            
+            for doc in sorted_doc_list:
+                
+
+                sorted_workload = dict(sorted(doc.work_load.items(), key=lambda item: item[1]))
+                i = 0
+                list_keys = list(sorted_workload.keys())
+                for i in list_keys:
+
+
+                    if self.check_skill(doc,i) == 1:
+                        if demand1[i] + r_demand1[i] < self.data.l_demands[i].demand1 :
+                            # print("Phong" , i ,  "nay con cho vi bac lam viec cung duoc")
+                            self.choose_bs(doc,i,d)
+                            demand1[i] +=1
+                            r_demand1[i] +=1
+                            break
+                        else:
+                            # print('Qua phong khac di bac co nguoi roi')
+                            continue
+                    if self.check_skill(doc,i) == 2:
+                        if demand2[i] + r_demand2[i] < self.data.l_demands[i].demand2 :
+                            # print("Phong" , i ,  "nay con cho vi bac dinh vl")
+                            self.choose_bs(doc,i,d)
+                            demand2[i] +=1
+                            r_demand2[i] +=1
+                            break
+                        else:
+                            #  print('Qua phong khac di bac co nguoi roi')
+                             continue
+            
+            # print("ngay thu " , d , " cac phong co ngan nay nguoi" )
+            # print("lam bth" , r_demand1)
+            # print("dinh vl" , r_demand2)
+                # if i == len(list_keys):
+                #     print("BS nay het cuu")
+                # print(first_key , ' - ' , self.check_skill(doc,first_key))
+
+                # self.solution.update_matrix(doc.doctorId,d,first_key)
+                # doc.work_load[first_key] += self.data.l_rooms[first_key].heavy
+
+
+    
+    
+
+        
+        
+
 
 
 
