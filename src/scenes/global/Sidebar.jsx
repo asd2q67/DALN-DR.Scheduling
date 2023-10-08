@@ -9,6 +9,7 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const navigate = useNavigate();
@@ -59,6 +60,11 @@ const Sidebar = () => {
           color: "#6870fa !important",
         },
       }}
+      style={{
+        // position: "fixed",
+        // top: 0,
+        // left: 0,
+      }}
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
@@ -78,7 +84,7 @@ const Sidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" color={colors.grey[100]}>
+                <Typography variant="h3" color={colors.greenAccent[400]}>
                   Hospital H
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -156,9 +162,9 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
+              title="Room"
+              to="/room"
+              icon={<MeetingRoomIcon />}
               selected={selected}
               setSelected={setSelected}
             />
