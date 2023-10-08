@@ -15,15 +15,19 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
 import "./style.css";
 
+const fieldMapping = [
+  { fieldName: "R1", displayName: "Phòng 309 (KKB) TH1" },
+  { fieldName: "R2", displayName: "Phòng 309 (KKB) TH2" },
+  { fieldName: "R3", displayName: "Phòng 309 (KKB) TH3" },
+  { fieldName: "R4", displayName: "PK nhà K1 703" },
+  { fieldName: "R5", displayName: "PK nhà K1 704" },
+  { fieldName: "R6", displayName: "PK nhà K1 705" },
+  { fieldName: "R7", displayName: "PK nhà K1 707" },
+];
+
 const initialValues = {
   Name: "",
-  R1: "0",
-  R2: "0",
-  R3: "0",
-  R4: "0",
-  R5: "0",
-  R6: "0",
-  R7: "0",
+  ...Object.fromEntries(fieldMapping.map(({ fieldName }) => [fieldName, "0"])),
 };
 
 const validationSchema = yup.object({
@@ -36,16 +40,6 @@ const validationSchema = yup.object({
   R6: yup.string().required("Required"),
   R7: yup.string().required("Required"),
 });
-
-const fieldMapping = {
-  R1: "Phòng 309 (KKB) TH1",
-  R2: "Phòng 309 (KKB) TH2",
-  R3: "Phòng 309 (KKB) TH3",
-  R4: "PK nhà K1 703",
-  R5: "PK nhà K1 704",
-  R6: "PK nhà K1 705",
-  R7: "PK nhà K1 707",
-};
 
 const MyForm = () => {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -63,7 +57,7 @@ const MyForm = () => {
           },
         }
       );
-      
+
       setIsSuccess(true);
 
       // Reset input and radio buttons after 5 seconds
@@ -131,7 +125,7 @@ const MyForm = () => {
                 helperText={touched.Name && errors.Name}
                 sx={{ gridColumn: "span 4" }}
               />
-              {Object.entries(fieldMapping).map(([fieldName, displayName]) => (
+              {fieldMapping.map(({ fieldName, displayName }) => (
                 <React.Fragment key={fieldName}>
                   <div style={{ color: colors.greenAccent[200] }}>
                     {displayName}
