@@ -9,6 +9,7 @@ import {
 import { Formik } from "formik";
 import { tokens } from "../../theme";
 import * as yup from "yup";
+import axios from "axios";
 import Header from "../../components/Header";
 import React, { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
@@ -16,38 +17,63 @@ import "./style.css";
 
 const initialValues = {
   Name: "",
-  skills: [
-    { name: "Phòng 309 (KKB) TH1", level: 0 },
-    { name: "Phòng 309 (KKB) TH2", level: 0 },
-    { name: "Phòng 309 (KKB) TH3", level: 0 },
-    { name: "PK nhà K1 703", level: 0 },
-    { name: "PK nhà K1 704", level: 0 },
-    { name: "PK nhà K1 705", level: 0 },
-    { name: "PK nhà K1 707", level: 0 },
-    { name: "PK nhà K1 708", level: 0 },
-    { name: "PK nhà K1 709", level: 0 },
-    { name: "Điều trị tầng 9 K1", level: 0 },
-  ],
+  R1: "0",
+  R2: "0",
+  R3: "0",
+  R4: "0",
+  R5: "0",
+  R6: "0",
+  R7: "0",
 };
 
-const checkoutSchema = yup.object().shape({
-  Name: yup.string().required("required"),
+const validationSchema = yup.object({
+  Name: yup.string().required("Required"),
+  R1: yup.string().required("Required"),
+  R2: yup.string().required("Required"),
+  R3: yup.string().required("Required"),
+  R4: yup.string().required("Required"),
+  R5: yup.string().required("Required"),
+  R6: yup.string().required("Required"),
+  R7: yup.string().required("Required"),
 });
+
+const fieldMapping = {
+  R1: "Phòng 309 (KKB) TH1",
+  R2: "Phòng 309 (KKB) TH2",
+  R3: "Phòng 309 (KKB) TH3",
+  R4: "PK nhà K1 703",
+  R5: "PK nhà K1 704",
+  R6: "PK nhà K1 705",
+  R7: "PK nhà K1 707",
+};
 
 const MyForm = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const handleFormSubmit = (values, { resetForm }) => {
-    console.log(values);
-    setIsSuccess(true);
+  const handleFormSubmit = async (values, { resetForm }) => {
+    try {
+      const response = await axios.post(
+        "http://localhost/src/php/post_handler.php",
+        values,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      
+      setIsSuccess(true);
 
-    // Reset input and radio buttons after 5 seconds
-    setTimeout(() => {
-      setIsSuccess(false);
-      resetForm(); // Reset form values
-    }, 5000);
+      // Reset input and radio buttons after 5 seconds
+      setTimeout(() => {
+        setIsSuccess(false);
+        resetForm(); // Reset form values
+      }, 5000);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   useEffect(() => {
@@ -76,7 +102,7 @@ const MyForm = () => {
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
-        validationSchema={checkoutSchema}
+        validationSchema={validationSchema}
       >
         {({
           values,
@@ -105,14 +131,14 @@ const MyForm = () => {
                 helperText={touched.Name && errors.Name}
                 sx={{ gridColumn: "span 4" }}
               />
-              {values.skills.map((skill, index) => (
-                <React.Fragment key={index}>
+              {Object.entries(fieldMapping).map(([fieldName, displayName]) => (
+                <React.Fragment key={fieldName}>
                   <div style={{ color: colors.greenAccent[200] }}>
-                    {skill.name}
+                    {displayName}
                   </div>
                   <RadioGroup
-                    name={`skills[${index}].level`}
-                    value={values.skills[index].level}
+                    name={fieldName}
+                    value={values[fieldName] || "0"} // Default value to "0" if undefined
                     onChange={handleChange}
                   >
                     <FormControlLabel
