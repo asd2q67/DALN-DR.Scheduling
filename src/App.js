@@ -8,6 +8,7 @@ import Sidebar from "./scenes/global/Sidebar";
 import Doctor from "./scenes/doctor";
 import Calendar from "./scenes/calendar";
 import UserForm from "./scenes/form";
+import Room from "./scenes/Room";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -26,6 +27,7 @@ function App() {
               <Route path="/doctor" element={<Doctor />} />
               <Route path="/form" element={<UserForm />} />
               <Route path="/calendar" element={<Calendar />} />
+              <Route path="/room" element={<Room />} />
             </Routes>
           </main>
         </div>

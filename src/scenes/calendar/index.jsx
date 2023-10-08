@@ -4,7 +4,14 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
-import { Box, List, ListItem, ListItemText, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
 
@@ -30,7 +37,11 @@ const Calendar = () => {
   };
 
   const handleEventClick = (selected) => {
-    if (window.confirm(`Are you sure you want to delete the event '${selected.event.title}'`)) {
+    if (
+      window.confirm(
+        `Are you sure you want to delete the event '${selected.event.title}'`
+      )
+    ) {
       selected.event.remove();
     }
   };
@@ -42,7 +53,7 @@ const Calendar = () => {
 
   return (
     <Box m="20px">
-      <Header title="Calendar" subtitle="Full Calendar Interactive Page" />
+      <Header title="CALENDAR" subtitle="Full Calendar Interactive Page" />
 
       <Box display="flex" justifyContent="space-between">
         {/* CALENDAR SIDEBAR */}
@@ -52,7 +63,7 @@ const Calendar = () => {
           p="15px"
           borderRadius="4px"
         >
-          <Typography variant="h5">Events</Typography>
+          <Typography variant="h5">Rooms</Typography>
           <List>
             {currentEvents.map((event) => (
               <ListItem
@@ -65,11 +76,7 @@ const Calendar = () => {
               >
                 <ListItemText
                   primary={event.title}
-                  secondary={
-                    <Typography>
-                      {formatDate(event.start)}
-                    </Typography>
-                  }
+                  secondary={<Typography>{formatDate(event.start)}</Typography>}
                 />
               </ListItem>
             ))}
@@ -89,9 +96,9 @@ const Calendar = () => {
             headerToolbar={{
               left: "prev,next today",
               center: "title",
-              right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+              right: "timeGridWeek",
             }}
-            initialView="dayGridMonth"
+            initialView="timeGridWeek"
             editable={true}
             selectable={true}
             selectMirror={true}
@@ -99,19 +106,7 @@ const Calendar = () => {
             select={handleDateClick}
             eventClick={handleEventClick}
             eventsSet={(events) => setCurrentEvents(events)}
-            initialEvents={[
-              {
-                id: "12315",
-                title: "All-day event",
-                start: "2023-10-26",
-              },
-              {
-                id: "5123",
-                title: "Timed event",
-                start: "2023-10-28T10:00:00",
-                end: "2023-10-29T12:00:00",
-              },
-            ]}
+            initialEvents={[]}
           />
         </Box>
       </Box>
