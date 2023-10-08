@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 08, 2023 at 09:24 AM
+-- Generation Time: Oct 08, 2023 at 09:47 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `daln-dr.scheduling`
+-- Database: `daln_dr.scheduling`
 --
 
 -- --------------------------------------------------------
