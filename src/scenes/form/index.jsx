@@ -9,11 +9,12 @@ import {
 import { Formik } from "formik";
 import { tokens } from "../../theme";
 import * as yup from "yup";
-import axios from "axios";
 import Header from "../../components/Header";
 import React, { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
 import "./style.css";
+import { postDataToAPI } from "../../data/api";
+import { useNavigate } from "react-router-dom";
 
 const fieldMapping = [
   { fieldName: "R1", displayName: "Phòng 309 (KKB) TH1" },
@@ -45,18 +46,15 @@ const MyForm = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
 
   const handleFormSubmit = async (values, { resetForm }) => {
     try {
-      const response = await axios.post(
-        "http://localhost/src/php/post_handler.php",
-        values,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await postDataToAPI("/post_handler.php", values, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       setIsSuccess(true);
 
@@ -64,6 +62,7 @@ const MyForm = () => {
       setTimeout(() => {
         setIsSuccess(false);
         resetForm(); // Reset form values
+        navigate("/doctor");
       }, 5000);
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -109,7 +108,7 @@ const MyForm = () => {
           <form onSubmit={handleSubmit}>
             <Box
               display="grid"
-              gap="30px"
+              mb="20px"
               gridTemplateColumns="repeat(4, minmax(0, 1fr)"
             >
               <TextField

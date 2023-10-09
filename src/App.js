@@ -9,6 +9,7 @@ import Doctor from "./scenes/doctor";
 import Calendar from "./scenes/calendar";
 import UserForm from "./scenes/form";
 import Room from "./scenes/Room";
+import Demand from "./scenes/demand";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -28,6 +29,7 @@ function App() {
               <Route path="/form" element={<UserForm />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/room" element={<Room />} />
+              <Route path="/demand" element={<Demand />} />
             </Routes>
           </main>
         </div>

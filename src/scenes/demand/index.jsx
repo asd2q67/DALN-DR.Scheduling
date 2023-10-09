@@ -5,25 +5,38 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { fetchDataFromAPI } from "../../data/api";
 
-const Room = () => {
+const Demand = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [roomData, setRoomData] = useState([]);
+  const [demandData, setDemandData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Name", flex: 1 },
-    { field: "load", headerName: "Load", flex: 1 },
-    { field: "priority", headerName: "Priority", flex: 1 },
+    { field: "roomName", headerName: "Room Name", flex: 1 },
+    { field: "doctor-num", headerName: "Doctor Num", flex: 1 },
+    { field: "demand0", headerName: "Demand for Low", flex: 1 },
+    { field: "demand1", headerName: "Demand for Medium", flex: 1 },
+    { field: "demand2", headerName: "Demand for High", flex: 1 },
   ];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchDataFromAPI("/room_detail.php");
-        setRoomData(data);
+        const demandData = await fetchDataFromAPI("/demand.php");
+        const roomData = await fetchDataFromAPI("/room_detail.php");
+        // console.log(demandData);
+        // Map room-id to room name in demand data
+        const mappedDemandData = demandData.map(demand => {
+          const room = roomData.find(room => room.id === demand['room-id']);
+          return {
+            ...demand,
+            roomName: room ? room.name : 'N/A', // Set room name or 'N/A' if not found
+          };
+        });
+
+        setDemandData(mappedDemandData);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -36,7 +49,7 @@ const Room = () => {
 
   return (
     <Box m="20px">
-      <Header title="ROOMS" subtitle="Managing Rooms" />
+      <Header title="DEMAND" subtitle="View Demand Data" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -60,7 +73,7 @@ const Room = () => {
         <DataGrid
           style={{ width: "100%" }}
           checkboxSelection
-          rows={roomData}
+          rows={demandData}
           columns={columns}
         />
       </Box>
@@ -68,4 +81,4 @@ const Room = () => {
   );
 };
 
-export default Room;
+export default Demand;
