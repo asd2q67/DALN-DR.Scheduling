@@ -3,8 +3,13 @@ import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-import { fetchDataFromAPI, deleteDataFromAPI } from "../../data/api";
+import {
+  fetchDataFromAPI,
+  deleteDataFromAPI,
+  updateDataToAPI,
+} from "../../data/api";
 import "./style.css";
+import EditModal from "../../components/EditModal";
 
 const Doctor = () => {
   const theme = useTheme();
@@ -14,6 +19,8 @@ const Doctor = () => {
   const [loading, setLoading] = useState(true);
 
   const [selectedRowIds, setSelectedRowIds] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
 
   const handleRowClick = (params) => {
     const selectedId = params.row.id;
@@ -29,26 +36,57 @@ const Doctor = () => {
         selectedId,
       ]);
     }
-    // console.log("111", selectedRowIds);
   };
 
   const handleDeleteClick = async () => {
     try {
       for (const id of selectedRowIds) {
         // Use deleteDataFromAPI function to delete data by ID
-        await deleteDataFromAPI(`/dr_detail.php?id=${id}`);
+        await deleteDataFromAPI(`/dr_delete.php?id=${id}`);
         console.log(`Successfully deleted item with ID ${id}`);
       }
-  
+
       // Fetch updated doctor data after successful deletion
       const updatedData = await fetchDataFromAPI("/dr_detail.php");
       setDoctorData(updatedData);
-  
+
       // Clear the selected IDs after deletion
       setSelectedRowIds([]);
     } catch (error) {
       console.error("Error during fetch:", error);
       setError("Error during fetch: " + error.message);
+    }
+  };
+
+  useEffect(() => {
+    // Check if selectedRowData is not null and log it here
+    if (selectedRowData !== null) {
+      console.log(selectedRowData);
+    }
+  }, [selectedRowData]); 
+
+  const handleEditClick = () => {
+    // Lấy dữ liệu của hàng được chọn
+    const selectedRow = doctorData.find((row) => row.id === selectedRowIds[0]);
+    // Nếu có dữ liệu, hiển thị modal sửa
+    if (selectedRow) {
+      setSelectedRowData(selectedRow);
+      setIsModalOpen(true);
+    }
+    console.log("selectedRowIds", selectedRowIds);
+  };
+
+  const updateToAPI = async (updatedData) => {
+    try {
+      // Gửi dữ liệu cập nhật thông qua API sử dụng hàm updateDataToAPI
+      const response = await updateDataToAPI(`/dr_update.php?id=${updatedData.id}`, updatedData);
+      console.log(`Successfully updated item with ID ${updatedData.id}`);
+      // Nếu cần, cập nhật lại danh sách bác sĩ sau khi cập nhật
+      const updatedDoctorData = await fetchDataFromAPI("/dr_detail.php");
+      setDoctorData(updatedDoctorData);
+    } catch (error) {
+      console.error("Error during update:", error);
+      // Xử lý lỗi khi cập nhật dữ liệu
     }
   };
   
@@ -107,8 +145,8 @@ const Doctor = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchDataFromAPI("/dr_detail.php")
-        
+        const data = await fetchDataFromAPI("/dr_detail.php");
+
         setDoctorData(data);
         // console.log(data);
       } catch (error) {
@@ -139,6 +177,25 @@ const Doctor = () => {
         >
           Delete Selected Doctors
         </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleEditClick}
+          disabled={selectedRowIds.length === 0}
+          sx={{
+            ml: "10px",
+          }}
+        >
+          Edit Selected Doctors
+        </Button>
+        {selectedRowData && (
+          <EditModal
+            open={isModalOpen}
+            handleClose={() => setIsModalOpen(false)}
+            rowData={selectedRowData}
+            handleUpdate={updateToAPI}
+          />
+        )}
       </Box>
 
       <Box

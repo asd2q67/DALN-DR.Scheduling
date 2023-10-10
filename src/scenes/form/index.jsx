@@ -58,12 +58,12 @@ const MyForm = () => {
 
       setIsSuccess(true);
 
-      // Reset input and radio buttons after 5 seconds
+      // Reset input and radio buttons after 2 seconds
       setTimeout(() => {
         setIsSuccess(false);
         resetForm(); // Reset form values
         navigate("/doctor");
-      }, 5000);
+      }, 2000);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -72,10 +72,10 @@ const MyForm = () => {
   useEffect(() => {
     let timer;
     if (isSuccess) {
-      // Hide the alert after 5 seconds
+      // Hide the alert after 2 seconds
       timer = setTimeout(() => {
         setIsSuccess(false);
-      }, 5000);
+      }, 2000);
     }
 
     // Clear the timer if the component unmounts or if isSuccess becomes false
@@ -86,7 +86,7 @@ const MyForm = () => {
 
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
+      <Header title="CREATE DOCTOR" subtitle="Create a New Doctor Profile" />
 
       <div className={`custom-alert ${isSuccess ? "" : "hide-alert"}`}>
         Form submitted successfully!
@@ -174,7 +174,7 @@ const MyForm = () => {
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create New User
+                Create Doctor
               </Button>
             </Box>
           </form>

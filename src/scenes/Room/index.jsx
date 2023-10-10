@@ -14,7 +14,12 @@ const Room = () => {
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Name", flex: 1 },
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
     { field: "load", headerName: "Load", flex: 1 },
     { field: "priority", headerName: "Priority", flex: 1 },
   ];
@@ -47,6 +52,9 @@ const Room = () => {
           },
           "& .MuiDataGrid-cell": {
             borderBottom: "none",
+          },
+          "& .name-column--cell": {
+            color: colors.greenAccent[300],
           },
           "& .MuiDataGrid-columnHeaders": {
             backgroundColor: colors.blueAccent[700],

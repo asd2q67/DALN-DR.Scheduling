@@ -14,7 +14,12 @@ const Demand = () => {
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
-    { field: "roomName", headerName: "Room Name", flex: 1 },
+    {
+      field: "roomName",
+      headerName: "Room Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
     { field: "doctor-num", headerName: "Doctor Num", flex: 1 },
     { field: "demand0", headerName: "Demand for Low", flex: 1 },
     { field: "demand1", headerName: "Demand for Medium", flex: 1 },
@@ -28,11 +33,11 @@ const Demand = () => {
         const roomData = await fetchDataFromAPI("/room_detail.php");
         // console.log(demandData);
         // Map room-id to room name in demand data
-        const mappedDemandData = demandData.map(demand => {
-          const room = roomData.find(room => room.id === demand['room-id']);
+        const mappedDemandData = demandData.map((demand) => {
+          const room = roomData.find((room) => room.id === demand["room-id"]);
           return {
             ...demand,
-            roomName: room ? room.name : 'N/A', // Set room name or 'N/A' if not found
+            roomName: room ? room.name : "N/A", // Set room name or 'N/A' if not found
           };
         });
 
@@ -60,6 +65,9 @@ const Demand = () => {
           },
           "& .MuiDataGrid-cell": {
             borderBottom: "none",
+          },
+          "& .name-column--cell": {
+            color: colors.greenAccent[300],
           },
           "& .MuiDataGrid-columnHeaders": {
             backgroundColor: colors.blueAccent[700],

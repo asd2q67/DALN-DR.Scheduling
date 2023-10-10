@@ -7,9 +7,12 @@ header("Access-Control-Allow-Credentials: true");
 
 // Handle OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    header("HTTP/1.1 200 OK");
+    header("Access-Control-Allow-Methods: DELETE, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+    http_response_code(200);
     exit();
 }
+
 // Database configuration
 $dbserver = "localhost";
 $dbuser = "root";
