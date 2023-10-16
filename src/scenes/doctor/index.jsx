@@ -21,6 +21,32 @@ const Doctor = () => {
   const [selectedRowIds, setSelectedRowIds] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
+  const [roomDetails, setRoomDetails] = useState([]);
+  const [doctorDetails, setDoctorDetails] = useState([]);
+  
+  useEffect(() => {
+    const fetchRoomDetails = async () => {
+      try {
+        const response = await fetchDataFromAPI("/room_detail.php");
+        setRoomDetails(response);
+      } catch (error) {
+        console.error("Error fetching room details:", error);
+      }
+    };
+  
+    const fetchDoctorDetails = async () => {
+      try {
+        const response = await fetchDataFromAPI("/dr_detail.php");
+        setDoctorDetails(response);
+      } catch (error) {
+        console.error("Error fetching doctor details:", error);
+      }
+    };
+  
+    fetchRoomDetails();
+    fetchDoctorDetails();
+  }, []);
+  
 
   const handleRowClick = (params) => {
     const selectedId = params.row.id;
@@ -57,13 +83,6 @@ const Doctor = () => {
       setError("Error during fetch: " + error.message);
     }
   };
-
-  useEffect(() => {
-    // Check if selectedRowData is not null and log it here
-    if (selectedRowData !== null) {
-      console.log(selectedRowData);
-    }
-  }, [selectedRowData]); 
 
   const handleEditClick = () => {
     // Lấy dữ liệu của hàng được chọn
@@ -105,15 +124,14 @@ const Doctor = () => {
       flex: 3,
       cellClassName: "skill-column--cell",
       renderCell: (params) => {
-        const skills = [
-          { name: "Phòng 309 (KKB) TH1", level: params.row.R1 },
-          { name: "Phòng 309 (KKB) TH2", level: params.row.R2 },
-          { name: "Phòng 309 (KKB) TH3", level: params.row.R3 },
-          { name: "PK nhà K1 703", level: params.row.R4 },
-          { name: "PK nhà K1 704", level: params.row.R5 },
-          { name: "PK nhà K1 705", level: params.row.R6 },
-          { name: "PK nhà K1 707", level: params.row.R7 },
-        ];
+        const skills = roomDetails.map((room) => {
+          const doctorDetail = doctorDetails.find((doctor) => doctor.id === params.row.id);
+          const level = doctorDetail ? doctorDetail[`R${room.id}`] : "0";
+          return {
+            name: room.name,
+            level: level,
+          };
+        });
 
         return (
           <div
@@ -126,13 +144,13 @@ const Doctor = () => {
               <div key={index} style={{ marginRight: "10px" }}>
                 <Typography variant="body1">{`${skill.name} `}</Typography>
                 {skill.level === "0" && (
-                  <span style={{ color: colors.redAccent[300] }}>Low</span>
+                  <span style={{ color: colors.redAccent[300] }}>Không kinh nghiệm</span>
                 )}
                 {skill.level === "1" && (
-                  <span style={{ color: "orange" }}>Medium</span>
+                  <span style={{ color: "orange" }}>Làm được</span>
                 )}
                 {skill.level === "2" && (
-                  <span style={{ color: colors.greenAccent[300] }}>High</span>
+                  <span style={{ color: colors.greenAccent[300] }}>Làm tốt</span>
                 )}
               </div>
             ))}
@@ -146,9 +164,7 @@ const Doctor = () => {
     const fetchData = async () => {
       try {
         const data = await fetchDataFromAPI("/dr_detail.php");
-
         setDoctorData(data);
-        // console.log(data);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -158,6 +174,20 @@ const Doctor = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchRoomDetails = async () => {
+      try {
+        const response = await fetchDataFromAPI("/room_detail.php");
+        setRoomDetails(response);
+      } catch (error) {
+        console.error("Error fetching room details:", error);
+      }
+    };
+  
+    fetchRoomDetails();
+  }, []);
+  
 
   return (
     <Box m="20px">
@@ -175,7 +205,7 @@ const Doctor = () => {
           onClick={handleDeleteClick}
           disabled={selectedRowIds.length === 0}
         >
-          Delete Selected Doctors
+          Delete Selected Doctor
         </Button>
         <Button
           variant="contained"
@@ -194,6 +224,7 @@ const Doctor = () => {
             handleClose={() => setIsModalOpen(false)}
             rowData={selectedRowData}
             handleUpdate={updateToAPI}
+            roomDetails={roomDetails}
           />
         )}
       </Box>

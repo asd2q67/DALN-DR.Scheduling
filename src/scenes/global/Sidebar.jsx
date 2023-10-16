@@ -8,9 +8,10 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
-import ChecklistIcon from '@mui/icons-material/Checklist';
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import ChecklistIcon from "@mui/icons-material/Checklist";
+import AddHomeTwoToneIcon from '@mui/icons-material/AddHomeTwoTone';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const navigate = useNavigate();
@@ -92,11 +93,13 @@ const Sidebar = () => {
           color: "#6870fa !important",
         },
       }}
-      style={{
-        // position: "fixed",
-        // top: 0,
-        // left: 0,
-      }}
+      style={
+        {
+          // position: "fixed",
+          // top: 0,
+          // left: 0,
+        }
+      }
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
@@ -180,8 +183,8 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="New Profile"
-              to="/form"
+              title="Create Doctor"
+              to="/create_doctor"
               icon={<PersonAddIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -190,6 +193,13 @@ const Sidebar = () => {
               title="Room"
               to="/room"
               icon={<MeetingRoomIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Create Room"
+              to="/create_room"
+              icon={<AddHomeTwoToneIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -221,13 +231,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-                        <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
             <Item
               title="?"
               to="/?"
@@ -235,7 +238,7 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-                        <Item
+            <Item
               title="?"
               to="/?"
               icon={<HelpOutlineOutlinedIcon />}

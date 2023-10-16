@@ -1,56 +1,60 @@
+// Import các dependencies và components cần thiết
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
-  TextField,
-  RadioGroup,
   FormControlLabel,
   Radio,
+  RadioGroup,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { Formik } from "formik";
-import { tokens } from "../../theme";
 import * as yup from "yup";
 import Header from "../../components/Header";
-import React, { useEffect, useState } from "react";
-import { useTheme } from "@emotion/react";
-import "./style.css";
-import { postDataToAPI } from "../../data/api";
+import { postDataToAPI, fetchDataFromAPI } from "../../data/api"; // Import hàm gửi yêu cầu API từ module api của bạn
+import "./style.css"
 import { useNavigate } from "react-router-dom";
-
-const fieldMapping = [
-  { fieldName: "R1", displayName: "Phòng 309 (KKB) TH1" },
-  { fieldName: "R2", displayName: "Phòng 309 (KKB) TH2" },
-  { fieldName: "R3", displayName: "Phòng 309 (KKB) TH3" },
-  { fieldName: "R4", displayName: "PK nhà K1 703" },
-  { fieldName: "R5", displayName: "PK nhà K1 704" },
-  { fieldName: "R6", displayName: "PK nhà K1 705" },
-  { fieldName: "R7", displayName: "PK nhà K1 707" },
-];
-
-const initialValues = {
-  Name: "",
-  ...Object.fromEntries(fieldMapping.map(({ fieldName }) => [fieldName, "0"])),
-};
 
 const validationSchema = yup.object({
   Name: yup.string().required("Required"),
-  R1: yup.string().required("Required"),
-  R2: yup.string().required("Required"),
-  R3: yup.string().required("Required"),
-  R4: yup.string().required("Required"),
-  R5: yup.string().required("Required"),
-  R6: yup.string().required("Required"),
-  R7: yup.string().required("Required"),
+  // Thêm các trường validation cho các trường R1, R2, ...
+  // Ví dụ: R1: yup.string().required("Required"),
+  // R2: yup.string().required("Required"),
+  // ...
 });
 
-const MyForm = () => {
+const CreateDoctor = () => {
   const [isSuccess, setIsSuccess] = useState(false);
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const [roomDetails, setRoomDetails] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Gọi API để lấy chi tiết các phòng và cập nhật vào state roomDetails
+    const fetchRoomDetails = async () => {
+      try {
+        const response = await fetchDataFromAPI("/room_detail.php");
+        setRoomDetails(response);
+      } catch (error) {
+        console.error("Error fetching room details:", error);
+      }
+    };
+
+    fetchRoomDetails();
+  }, []);
+
+  const initialValues = {
+    Name: "",
+    ...roomDetails.reduce((acc, room) => {
+      acc[`R${room.id}`] = "0";
+      return acc;
+    }, {}),
+  };
 
   const handleFormSubmit = async (values, { resetForm }) => {
     try {
-      const response = await postDataToAPI("/post_handler.php", values, {
+      // Gửi yêu cầu POST đến API để tạo bác sĩ mới
+      const response = await postDataToAPI("/dr_create.php", values, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -58,10 +62,10 @@ const MyForm = () => {
 
       setIsSuccess(true);
 
-      // Reset input and radio buttons after 2 seconds
+      // Reset form và ẩn thông báo thành công sau 2 giây
       setTimeout(() => {
         setIsSuccess(false);
-        resetForm(); // Reset form values
+        resetForm();
         navigate("/doctor");
       }, 2000);
     } catch (error) {
@@ -72,10 +76,10 @@ const MyForm = () => {
   useEffect(() => {
     let timer;
     if (isSuccess) {
-      // Hide the alert after 2 seconds
+      // Hide the alert after 5 seconds
       timer = setTimeout(() => {
         setIsSuccess(false);
-      }, 2000);
+      }, 5000);
     }
 
     // Clear the timer if the component unmounts or if isSuccess becomes false
@@ -124,49 +128,34 @@ const MyForm = () => {
                 helperText={touched.Name && errors.Name}
                 sx={{ gridColumn: "span 4" }}
               />
-              {fieldMapping.map(({ fieldName, displayName }) => (
-                <React.Fragment key={fieldName}>
-                  <div style={{ color: colors.greenAccent[200] }}>
-                    {displayName}
-                  </div>
+              {roomDetails.map((room) => (
+                <React.Fragment key={room.id}>
+                  <Typography variant="body1" sx={{ gridColumn: "span 2" }}>
+                    {room.name}:
+                  </Typography>
                   <RadioGroup
-                    name={fieldName}
-                    value={values[fieldName] || "0"} // Default value to "0" if undefined
+                    name={`R${room.id}`}
+                    value={values[`R${room.id}`]}
+                    defaultValue="0"
                     onChange={handleChange}
+                    row
+                    sx={{ gridColumn: "span ２" }}
                   >
                     <FormControlLabel
                       value="0"
-                      control={
-                        <Radio
-                          sx={{
-                            color: `${colors.greenAccent[200]} !important`,
-                          }}
-                        />
-                      }
-                      label="Low"
+                      control={<Radio />}
+                      label="Không kinh nghiệm"
                       defaultChecked
                     />
                     <FormControlLabel
                       value="1"
-                      control={
-                        <Radio
-                          sx={{
-                            color: `${colors.greenAccent[200]} !important`,
-                          }}
-                        />
-                      }
-                      label="Medium"
+                      control={<Radio />}
+                      label="Làm được"
                     />
                     <FormControlLabel
                       value="2"
-                      control={
-                        <Radio
-                          sx={{
-                            color: `${colors.greenAccent[200]} !important`,
-                          }}
-                        />
-                      }
-                      label="High"
+                      control={<Radio />}
+                      label="Làm tốt"
                     />
                   </RadioGroup>
                 </React.Fragment>
@@ -183,4 +172,5 @@ const MyForm = () => {
     </Box>
   );
 };
-export default MyForm;
+
+export default CreateDoctor;

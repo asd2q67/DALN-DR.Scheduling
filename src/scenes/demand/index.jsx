@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Box, useTheme } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-import { fetchDataFromAPI } from "../../data/api";
+import { fetchDataFromAPI, updateDataToAPI } from "../../data/api";
+import DemandModal from "../../components/DemandModal";
 
 const Demand = () => {
   const theme = useTheme();
@@ -11,6 +12,9 @@ const Demand = () => {
   const [demandData, setDemandData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedRowIds, setSelectedRowIds] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
@@ -20,10 +24,13 @@ const Demand = () => {
       flex: 1,
       cellClassName: "name-column--cell",
     },
-    { field: "doctor-num", headerName: "Doctor Num", flex: 1 },
-    { field: "demand0", headerName: "Demand for Low", flex: 1 },
-    { field: "demand1", headerName: "Demand for Medium", flex: 1 },
-    { field: "demand2", headerName: "Demand for High", flex: 1 },
+    {
+      field: "demand0",
+      headerName: "Yêu cầu về người không có kinh nghiệm",
+      flex: 1,
+    },
+    { field: "demand1", headerName: "Yêu cầu về người Làm được", flex: 1 },
+    { field: "demand2", headerName: "Yêu cầu về người Làm tốt", flex: 1 },
   ];
 
   useEffect(() => {
@@ -52,9 +59,61 @@ const Demand = () => {
     fetchData();
   }, []);
 
+  const handleRowClick = (params) => {
+    const selectedId = params.row.id;
+    if (selectedRowIds.includes(selectedId)) {
+      setSelectedRowIds((prevSelectedRowIds) =>
+        prevSelectedRowIds.filter((id) => id !== selectedId)
+      );
+    } else {
+      setSelectedRowIds((prevSelectedRowIds) => [
+        ...prevSelectedRowIds,
+        selectedId,
+      ]);
+    }
+  };
+
+  const handleEditClick = () => {
+    const selectedRow = demandData.find((row) => row.id === selectedRowIds[0]);
+    if (selectedRow) {
+      setSelectedRowData(selectedRow);
+      setIsModalOpen(true);
+    }
+  };
+
+  const updateDemand = async (updatedData) => {
+    try {
+      const response = await updateDataToAPI(
+        `/demand_update.php?id=${updatedData.id}`,
+        updatedData
+      );
+      console.log(`Successfully updated demand with ID ${updatedData.id}`);
+      const updatedDemandData = await fetchDataFromAPI("/demand.php");
+      setDemandData(updatedDemandData);
+    } catch (error) {
+      console.error("Error during update:", error);
+    }
+  };
+
   return (
     <Box m="20px">
-      <Header title="DEMAND" subtitle="View Demand Data" />
+      <Header title="DEMAND" subtitle="Demand for Rooms" />
+
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="center"
+        marginBottom="20px"
+      >
+        <Button
+          variant="contained"
+          color="secondary"
+          disabled={selectedRowIds.length === 0}
+          onClick={() => handleEditClick()}
+        >
+          Edit demand
+        </Button>
+      </Box>
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -83,8 +142,17 @@ const Demand = () => {
           checkboxSelection
           rows={demandData}
           columns={columns}
+          onRowClick={handleRowClick}
         />
       </Box>
+      {selectedRowData && (
+        <DemandModal
+          open={isModalOpen}
+          handleClose={() => setIsModalOpen(false)}
+          rowData={selectedRowData}
+          handleUpdate={updateDemand}
+        />
+      )}
     </Box>
   );
 };
