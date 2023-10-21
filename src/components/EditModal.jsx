@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogActions,
@@ -8,15 +8,38 @@ import {
   TextField,
 } from "@mui/material";
 
-const EditModal = ({ open, handleClose, rowData, handleUpdate, roomDetails }) => {
+const EditModal = ({
+  open,
+  handleClose,
+  rowData,
+  handleUpdate,
+  roomDetails,
+}) => {
+  {
+    // console.log(1111, rowData);
+  }
   const [updatedData, setUpdatedData] = useState({
     id: rowData.id,
     Name: rowData.Name,
     ...roomDetails.reduce((acc, room) => {
-      acc[`R${room.id}`] = rowData.Skills && rowData.Skills[`R${room.id}`] ? rowData.Skills[`R${room.id}`] : "0";
+      const roomKey = `R${room.id}`;
+      acc[roomKey] = rowData[roomKey] || "0";
       return acc;
     }, {}),
   });
+
+  useEffect(() => {
+    setUpdatedData(prevData => ({
+      ...prevData,
+      id: rowData.id,
+      Name: rowData.Name,
+      ...roomDetails.reduce((acc, room) => {
+        const roomKey = `R${room.id}`;
+        acc[roomKey] = rowData[roomKey] || "0";
+        return acc;
+      }, {})
+    }));
+  }, [rowData, roomDetails]);  
 
   const handleChange = (e) => {
     const { name, value } = e.target;

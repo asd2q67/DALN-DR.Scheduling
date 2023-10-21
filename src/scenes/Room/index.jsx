@@ -51,11 +51,16 @@ const Room = () => {
     }
   };
 
-  const handleEditClick = () => {
-    const selectedRow = roomData.find((row) => row.id === selectedRowIds[0]);
-    if (selectedRow) {
-      setSelectedRowData(selectedRow);
-      setIsModalOpen(true);
+  const handleEditClick = async () => {
+    try {
+      const selectedRow = roomData.find((row) => row.id === selectedRowIds[0]);
+      if (selectedRow) {
+        setSelectedRowData(selectedRow);
+        setIsModalOpen(true);
+      }
+    } catch (error) {
+      console.error("Error during fetch:", error);
+      setError("Error during fetch: " + error.message);
     }
   };
 

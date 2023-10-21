@@ -11,6 +11,8 @@ import Room from "./scenes/Room";
 import Demand from "./scenes/demand";
 import CreateRoom from "./scenes/CreateRoom";
 import CreateDoctor from "./scenes/CreateDoctor";
+import WorkAssign from "./scenes/workAssign";
+import WorkAssignment from "./scenes/workAssignment";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -32,6 +34,8 @@ function App() {
               <Route path="/room" element={<Room />} />
               <Route path="/create_room" element={<CreateRoom />} />
               <Route path="/demand" element={<Demand />} />
+              <Route path="/work_assign" element={<WorkAssign />} />
+              <Route path="/work_assignment" element={<WorkAssignment />} />
             </Routes>
           </main>
         </div>

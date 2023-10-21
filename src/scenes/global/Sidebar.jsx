@@ -11,7 +11,9 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import ChecklistIcon from "@mui/icons-material/Checklist";
-import AddHomeTwoToneIcon from '@mui/icons-material/AddHomeTwoTone';
+import AddHomeTwoToneIcon from "@mui/icons-material/AddHomeTwoTone";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const navigate = useNavigate();
@@ -211,23 +213,23 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
+              title="Work Assign"
+              to="/work_assign"
+              icon={<AssignmentIndIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Work Assignment"
+              to="/work_assignment"
+              icon={<AssignmentIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
               title="Calendar"
               to="/calendar"
               icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />

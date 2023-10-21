@@ -92,7 +92,7 @@ const Doctor = () => {
       setSelectedRowData(selectedRow);
       setIsModalOpen(true);
     }
-    console.log("selectedRowIds", selectedRowIds);
+    // console.log("selectedRowIds", selectedRowIds);
   };
 
   const updateToAPI = async (updatedData) => {
@@ -218,6 +218,7 @@ const Doctor = () => {
         >
           Edit Selected Doctors
         </Button>
+        {/* {console.log(111, selectedRowData)} */}
         {selectedRowData && (
           <EditModal
             open={isModalOpen}
