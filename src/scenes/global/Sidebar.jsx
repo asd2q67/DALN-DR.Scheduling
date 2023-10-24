@@ -1,15 +1,19 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Menu, MenuItem, Sidebar as ProSidebar } from "react-pro-sidebar";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import ChecklistIcon from "@mui/icons-material/Checklist";
+import AddHomeTwoToneIcon from "@mui/icons-material/AddHomeTwoTone";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const navigate = useNavigate();
@@ -40,10 +44,41 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const location = useLocation();
+
+  React.useEffect(() => {
+    const currentPath = location.pathname;
+    // Update the selected state based on the current path
+    if (currentPath === "/") {
+      setSelected("Dashboard");
+    } else if (currentPath === "/doctor") {
+      setSelected("Doctor");
+    } else if (currentPath === "/form") {
+      setSelected("New Profile");
+    } else if (currentPath === "/room") {
+      setSelected("Room");
+    } else if (currentPath === "/demand") {
+      setSelected("Demand");
+    } else if (currentPath === "/calendar") {
+      setSelected("Calendar");
+    } else if (currentPath === "/?") {
+      setSelected("?");
+    }
+    // Add more conditions as needed for other routes
+  }, [location.pathname]);
 
   return (
     <Box
       sx={{
+        height: "100vh",
+        flex: "0 0 auto", // Allow sidebar to shrink and grow based on content
+        display: "flex",
+        flexDirection: "column",
+        transition: "width 0.5s ease", // Add transition for smooth animation
+        overflowY: "auto",
+        overflowX: "hidden", // Prevent horizontal scrollbar
+        maxWidth: isCollapsed ? "60px" : "250px", // Set maximum width for collapsed state
+        width: isCollapsed ? "60px" : "100%", // Set width based on collapsed state
         "& .ps-sidebar-container": {
           background: `${colors.primary[400]} !important`,
         },
@@ -60,11 +95,13 @@ const Sidebar = () => {
           color: "#6870fa !important",
         },
       }}
-      style={{
-        // position: "fixed",
-        // top: 0,
-        // left: 0,
-      }}
+      style={
+        {
+          // position: "fixed",
+          // top: 0,
+          // left: 0,
+        }
+      }
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
@@ -148,16 +185,9 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="New Profile"
-              to="/form"
+              title="Create Doctor"
+              to="/create_doctor"
               icon={<PersonAddIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Calendar"
-              to="/calendar"
-              icon={<CalendarTodayOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -169,44 +199,37 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
+              title="Create Room"
+              to="/create_room"
+              icon={<AddHomeTwoToneIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
+              title="Demand"
+              to="/demand"
+              icon={<ChecklistIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
+              title="Work Assign"
+              to="/work_assign"
+              icon={<AssignmentIndIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
+              title="Work Assignment"
+              to="/work_assignment"
+              icon={<AssignmentIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
+              title="Calendar"
+              to="/calendar"
+              icon={<CalendarTodayOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
