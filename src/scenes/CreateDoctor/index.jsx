@@ -13,18 +13,18 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import Header from "../../components/Header";
 import { postDataToAPI, fetchDataFromAPI } from "../../data/api"; // Import hàm gửi yêu cầu API từ module api của bạn
-import "./style.css"
+import "./style.css";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@emotion/react";
+import { tokens } from "../../theme";
 
 const validationSchema = yup.object({
   Name: yup.string().required("Required"),
-  // Thêm các trường validation cho các trường R1, R2, ...
-  // Ví dụ: R1: yup.string().required("Required"),
-  // R2: yup.string().required("Required"),
-  // ...
 });
 
 const CreateDoctor = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const [isSuccess, setIsSuccess] = useState(false);
   const [roomDetails, setRoomDetails] = useState([]);
   const navigate = useNavigate();
@@ -96,79 +96,93 @@ const CreateDoctor = () => {
         Form submitted successfully!
       </div>
 
-      <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={initialValues}
-        validationSchema={validationSchema}
+      <Box
+        m="40px 0 0 0"
+        height="75vh"
+        sx={{
+          "& .MuiTypography-root": {
+            border: "none",
+          },
+          "& .MuiButtonBase-root": {color: colors.greenAccent[300]}
+        }}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <Box
-              display="grid"
-              mb="20px"
-              gridTemplateColumns="repeat(4, minmax(0, 1fr)"
-            >
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.Name}
-                name="Name"
-                error={!!touched.Name && !!errors.Name}
-                helperText={touched.Name && errors.Name}
-                sx={{ gridColumn: "span 4" }}
-              />
-              {roomDetails.map((room) => (
-                <React.Fragment key={room.id}>
-                  <Typography variant="body1" sx={{ gridColumn: "span 2" }}>
-                    {room.name}:
-                  </Typography>
-                  <RadioGroup
-                    name={`R${room.id}`}
-                    value={values[`R${room.id}`]}
-                    defaultValue="0"
-                    onChange={handleChange}
-                    row
-                    sx={{ gridColumn: "span ２" }}
-                  >
-                    <FormControlLabel
-                      value="0"
-                      control={<Radio />}
-                      label="Không kinh nghiệm"
-                      defaultChecked
-                    />
-                    <FormControlLabel
-                      value="1"
-                      control={<Radio />}
-                      label="Làm được"
-                    />
-                    <FormControlLabel
-                      value="2"
-                      control={<Radio />}
-                      label="Làm tốt"
-                    />
-                  </RadioGroup>
-                </React.Fragment>
-              ))}
-            </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
-                Create Doctor
-              </Button>
-            </Box>
-          </form>
-        )}
-      </Formik>
+        <Formik
+          onSubmit={handleFormSubmit}
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <Box
+                display="grid"
+                mb="20px"
+                gridTemplateColumns="repeat(4, minmax(0, 1fr)"
+              >
+                <TextField
+                  fullWidth
+                  variant="filled"
+                  type="text"
+                  label="Name"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.Name}
+                  name="Name"
+                  error={!!touched.Name && !!errors.Name}
+                  helperText={touched.Name && errors.Name}
+                  sx={{ gridColumn: "span 4" }}
+                />
+                {roomDetails.map((room) => (
+                  <React.Fragment key={room.id}>
+                    <Typography variant="body1" sx={{ gridColumn: "span 2" }}>
+                      {room.name}:
+                    </Typography>
+                    <RadioGroup
+                      name={`R${room.id}`}
+                      value={values[`R${room.id}`]}
+                      defaultValue="0"
+                      onChange={handleChange}
+                      row
+                      sx={{ gridColumn: "span ２" }}
+                    >
+                      <FormControlLabel
+                        value="0"
+                        control={<Radio />}
+                        label="Không kinh nghiệm"
+                        style={{ color: colors.redAccent[300] }}
+                        defaultChecked
+                      />
+                      <FormControlLabel
+                        value="1"
+                        control={<Radio />}
+                        style={{ color: "orange" }}
+                        label="Làm được"
+                      />
+                      <FormControlLabel
+                        value="2"
+                        control={<Radio />}
+                        style={{ color: colors.greenAccent[300] }}
+                        label="Làm tốt"
+                      />
+                    </RadioGroup>
+                  </React.Fragment>
+                ))}
+              </Box>
+              <Box display="flex" justifyContent="end" mt="20px">
+                <Button type="submit" color="secondary" variant="contained">
+                  Create Doctor
+                </Button>
+              </Box>
+            </form>
+          )}
+        </Formik>
+      </Box>
     </Box>
   );
 };

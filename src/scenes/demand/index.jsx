@@ -116,7 +116,7 @@ const Demand = () => {
       </Box>
       <Box
         m="40px 0 0 0"
-        height="75vh"
+        height="65vh"
         sx={{
           // styles here
           "& .MuiDataGrid-root": {

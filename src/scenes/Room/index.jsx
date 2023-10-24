@@ -143,7 +143,7 @@ const Room = () => {
 
       <Box
         m="40px 0 0 0"
-        height="75vh"
+        height="65vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",
