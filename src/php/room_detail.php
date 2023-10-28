@@ -15,7 +15,30 @@ $mysqli = new mysqli($dbserver, $dbuser, $dbpass, $dbname);
 if ($mysqli->connect_error) {
     die("Connection failed: " . $mysqli->connect_error);
 }
+function generateCSV($mysqli)
+{
+    // Build the SQL query to select data from room_detail and demand tables
+    $query = "SELECT rd.id AS roomID, rd.name, rd.load AS heavy, rd.priority, d.demand0, d.demand1, d.demand2
+              FROM room_detail rd
+              JOIN demand d ON rd.id = d.`room-id`";
 
+    // Execute the query
+    $result = $mysqli->query($query);
+
+    // Create a file pointer connected to the output stream
+    $output = fopen('../instance-generator/Room.csv', 'w');
+
+    // Write the CSV header
+    fputcsv($output, array('roomID', 'name', 'heavy', 'priority', 'demand0', 'demand1', 'demand2'));
+
+    // Write data rows from the database to the CSV file
+    while ($row = $result->fetch_assoc()) {
+        fputcsv($output, $row);
+    }
+
+    // Close the file pointer
+    fclose($output);
+}
 // Handle GET request
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Prepare the SQL query to fetch data from room_detail table
@@ -39,6 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Output the data as JSON
     header('Content-Type: application/json');
     echo json_encode($data);
+
+    // Generate and save the CSV file
+    generateCSV($mysqli);
 
     // Close the database connection
     $mysqli->close();

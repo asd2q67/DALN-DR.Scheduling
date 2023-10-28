@@ -79,12 +79,12 @@ const Room = () => {
     { field: "id", headerName: "ID", width: 70 },
     {
       field: "name",
-      headerName: "Name",
+      headerName: "Tên",
       flex: 1,
       cellClassName: "name-column--cell",
     },
-    { field: "load", headerName: "Load", flex: 1 },
-    { field: "priority", headerName: "Priority", flex: 1 },
+    { field: "load", headerName: "Độ nặng", flex: 1 },
+    { field: "priority", headerName: "Mức độ ưu tiên", flex: 1 },
   ];
 
   useEffect(() => {
@@ -97,14 +97,15 @@ const Room = () => {
       } finally {
         setLoading(false);
       }
+      // console.log(typeof roomData);
     };
-
+  
     fetchData();
   }, []);
 
   return (
     <Box m="20px">
-      <Header title="ROOMS" subtitle="Managing Rooms" />
+      <Header title="ROOM" subtitle="Quản Lý Phòng" />
 
       <Box
         display="flex"
@@ -118,7 +119,7 @@ const Room = () => {
           onClick={handleDeleteClick}
           disabled={selectedRowIds.length === 0}
         >
-          Delete Selected Rooms
+          XÓA CÁC PHÒNG ĐƯỢC CHỌN
         </Button>
         <Button
           variant="contained"
@@ -129,7 +130,7 @@ const Room = () => {
             ml: "10px",
           }}
         >
-          Edit Selected Rooms
+          SỬA PHÒNG ĐƯỢC CHỌN
         </Button>
         {selectedRowData && (
           <EditRoomModal

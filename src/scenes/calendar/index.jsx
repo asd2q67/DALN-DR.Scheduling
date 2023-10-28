@@ -26,6 +26,8 @@ const Calendar = () => {
   const colors = tokens(theme.palette.mode);
 
   const [roomData, setRoomData] = useState([]);
+  const [doctorData, setDoctorData] = useState([]);
+  const [calendarData, setCalendarData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentEvents, setCurrentEvents] = useState([]);
@@ -51,7 +53,7 @@ const Calendar = () => {
     }
     return weekDates;
   };
-  
+
   const columns = [
     { field: "id", headerName: "Room", width: 150 },
     ...generateWeekDates().map((day, index) => ({
@@ -60,22 +62,32 @@ const Calendar = () => {
       width: 150,
     })),
   ];
-
   const rows = roomData.map((room, roomIndex) => {
     const row = {
       id: room.name,
       ...generateWeekDates().reduce((acc, day, dayIndex) => {
-        const formattedDate = day.toISOString().split("T")[0];
-        const matchingEvent = currentEvents.find(
-          (event) =>
-            event.room === room.name && event.start === formattedDate
-        );
-        acc[`day${dayIndex}`] = matchingEvent ? matchingEvent.title : "";
+        const calendarDataForDay = calendarData[dayIndex.toString()];
+        if (calendarDataForDay && calendarDataForDay[room.id]) {
+          const data = calendarDataForDay[room.id];
+          try {
+            acc[`day${dayIndex}`] = JSON.parse(data).map((doctorId) => {
+              const doctor = doctorData.find((doctor, index) => index + 1 === doctorId);
+              return doctor ? doctor.Name : ''; // Nếu không tìm thấy bác sĩ, trả về chuỗi rỗng hoặc giá trị mặc định khác
+            });
+          } catch (error) {
+            console.error(`Error parsing JSON for room ${room.id} on day ${dayIndex}: ${error.message}`);
+            acc[`day${dayIndex}`] = null; // hoặc đặt giá trị mặc định tùy thuộc vào yêu cầu của bạn
+          }
+        } else {
+          acc[`day${dayIndex}`] = null; // hoặc đặt giá trị mặc định tùy thuộc vào yêu cầu của bạn
+        }
         return acc;
       }, {}),
     };
     return row;
   });
+  
+  
 
   const handleCellClick = (params) => {
     setSelectedCell({
@@ -116,7 +128,7 @@ const Calendar = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchRoomData = async () => {
       try {
         const data = await fetchDataFromAPI("/room_detail.php");
         setRoomData(data);
@@ -127,7 +139,29 @@ const Calendar = () => {
       }
     };
 
-    fetchData();
+    const fetchDoctorData = async () => {
+      try {
+        const data = await fetchDataFromAPI("/dr_detail.php");
+        setDoctorData(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    const fetchCSVData = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/api/data"); // Gửi yêu cầu đến API endpoint
+        const jsonData = await response.json();
+        setCalendarData(jsonData);
+        console.log("Data from API:", jsonData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchCSVData();
+    fetchRoomData();
+    fetchDoctorData();
   }, []);
 
   return (
@@ -189,7 +223,7 @@ const Calendar = () => {
             },
             "& .MuiDataGrid-cell--currentDate": {
               backgroundColor: `${colors.greenAccent[200]} !important`,
-              color: `${colors.primary} !important`
+              color: `${colors.primary} !important`,
             },
           }}
         >

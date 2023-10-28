@@ -49,7 +49,7 @@ const EditRoomModal = ({ open, handleClose, rowData, handleUpdate }) => {
         </Typography>
         <TextField
           fullWidth
-          label="Name"
+          label="Tên"
           name="name"
           value={updatedData.name}
           onChange={handleInputChange}
@@ -57,7 +57,7 @@ const EditRoomModal = ({ open, handleClose, rowData, handleUpdate }) => {
         />
         <TextField
           fullWidth
-          label="Load"
+          label="Độ nặng"
           name="load"
           value={updatedData.load}
           onChange={handleInputChange}
@@ -65,7 +65,7 @@ const EditRoomModal = ({ open, handleClose, rowData, handleUpdate }) => {
         />
         <TextField
           fullWidth
-          label="Priority"
+          label="Mức độ ưu tiên"
           name="priority"
           value={updatedData.priority}
           onChange={handleInputChange}
