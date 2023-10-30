@@ -7,6 +7,7 @@ from Doctor import Doctor
 from Room import Room
 from solution import Solution
 from Solver import Solver
+# import pandas as pd
 
 if __name__ == '__main__':
     data = read_input()
@@ -20,7 +21,9 @@ if __name__ == '__main__':
     solver.init_matrix()
 
     solver.run1()
-    print(solver.solution.schedule_matrix)
+    df = pd.DataFrame(solver.solution.schedule_matrix)
+    # df.to_csv("lich.csv")
+    # print(solver.solution.schedule_matrix)
 
     # print (data.l_doctors[0].level1)
     # for i in solver.sort_doc(data.l_doctors):
