@@ -20,7 +20,7 @@ const Demand = () => {
     { field: "id", headerName: "ID", width: 70 },
     {
       field: "roomName",
-      headerName: "Room Name",
+      headerName: "Tên Phòng",
       flex: 1,
       cellClassName: "name-column--cell",
     },
@@ -97,7 +97,7 @@ const Demand = () => {
 
   return (
     <Box m="20px">
-      <Header title="DEMAND" subtitle="Demand for Rooms" />
+      <Header title="DEMAND" subtitle="Yêu Cầu Về Phòng Ban" />
 
       <Box
         display="flex"
@@ -111,7 +111,7 @@ const Demand = () => {
           disabled={selectedRowIds.length === 0}
           onClick={() => handleEditClick()}
         >
-          Edit demand
+          Sửa yêu cầu
         </Button>
       </Box>
       <Box

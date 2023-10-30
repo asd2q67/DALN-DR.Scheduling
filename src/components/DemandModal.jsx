@@ -53,7 +53,7 @@ const DemandModal = ({ open, handleClose, rowData, handleUpdate }) => {
         </Typography>
         <TextField
           fullWidth
-          label="Room Name"
+          label="Tên Phòng"
           name="roomName"
           value={updatedData.roomName}
           onChange={handleInputChange}
@@ -61,7 +61,7 @@ const DemandModal = ({ open, handleClose, rowData, handleUpdate }) => {
         />
         <TextField
           fullWidth
-          label="Demand Level 0"
+          label="Yêu cầu về người không kinh nghiệm"
           name="demand0"
           value={updatedData.demand0}
           onChange={handleInputChange}
@@ -69,7 +69,7 @@ const DemandModal = ({ open, handleClose, rowData, handleUpdate }) => {
         />
         <TextField
           fullWidth
-          label="Demand Level 1"
+          label="Yêu cầu về người làm được"
           name="demand1"
           value={updatedData.demand1}
           onChange={handleInputChange}
@@ -77,7 +77,7 @@ const DemandModal = ({ open, handleClose, rowData, handleUpdate }) => {
         />
         <TextField
           fullWidth
-          label="Demand Level 2"
+          label="Yêu cầu về người làm tốt"
           name="demand2"
           value={updatedData.demand2}
           onChange={handleInputChange}

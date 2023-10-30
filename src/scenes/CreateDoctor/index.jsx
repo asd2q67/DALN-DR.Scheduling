@@ -90,7 +90,7 @@ const CreateDoctor = () => {
 
   return (
     <Box m="20px">
-      <Header title="CREATE DOCTOR" subtitle="Create a New Doctor Profile" />
+      <Header title="CREATE DOCTOR" subtitle="Tạo Hồ Sơ Bác Sĩ Mới" />
 
       <div className={`custom-alert ${isSuccess ? "" : "hide-alert"}`}>
         Form submitted successfully!
@@ -103,7 +103,8 @@ const CreateDoctor = () => {
           "& .MuiTypography-root": {
             border: "none",
           },
-          "& .MuiButtonBase-root": {color: colors.greenAccent[300]}
+          "& .MuiButtonBase-root": `${colors.greenAccent[300]} !important`,
+          "& .MuiTypography-root": `${colors.greenAccent[300]} !important`
         }}
       >
         <Formik
@@ -129,7 +130,7 @@ const CreateDoctor = () => {
                   fullWidth
                   variant="filled"
                   type="text"
-                  label="Name"
+                  label="Tên"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.Name}
@@ -140,7 +141,7 @@ const CreateDoctor = () => {
                 />
                 {roomDetails.map((room) => (
                   <React.Fragment key={room.id}>
-                    <Typography variant="body1" sx={{ gridColumn: "span 2" }}>
+                    <Typography variant="body1" sx={{ gridColumn: "span 4" }}>
                       {room.name}:
                     </Typography>
                     <RadioGroup
@@ -149,13 +150,14 @@ const CreateDoctor = () => {
                       defaultValue="0"
                       onChange={handleChange}
                       row
-                      sx={{ gridColumn: "span ２" }}
+                      sx={{ gridColumn: "span 2" }}
                     >
                       <FormControlLabel
                         value="0"
                         control={<Radio />}
                         label="Không kinh nghiệm"
                         style={{ color: colors.redAccent[300] }}
+                        labelPlacement="end"
                         defaultChecked
                       />
                       <FormControlLabel
@@ -174,9 +176,9 @@ const CreateDoctor = () => {
                   </React.Fragment>
                 ))}
               </Box>
-              <Box display="flex" justifyContent="end" mt="20px">
+              <Box display="flex" justifyContent="start" mt="20px">
                 <Button type="submit" color="secondary" variant="contained">
-                  Create Doctor
+                  Tạo bác sĩ mới
                 </Button>
               </Box>
             </form>

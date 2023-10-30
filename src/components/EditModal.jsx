@@ -6,6 +6,8 @@ import {
   DialogTitle,
   Button,
   TextField,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 const EditModal = ({
@@ -29,7 +31,7 @@ const EditModal = ({
   });
 
   useEffect(() => {
-    setUpdatedData(prevData => ({
+    setUpdatedData((prevData) => ({
       ...prevData,
       id: rowData.id,
       Name: rowData.Name,
@@ -37,9 +39,9 @@ const EditModal = ({
         const roomKey = `R${room.id}`;
         acc[roomKey] = rowData[roomKey] || "0";
         return acc;
-      }, {})
+      }, {}),
     }));
-  }, [rowData, roomDetails]);  
+  }, [rowData, roomDetails]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,22 +70,27 @@ const EditModal = ({
           onChange={handleChange}
         />
         {roomDetails.map((room) => (
-          <TextField
-            key={room.id}
-            fullWidth
-            margin="normal"
-            label={`${room.name}`}
-            name={`R${room.id}`}
-            value={updatedData[`R${room.id}`]}
-            onChange={handleChange}
-          />
+          <div key={room.id} style={{ marginTop: "10px" }}>
+            <label>{room.name}</label>
+            <Select
+              fullWidth
+              name={`R${room.id}`}
+              value={updatedData[`R${room.id}`]}
+              onChange={handleChange}
+              variant="outlined"
+            >
+              <MenuItem value="0">Không kinh nghiệm</MenuItem>
+              <MenuItem value="1">Làm được</MenuItem>
+              <MenuItem value="2">Làm tốt</MenuItem>
+            </Select>
+          </div>
         ))}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} variant="contained" color="secondary">
           Cancel
         </Button>
-        <Button onClick={handleSave} color="primary">
+        <Button onClick={handleSave} variant="contained" color="secondary">
           Save
         </Button>
       </DialogActions>

@@ -87,10 +87,10 @@ const CreateRoom = () => {
 
   return (
     <Box m="20px">
-      <Header title="CREATE ROOM" subtitle="Create a New Room" />
+      <Header title="CREATE ROOM" subtitle="Tạo Phòng Mới" />
 
       <div className={`custom-alert ${isSuccess ? "" : "hide-alert"}`}>
-        Create room successfully!
+        Tạo phòng mới thành công!
       </div>
 
       <Formik
@@ -116,7 +116,7 @@ const CreateRoom = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Name"
+                label="Tên"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.Name}
@@ -129,7 +129,7 @@ const CreateRoom = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Load"
+                label="Độ nặng"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.Load}
@@ -142,7 +142,7 @@ const CreateRoom = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Priority"
+                label="Mức độ ưu tiên"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.Priority}
@@ -155,7 +155,7 @@ const CreateRoom = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Demand0"
+                label="Yêu cầu về người không có kinh nghiệm"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.Demand0}
@@ -168,7 +168,7 @@ const CreateRoom = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Demand1"
+                label="Yêu cầu về người Làm được"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.Demand1}
@@ -181,7 +181,7 @@ const CreateRoom = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Demand2"
+                label="Yêu cầu về người Làm tốt"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.Demand2}
@@ -193,7 +193,7 @@ const CreateRoom = () => {
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create Room
+                Tạo phòng mới
               </Button>
             </Box>
           </form>

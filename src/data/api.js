@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "./config";
 
+
 // Function to fetch data from the API using GET request
 export const fetchDataFromAPI = async (endpoint) => {
   try {

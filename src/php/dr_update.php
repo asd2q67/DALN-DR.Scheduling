@@ -35,10 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     // Extract data from JSON
     $id = $mysqli->real_escape_string($data['id']);
     $name = $mysqli->real_escape_string($data['Name']);
-    $workload = $mysqli->real_escape_string($data['workload']);
 
     // Build the SQL query dynamically based on room IDs
-    $updateColumns = ["`Name`='$name'", "`workload`='$workload'"];
+    $updateColumns = ["`Name`='$name'"];
     foreach ($data as $key => $value) {
         if (strpos($key, 'R') === 0) {
             $roomId = $mysqli->real_escape_string($value);
