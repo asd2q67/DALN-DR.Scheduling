@@ -43,7 +43,7 @@ function generateCSV($mysqli)
     }
 
     // Create Day-ol.csv
-    $dayOlCsvFile = fopen('../instance-generator/Day-ol.csv', 'w');
+    $dayOlCsvFile = fopen('../../instance-generator/Day-ol.csv', 'w');
     fputcsv($dayOlCsvFile, ['roomId', 'session', 'doctorId']);
     foreach ($dayOlData as $row) {
         fputcsv($dayOlCsvFile, $row);
@@ -51,7 +51,7 @@ function generateCSV($mysqli)
     fclose($dayOlCsvFile);
 
     // Create Day-off.csv
-    $dayOffCsvFile = fopen('../instance-generator/Day-off.csv', 'w');
+    $dayOffCsvFile = fopen('../../instance-generator/Day-off.csv', 'w');
     fputcsv($dayOffCsvFile, ['session', 'doctorId']);
     foreach ($dayOffData as $row) {
         fputcsv($dayOffCsvFile, $row);

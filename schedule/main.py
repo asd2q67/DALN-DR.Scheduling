@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\schedule')
+sys.path.insert(0,'/Users/thutranghoa/Code/DALN-DR.Scheduling/schedule')
 from Data import Data
 from read_input import read_input
 import csv
@@ -13,14 +13,29 @@ if __name__ == '__main__':
     solver = Solver (data)
     
     # print (data.get_num_doctors())
-    # print (data.get_num_rooms())
+    print (data.get_num_rooms())
+
+    # print (data.horizon)
     # print (data.get_num_demands())
     # print (data.l_doctors[0].name)
-    # print (solver.solution.schedule_matrix)
-    solver.init_matrix()
+    # print (solver.sort_by_workLoad())
+    # solver.init_matrix()
 
-    solver.run1()
+    # solver.run1()
+    solver.schedule()
     print(solver.solution.schedule_matrix)
+
+    temp = solver.solution.schedule_matrix.copy()
+    for i in range (len (temp)):
+        for j in range (len (temp[0])):
+            for k in range (len(temp[i][j]) ):
+                temp [i][j][k] = data.l_doctors[temp[i][j][k]].name
+
+    with open ('solution.csv', 'w') as f :
+        write = csv.writer(f)
+            
+        # write.writerows(solver.solution.schedule_matrix)
+        write.writerows(temp)
 
     # print (data.l_doctors[0].level1)
     # for i in solver.sort_doc(data.l_doctors):

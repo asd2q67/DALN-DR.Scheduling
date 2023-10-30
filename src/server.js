@@ -13,7 +13,7 @@ app.use(cors());
 
 app.get('/api/data', (req, res) => {
   const results = [];
-  fs.createReadStream('instance-generator\\lich.csv')
+  fs.createReadStream('D:\\Workspace\\Đồ án liên ngành\\DALN-DR.Scheduling\\solution.csv')
     .pipe(csv())
     .on('data', (row) => {
       results.push(row);

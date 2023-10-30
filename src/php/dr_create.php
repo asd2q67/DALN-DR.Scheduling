@@ -34,7 +34,7 @@ function generateCSV($mysqli) {
     $result = $mysqli->query($query);
 
     // Create a file pointer connected to the output stream
-    $output = fopen('../instance-generator/Doctor.csv', 'w');
+    $output = fopen('../../instance-generator/Doctor.csv', 'w');
 
     // Write the CSV header
     $columnHeaders = array();

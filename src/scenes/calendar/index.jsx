@@ -1,270 +1,89 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, TextField, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Header from "../../components/Header";
+import dayjs from "dayjs";
 import { fetchDataFromAPI } from "../../data/api";
-import { useTheme } from "@emotion/react";
-import { tokens } from "../../theme";
-
-const daysOfWeek = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
 
 const Calendar = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-
-  const [roomData, setRoomData] = useState([]);
-  const [doctorData, setDoctorData] = useState([]);
   const [calendarData, setCalendarData] = useState([]);
+  const [doctorData, setDoctorData] = useState([]);
+  const [roomData, setRoomData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentEvents, setCurrentEvents] = useState([]);
-  const [selectedCell, setSelectedCell] = useState({
-    row: null,
-    column: null,
-    value: "",
-  });
-  const [openDialog, setOpenDialog] = useState(false);
-  const [newEventContent, setNewEventContent] = useState("");
-  const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
-  const currentDate = new Date();
 
-  // Hàm này sẽ trả về một mảng chứa 7 ngày từ ngày hiện tại
-  const generateWeekDates = () => {
-    const startDay = new Date(currentWeekStart);
-    startDay.setDate(currentWeekStart.getDate() - currentWeekStart.getDay()); // Ngày đầu tiên của tuần (Chủ Nhật)
-    const weekDates = [];
-    for (let i = 0; i < 7; i++) {
-      const day = new Date(startDay);
-      day.setDate(startDay.getDate() + i);
-      weekDates.push(day);
-    }
-    return weekDates;
-  };
-
-  const columns = [
-    { field: "id", headerName: "Room", width: 150 },
-    ...generateWeekDates().map((day, index) => ({
-      field: `day${index}`,
-      headerName: `${daysOfWeek[day.getDay()]} ${day.toLocaleDateString()}`,
-      width: 150,
-    })),
-  ];
-  const rows = roomData.map((room, roomIndex) => {
-    const row = {
-      id: room.name,
-      ...generateWeekDates().reduce((acc, day, dayIndex) => {
-        const calendarDataForDay = calendarData[dayIndex.toString()];
-        if (calendarDataForDay && calendarDataForDay[room.id]) {
-          const data = calendarDataForDay[room.id];
-          try {
-            acc[`day${dayIndex}`] = JSON.parse(data).map((doctorId) => {
-              const doctor = doctorData.find((doctor, index) => index + 1 === doctorId);
-              return doctor ? doctor.Name : ''; // Nếu không tìm thấy bác sĩ, trả về chuỗi rỗng hoặc giá trị mặc định khác
-            });
-          } catch (error) {
-            console.error(`Error parsing JSON for room ${room.id} on day ${dayIndex}: ${error.message}`);
-            acc[`day${dayIndex}`] = null; // hoặc đặt giá trị mặc định tùy thuộc vào yêu cầu của bạn
-          }
-        } else {
-          acc[`day${dayIndex}`] = null; // hoặc đặt giá trị mặc định tùy thuộc vào yêu cầu của bạn
-        }
-        return acc;
-      }, {}),
-    };
-    return row;
-  });
-  
-  
-
-  const handleCellClick = (params) => {
-    setSelectedCell({
-      row: params.row.id,
-      column: params.field,
-      value: params.value,
-    });
-    setOpenDialog(true);
-  };
-
-  const handleOpenDialog = (row, column, value) => {
-    console.log("Opening dialog with data:", row, column, value);
-    setSelectedCell({ row, column, value });
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-  const handleAddNewEvent = () => {
-    console.log("New event content:", newEventContent);
-    handleCloseDialog();
-  };
-  const moveToPreviousWeek = () => {
-    const previousWeekStart = new Date(currentWeekStart);
-    previousWeekStart.setDate(currentWeekStart.getDate() - 7);
-    setCurrentWeekStart(previousWeekStart);
-  };
-
-  const moveToCurrentWeek = () => {
-    setCurrentWeekStart(new Date());
-  };
-
-  const moveToNextWeek = () => {
-    const nextWeekStart = new Date(currentWeekStart);
-    nextWeekStart.setDate(currentWeekStart.getDate() + 7);
-    setCurrentWeekStart(nextWeekStart);
-  };
 
   useEffect(() => {
-    const fetchRoomData = async () => {
+    const fetchData = async () => {
       try {
-        const data = await fetchDataFromAPI("/room_detail.php");
-        setRoomData(data);
+        const drData = await fetchDataFromAPI("/dr_detail.php");
+        const rmData = await fetchDataFromAPI("/room_detail.php");
+        setDoctorData(drData);
+        setRoomData(rmData);
       } catch (error) {
         setError(error.message);
-      } finally {
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/api/data");
+        const jsonData = await response.json();
+        console.log(111, roomData);
+        // Chuyển đổi dữ liệu từ API để phù hợp với DataGrid và ghép thông tin phòng vào lịch trình
+        const formattedData = jsonData.map((day, index) => {
+          // Lấy thông tin phòng từ các key như 0, 1, 2,...
+          const roomKey = index.toString();
+          const roomInfo = roomData.find((room) => room.id === roomKey);
+          const roomName = roomInfo ? roomInfo.name : ""; // Lấy tên phòng từ thông tin phòng
+
+          return {
+            id: index.toString(), // Sử dụng index làm id, chúng ta cần đảm bảo id là duy nhất
+            room: roomName, // Sử dụng tên phòng
+            ...day, // Các ngày trong tuần trở thành các cột
+          };
+        });
+        console.log(1000);
+        setCalendarData(formattedData);
+        setLoading(false);
+        console.log("Data from API:", jsonData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError(error.message);
         setLoading(false);
       }
     };
 
-    const fetchDoctorData = async () => {
-      try {
-        const data = await fetchDataFromAPI("/dr_detail.php");
-        setDoctorData(data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
-    const fetchCSVData = async () => {
-      try {
-        const response = await fetch("http://localhost:3001/api/data"); // Gửi yêu cầu đến API endpoint
-        const jsonData = await response.json();
-        setCalendarData(jsonData);
-        console.log("Data from API:", jsonData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchCSVData();
-    fetchRoomData();
-    fetchDoctorData();
+    fetchData();
   }, []);
+
+  const columns = [
+    { field: "room", headerName: "Phòng", width: 150 }, // Cột tên phòng
+    ...Array.from({ length: 7 }, (_, index) => {
+      const day = dayjs()
+        .startOf("week")
+        .add(index + 1, "day")
+        .format("dddd");
+      return { field: index.toString(), headerName: day, width: 150 }; // Cột cho ngày trong tuần
+    }),
+  ];
 
   return (
     <Box m="20px">
-      <Header title="CALENDAR" subtitle="Doctor's Schedule" />
-
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        alignItems="center"
-        marginBottom="20px"
-      >
-        <Button
-          onClick={moveToPreviousWeek}
-          variant="contained"
-          color="secondary"
-        >
-          &lt; Previous Week
-        </Button>
-        <Button
-          onClick={moveToCurrentWeek}
-          variant="contained"
-          color="secondary"
-        >
-          Current Week
-        </Button>
-        <Button onClick={moveToNextWeek} variant="contained" color="secondary">
-          Next Week &gt;
-        </Button>
-      </Box>
-
-      <Box>
-        <Box
-          m="40px 0 0 0"
-          height="65vh"
-          sx={{
-            "& .MuiDataGrid-root": {
-              border: "none",
-            },
-            "& .MuiDataGrid-cell": {
-              borderBottom: "none",
-            },
-            "& .name-column--cell": {
-              color: colors.greenAccent[300],
-            },
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: colors.blueAccent[700],
-              borderBottom: "none",
-            },
-            "& .MuiDataGrid-virtualScroller": {
-              backgroundColor: colors.primary[400],
-            },
-            "& .MuiDataGrid-footerContainer": {
-              borderTop: "none",
-              backgroundColor: colors.blueAccent[700],
-            },
-            "& .MuiCheckbox-root": {
-              color: `${colors.greenAccent[200]} !important`,
-            },
-            "& .MuiDataGrid-cell--currentDate": {
-              backgroundColor: `${colors.greenAccent[200]} !important`,
-              color: `${colors.primary} !important`,
-            },
-          }}
-        >
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={10}
-            onCellClick={handleCellClick}
-          />
-        </Box>
-
-        {selectedCell.row !== null && (
-          <Dialog open={openDialog} onClose={handleCloseDialog}>
-            <DialogTitle>
-              Chọn bác sĩ cho phòng "{selectedCell.value}" vào ngày{" "}
-              {daysOfWeek[selectedCell.column]}.
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText>Nhập tên bác sĩ:</DialogContentText>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="event-content"
-                label="Nội dung sự kiện"
-                type="text"
-                fullWidth
-                value={newEventContent}
-                onChange={(e) => setNewEventContent(e.target.value)}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseDialog} color="primary">
-                Hủy
-              </Button>
-              <Button onClick={handleAddNewEvent} color="primary">
-                Thêm mới
-              </Button>
-            </DialogActions>
-          </Dialog>
-        )}
-      </Box>
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
+      {!loading && !error && (
+        <DataGrid
+          rows={calendarData}
+          columns={columns}
+          pageSize={10}
+          rowsPerPageOptions={[10, 25, 50]}
+          pagination
+        />
+      )}
     </Box>
   );
 };

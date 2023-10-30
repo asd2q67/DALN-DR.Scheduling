@@ -12,7 +12,7 @@ num_rooms = 5
 num_doctors = 10
 num_skills = 4
 num_priority = 3
-schedule_day = 7
+schedule_day = 14
 
 doctor_name = list(string.ascii_uppercase)
 room_list = ['r{}'.format(i) for i in range (num_rooms)]
@@ -38,17 +38,24 @@ class Map :
     def gen_doctor_list (self):
 
         skill_table = []
-        fields = ['doctorID', 'doctorName', 'workLoad'] + room_list
+        workLoad = []
+        fields = ['doctorID', 'doctorName'] + room_list
         for i in range (num_doctors):
             feature = []
             #gen list of skill with room
             ability = [random.randint(0,2) for i in range (num_rooms)]
+            
+            work = [random.randint(0,10) for i in range (num_rooms)]
+            for j in range (0, len(ability)) :
+                if ability[j] == 0 :
+                    work[j] = 0
+
             feature.append(i)
             feature.append(doctor_name[i])
-            feature.append(random.randint(0,5))
             feature += ability
             
             skill_table.append(feature)
+            workLoad.append(work)
 
         with open('instance-generator/Doctor.csv', 'w') as f:
      
@@ -56,25 +63,32 @@ class Map :
             
             write.writerow(fields)
             write.writerows(skill_table)
+
+            
+        with open ('instance-generator/Workload.csv','w') as f1 :
+            write = csv.writer(f1)
+
+            write.writerow(room_list)
+            write.writerows(workLoad)
         
 
 
     def gen_room_list (self):
         room_lists = []
-        fields = ['roomID', 'heavy', 'priority', 'demand0', 'demand1', 'demand2']
+        fields = ['roomID', 'priority', 'heavy' , 'demand1', 'demand2']
 
         for i in range (num_rooms):
-            demand0 = random.randint(0,3)
-            demand1 = random.randint(0,3)
-            demand2 = random.randint(0,3)
+            # demand0 = random.randint(0,5)
+            demand1 = random.randint(0,5)
+            demand2 = random.randint(0,5)
             if (random.uniform(1,100) <= 30):
                 important = True
             else :
                 important = False
             
             pri = random.randint(0, num_priority + 1)
-
-            room = (i, important, pri, demand0, demand1, demand2)
+            heavy = random.randint(0, 5)
+            room = (i, pri, heavy, demand1, demand2)
             room_lists.append(room)
 
         with open('instance-generator/Room.csv', 'w') as f:
@@ -85,6 +99,7 @@ class Map :
             write.writerows(room_lists)
 
     def gen_day_off (self):
+        field = ['']
 
         for i in range (num_doctors):
             day_off = random.randint(-1, schedule_day-1)
@@ -98,14 +113,21 @@ class Map :
                 f.write("{}\n".format(day_off))
 
     def gen_day_work (self):
-        for i in range (num_doctors):
-            day_ol = random.randint(-1, schedule_day-1)
-            while (self.list_day_ol.count(day_ol) >= 2 or day_ol == self.list_day_off[i]):
-                day_ol = random.randint(0, schedule_day-1)
+        field = ['day', 'room']
 
-            room = random.randint(0, num_rooms - 1)
-    
-            with open('instance-generator/Day-ol.csv', 'a') as f:
+        with open('instance-generator/Day-ol.csv', 'a') as f:
+            write = csv.writer(f)
+            
+            write.writerow(field)
+
+            for i in range (num_doctors):
+                day_ol = random.randint(-1, schedule_day-1)
+                while (self.list_day_ol.count(day_ol) >= 2 or day_ol == self.list_day_off[i]):
+                    day_ol = random.randint(0, schedule_day-1)
+
+                room = random.randint(0, num_rooms - 1)
+        
+                    
                 f.write("{},{}\n".format(day_ol, room))
 
 
@@ -117,8 +139,9 @@ if __name__ == '__main__':
         
     m = Map()
     # m.write_file(i)
-    # m.gen_doctor_list()
-    # m.gen_room_list()
+    # print (doctor_name)
+    m.gen_doctor_list()
+    m.gen_room_list()
     m.gen_day_off()
     m.gen_day_work()
 

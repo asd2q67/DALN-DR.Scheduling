@@ -26,7 +26,7 @@ function generateCSV($mysqli)
     $result = $mysqli->query($query);
 
     // Create a file pointer connected to the output stream
-    $output = fopen('../instance-generator/Room.csv', 'w');
+    $output = fopen('../../instance-generator/Room.csv', 'w');
 
     // Write the CSV header
     fputcsv($output, array('roomID', 'name', 'heavy', 'priority', 'demand0', 'demand1', 'demand2'));
