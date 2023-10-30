@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'/Users/thutranghoa/Code/DALN-DR.Scheduling/schedule')
+sys.path.insert(0,'/home/toto/Code/DALN-DR.Scheduling/schedule/')
 from Data import Data
 import csv
 from Doctor import Doctor
@@ -17,7 +17,7 @@ def read_input () -> Data:
     workLoad = []
 
 
-    path = '/Users/thutranghoa/Code/DALN-DR.Scheduling/instance-generator/'
+    path = '/home/toto/Code/DALN-DR.Scheduling/instance-generator/'
 
     path4 =  path + 'Workload.csv'
 
@@ -90,4 +90,4 @@ def read_input () -> Data:
 
     
 
-    return Data(l_doctors, l_rooms, off, day_ol, room_ol, )
+    return Data(l_doctors, l_rooms, off, day_ol, room_ol, workLoad)

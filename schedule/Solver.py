@@ -1,6 +1,6 @@
 import sys
-sys.path.insert(0,'/Users/thutranghoa/Code/DALN-DR.Scheduling/schedule')
-
+sys.path.insert(0,'/home/toto/Code/DALN-DR.Scheduling/schedule')
+import copy
 from Data import Data
 from read_input import read_input
 import csv
@@ -17,26 +17,30 @@ class Solver:
         self.sum_demand1 = [[0 for i in range (self.data.horizon)] for j in range (self.data.get_num_rooms())]
         self.sum_demand2 = [[0 for i in range (self.data.horizon)] for j in range (self.data.get_num_rooms())]
 
-
+        # self.room_weights = [[0 for i in range (self.data.get_num_rooms())] for i in range (self.data.get_num_doctors())]
         
+
 
     def init_matrix (self):
         for i in range (self.data.get_num_doctors()):
             if (self.data.day_ol[i] != -1):
                 date = self.data.day_ol[i]
                 room = self.data.room_ol[i]
-                self.update(i,date,room)
 
-    def update (self, doctorID, date, room, level):
-        self.solution.update_matrix(doctorID,date,room)         
-        self.data.l_doctors[doctorID].work_load[room] 
+                level = self.check_skill(self.data.l_doctors[i], room)
+                self.update(i,date,room, level)
+
+    def update (self, doctorID, date, roomID, level):
+        self.solution.update_matrix(doctorID,date,roomID)         
+        # self.data.workLoad[doctorID][roomID] += self.data.l_rooms[roomID].heavy
+
+        self.solution.room_weights[doctorID][roomID] += self.data.l_rooms[roomID].heavy
         
         # update demand
         if (level == 1 ):
-            self.sum_demand1[room][date] += 1
+            self.sum_demand1[roomID][date] += 1
         elif (level == 2) : 
-            self.sum_demand2[room][date] += 1
-
+            self.sum_demand2[roomID][date] += 1
 
     def run (self):
 
@@ -263,6 +267,7 @@ class Solver:
                 return -1
 
     def schedule (self):
+        self.init_matrix()
         for shift in range (0,self.data.horizon,2):
             dump = []
 
