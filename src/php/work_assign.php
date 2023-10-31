@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $apm = $mysqli->real_escape_string($data['apm']);
 
     // Calculate session based on date and start date (1/8/2023)
-    $start_date = '2023-08-01'; // Format: YYYY-MM-DD
+    $start_date = '2023-11-01'; // Format: YYYY-MM-DD
     $session = floor((strtotime($date) - strtotime($start_date)) / (60 * 60 * 12)) + 1 + $apm;
 
     // Prepare the SQL query

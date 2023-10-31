@@ -18,7 +18,7 @@ if ($mysqli->connect_error) {
 function generateCSV($mysqli)
 {
     // Build the SQL query to select data from room_detail and demand tables
-    $query = "SELECT rd.id AS roomID, rd.name, rd.load AS heavy, rd.priority, d.demand0, d.demand1, d.demand2
+    $query = "SELECT rd.id AS roomID, rd.load AS heavy, rd.priority, d.demand1, d.demand2
               FROM room_detail rd
               JOIN demand d ON rd.id = d.`room-id`";
 
@@ -29,7 +29,7 @@ function generateCSV($mysqli)
     $output = fopen('../../instance-generator/Room.csv', 'w');
 
     // Write the CSV header
-    fputcsv($output, array('roomID', 'name', 'heavy', 'priority', 'demand0', 'demand1', 'demand2'));
+    fputcsv($output, array('roomID', 'heavy', 'priority', 'demand1', 'demand2'));
 
     // Write data rows from the database to the CSV file
     while ($row = $result->fetch_assoc()) {

@@ -33,11 +33,11 @@ function generateCSV($mysqli)
     for ($i = 1; $i <= $result->field_count - 2; $i++) {
         $columnHeaders[] = 'R' . $i;
     }
-    fputcsv($output, array_merge(['Name'], $columnHeaders));
+    fputcsv($output, array_merge(['Id'], $columnHeaders));
 
     // Write data rows from the database to the CSV file
     while ($row = $result->fetch_assoc()) {
-        $rowData = array($row['Name']);
+        $rowData = array($row['id']);
         for ($i = 1; $i <= $result->field_count - 2; $i++) {
             $columnName = 'R' . $i;
             $rowData[] = $row[$columnName];
