@@ -126,7 +126,7 @@ const WorkAssignment = () => {
     { field: "id", headerName: "ID", width: 70 },
     {
       field: "room",
-      headerName: "Room",
+      headerName: "Tên Phòng",
       flex: 1,
       valueGetter: (params) => {
         if (params.row.room === "-1") {
@@ -139,7 +139,7 @@ const WorkAssignment = () => {
     },
     {
       field: "date",
-      headerName: "Date",
+      headerName: "Ngày đăng ký",
       flex: 1,
       valueGetter: (params) => {
         const date = params.row.date;
@@ -148,7 +148,7 @@ const WorkAssignment = () => {
     },
     {
       field: "doctor",
-      headerName: "Doctor",
+      headerName: "Tên Bác sĩ",
       flex: 1,
       valueGetter: (params) => {
         // Lấy tên bác sĩ từ API hoặc từ một nguồn dữ liệu đã có
@@ -163,7 +163,7 @@ const WorkAssignment = () => {
 
   return (
     <Box m="20px">
-      <Header title="Work Assignment" subtitle="This Month Assignments" />
+      <Header title="WORK ASSIGNMENT" subtitle="Lịch Đăng Ký Hàng Tháng" />
 
       {/* nút bấm */}
       <Box
@@ -178,7 +178,7 @@ const WorkAssignment = () => {
           onClick={handleDeleteClick}
           disabled={selectedRowIds.length === 0}
         >
-          Delete Selected Assignment
+          Xóa lịch đã chọn
         </Button>
         <Button
           variant="contained"
@@ -189,7 +189,7 @@ const WorkAssignment = () => {
             ml: "10px",
           }}
         >
-          Edit Selected Assignment
+          Sửa lịch đã chọn
         </Button>
         {selectedRowData && (
           <EditAssignModel

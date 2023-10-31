@@ -1,6 +1,6 @@
 from typing import List
 import sys
-sys.path.insert(0,'F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\schedule')
+sys.path.insert(0,'F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\src\schedule')
 from Doctor import Doctor
 from Room import Room
 from Demand import Demand

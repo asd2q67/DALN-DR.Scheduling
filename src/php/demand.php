@@ -20,7 +20,7 @@ if ($mysqli->connect_error) {
 // Handle GET request
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Prepare the SQL query to fetch data from the demand table
-    $query = "SELECT id, `room-id`, `doctor-num`, demand0, demand1, demand2 FROM demand";
+    $query = "SELECT id, `room-id`, demand0, demand1, demand2 FROM demand";
 
     // Execute the query
     $result = $mysqli->query($query);

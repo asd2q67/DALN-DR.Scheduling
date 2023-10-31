@@ -33,6 +33,8 @@ const WorkAssign = () => {
   const [selectedDate, setSelectedDate] = React.useState(
     dayjs().utcOffset(7 * 60)
   );
+  const [isMorning, setIsMorning] = useState(false);
+  const [isAfternoon, setIsAfternoon] = useState(false);
   const [isOnLeave, setIsOnLeave] = useState(false);
   const [roomDropdownDisabled, setRoomDropdownDisabled] = useState(false);
 
@@ -79,6 +81,15 @@ const WorkAssign = () => {
     setIsOnLeave(event.target.checked);
     setRoomDropdownDisabled(event.target.checked);
   };
+  const handleMorningChange = (event) => {
+    setIsMorning(event.target.checked);
+    setIsAfternoon(!event.target.checked); // Uncheck afternoon if morning is checked
+  };
+
+  const handleAfternoonChange = (event) => {
+    setIsAfternoon(event.target.checked);
+    setIsMorning(!event.target.checked); // Uncheck morning if afternoon is checked
+  };
 
   const handleFormSubmit = async () => {
     try {
@@ -88,6 +99,7 @@ const WorkAssign = () => {
         room: roomId,
         date: selectedDate,
         doctor_id: selectedDoctor,
+        apm: isMorning ? 0 : isAfternoon ? 1 : null,
       };
       const response = await postDataToAPI("/work_assign.php", data, {
         headers: {
@@ -124,19 +136,19 @@ const WorkAssign = () => {
 
   return (
     <Box m="20px">
-      <Header title="Work Assign" subtitle="Assign Work to Rooms" />
+      <Header title="WORK ASSIGN" subtitle="Đăng ký lịch làm việc" />
 
       <div className={`custom-alert ${isSuccess ? "" : "hide-alert"}`}>
         Cập nhật lịch làm việc thành công!
       </div>
 
       <FormControl fullWidth sx={{ mb: 2 }}>
-        <InputLabel id="room-label">Room</InputLabel>
+        <InputLabel id="room-label">Chọn Phòng</InputLabel>
         <Select
           labelId="room-label"
           id="room-select"
           value={selectedRoom}
-          label="Room"
+          label="Chọn Phòng"
           onChange={handleRoomChange}
           disabled={roomDropdownDisabled}
         >
@@ -152,11 +164,29 @@ const WorkAssign = () => {
         control={<Checkbox checked={isOnLeave} onChange={handleLeaveChange} />}
         label="Nghỉ phép"
       />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={isMorning}
+            onChange={handleMorningChange}
+          />
+        }
+        label="Buổi Sáng"
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={isAfternoon}
+            onChange={handleAfternoonChange}
+          />
+        }
+        label="Buổi Chiều"
+      />
       {/* chọn ngày */}
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer components={["DatePicker", "DatePicker"]}>
           <DatePicker
-            label="Controlled picker"
+            label="Chọn Ngày"
             value={selectedDate}
             onChange={handleDateChange}
           />
@@ -165,15 +195,14 @@ const WorkAssign = () => {
 
       {/* Dropdown list cho bác sĩ */}
       <FormControl fullWidth sx={{ mb: 2, mt: 2 }}>
-        <InputLabel id="doctor-label">Doctor</InputLabel>
+        <InputLabel id="doctor-label">Chọn Bác Sĩ</InputLabel>
         <Select
           labelId="doctor-label"
           id="doctor-select"
           value={selectedDoctor}
-          label="Doctor"
+          label="Chọn Bác Sĩ"
           onChange={handleDoctorChange}
         >
-          {/* {console.log(111, doctorDetails)} */}
           {doctorDetails.map((doctor) => (
             <MenuItem key={doctor.id} value={doctor.id}>
               {doctor.Name}
@@ -182,8 +211,8 @@ const WorkAssign = () => {
         </Select>
       </FormControl>
 
-      <Button variant="contained" color="primary" onClick={handleFormSubmit}>
-        Assign Work
+      <Button variant="contained" color="secondary" onClick={handleFormSubmit}>
+        Xác nhận
       </Button>
     </Box>
   );
