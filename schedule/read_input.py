@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\schedule')
+sys.path.insert(0,"F:\Document\DALN\DALN-DR.Scheduling\schedule")
 from Data import Data
 import csv
 from Doctor import Doctor
@@ -14,9 +14,24 @@ def read_input () -> Data:
     day_off = []
     day_ol = []
     room_ol = []
-    l_demands = []
+    workLoad = []
 
-    path1 = "F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\instance-generator\Doctor.csv"
+
+    path = "F:\Document\DALN\DALN-DR.Scheduling\instance-generator\\"
+
+    path4 =  path + 'Workload.csv'
+
+    with open(path4, 'r') as file4:
+        reader = csv.reader(file4)
+        next(reader, None)
+
+        for row in reader:
+            A = [int(row[i]) for i in range (len(row))]
+
+            workLoad.append(A)
+
+
+    path1 = path +  "Doctor.csv"
 
 
     'DOCTOR INFO'
@@ -36,46 +51,44 @@ def read_input () -> Data:
                     level1.append(i - 2)
                 elif (int(row[i]) == 2):
                     level2.append(i - 2)
-        
-            d = Doctor(int(row[0]), row[1], level1, level2 )
+            # print(len(workLoad) , " - " ,int(row[0]) )
+            
+            d = Doctor(int(row[0]), level1, level2, workLoad[int(row[0]) - 1])
             l_doctors.append(d)
     
     'ROOM INFO'
-    path2 = "F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\instance-generator\Room.csv"
+    path2 = path + "Room.csv"
     with open(path2, 'r') as file2:
         reader = csv.reader(file2)
         next(reader, None)
         for row in reader :
 
-            r = Room (int (row[0]), int (row[1]), int(row[2]))
+            r = Room (int (row[0]), int (row[1]), int(row[2]), int(row[3]), int(row[4]))
 
             l_rooms.append(r)
 
-    path3 = "F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\instance-generator\Day-off.csv"
+    path3 = path +  "Day-off.csv"
+
+    off = [[] for i in range (14)]
+    with open(path3, 'r') as file3:
+        reader = csv.reader(file3)
+        id = 0
+        for row in reader :
+            if (id not in off[int(row[0])] ):
+                off[int (row[0])].append(id)
+            else :
+                off[int (row[0])] = id
+            id += 1
+
+    path3 = path + "Day-ol.csv"
 
     with open(path3, 'r') as file3:
         reader = csv.reader(file3)
-        for row in reader:
-            day_off.append(int (row[0]))
-
-    path3 = "F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\instance-generator\Day-ol.csv"
-
-    with open(path3, 'r') as file3:
-        reader = csv.reader(file3)
+        next(reader, None)
         for row in reader:
             day_ol.append(int (row[0]))
             room_ol.append(int (row[1]))
 
-    path4 = "F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\instance-generator\demand.csv"
+    
 
-    with open(path4,'r') as file4:
-        reader = csv.reader(file4)
-        next(reader, None)
-        for row in reader:
-
-            demand = Demand(int (row[0]),int (row[1]),int (row[2]), int (row[3]))
-
-            l_demands.append(demand)
-            
-
-    return Data(l_doctors, l_rooms, day_off, day_ol, room_ol, l_demands)
+    return Data(l_doctors, l_rooms, off, day_ol, room_ol, )

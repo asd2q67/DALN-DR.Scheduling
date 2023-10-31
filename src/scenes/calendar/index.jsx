@@ -1,115 +1,89 @@
-import React, { useState } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import listPlugin from "@fullcalendar/list";
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import Header from "../../components/Header";
-import { tokens } from "../../theme";
+import React, { useEffect, useState } from "react";
+import { Box } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import dayjs from "dayjs";
+import { fetchDataFromAPI } from "../../data/api";
 
 const Calendar = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const [currentEvents, setCurrentEvents] = useState([]);
+  const [calendarData, setCalendarData] = useState([]);
+  const [doctorData, setDoctorData] = useState([]);
+  const [roomData, setRoomData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleDateClick = (selected) => {
-    const title = prompt("Please enter a new title for your event");
-    const calendarApi = selected.view.calendar;
-    calendarApi.unselect();
 
-    if (title) {
-      calendarApi.addEvent({
-        id: `${selected.dateStr}-${title}`,
-        title,
-        start: selected.startStr,
-        end: selected.endStr,
-        allDay: selected.allDay,
-      });
-    }
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const drData = await fetchDataFromAPI("/dr_detail.php");
+        const rmData = await fetchDataFromAPI("/room_detail.php");
+        setDoctorData(drData);
+        setRoomData(rmData);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
 
-  const handleEventClick = (selected) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete the event '${selected.event.title}'`
-      )
-    ) {
-      selected.event.remove();
-    }
-  };
+    fetchData();
+  }, []);
 
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "short", day: "numeric" };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/api/data");
+        const jsonData = await response.json();
+        console.log(111, roomData);
+        // Chuyển đổi dữ liệu từ API để phù hợp với DataGrid và ghép thông tin phòng vào lịch trình
+        const formattedData = jsonData.map((day, index) => {
+          // Lấy thông tin phòng từ các key như 0, 1, 2,...
+          const roomKey = index.toString();
+          const roomInfo = roomData.find((room) => room.id === roomKey);
+          const roomName = roomInfo ? roomInfo.name : ""; // Lấy tên phòng từ thông tin phòng
+
+          return {
+            id: index.toString(), // Sử dụng index làm id, chúng ta cần đảm bảo id là duy nhất
+            room: roomName, // Sử dụng tên phòng
+            ...day, // Các ngày trong tuần trở thành các cột
+          };
+        });
+        console.log(1000);
+        setCalendarData(formattedData);
+        setLoading(false);
+        console.log("Data from API:", jsonData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const columns = [
+    { field: "room", headerName: "Phòng", width: 150 }, // Cột tên phòng
+    ...Array.from({ length: 7 }, (_, index) => {
+      const day = dayjs()
+        .startOf("week")
+        .add(index + 1, "day")
+        .format("dddd");
+      return { field: index.toString(), headerName: day, width: 150 }; // Cột cho ngày trong tuần
+    }),
+  ];
 
   return (
     <Box m="20px">
-      <Header title="CALENDAR" subtitle="Full Calendar Interactive Page" />
-
-      <Box display="flex" justifyContent="space-between">
-        {/* CALENDAR SIDEBAR */}
-        <Box
-          flex="1 1 20%"
-          backgroundColor={colors.primary[400]}
-          p="15px"
-          borderRadius="4px"
-        >
-          <Typography variant="h5">Rooms</Typography>
-          <List>
-            {currentEvents.map((event) => (
-              <ListItem
-                key={event.id}
-                sx={{
-                  backgroundColor: colors.greenAccent[500],
-                  margin: "10px 0",
-                  borderRadius: "2px",
-                }}
-              >
-                <ListItemText
-                  primary={event.title}
-                  secondary={<Typography>{formatDate(event.start)}</Typography>}
-                />
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-
-        {/* CALENDAR */}
-        <Box flex="1 1 100%" ml="15px">
-          <FullCalendar
-            height="75vh"
-            plugins={[
-              dayGridPlugin,
-              timeGridPlugin,
-              interactionPlugin,
-              listPlugin,
-            ]}
-            headerToolbar={{
-              left: "prev,next today",
-              center: "title",
-              right: "timeGridWeek",
-            }}
-            initialView="timeGridWeek"
-            editable={true}
-            selectable={true}
-            selectMirror={true}
-            dayMaxEvents={true}
-            select={handleDateClick}
-            eventClick={handleEventClick}
-            eventsSet={(events) => setCurrentEvents(events)}
-            initialEvents={[]}
-          />
-        </Box>
-      </Box>
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
+      {!loading && !error && (
+        <DataGrid
+          rows={calendarData}
+          columns={columns}
+          pageSize={10}
+          rowsPerPageOptions={[10, 25, 50]}
+          pagination
+        />
+      )}
     </Box>
   );
 };

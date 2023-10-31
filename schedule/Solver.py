@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\schedule')
+sys.path.insert(0,'/Users/thutranghoa/Code/DALN-DR.Scheduling/schedule')
 
 from Data import Data
 from read_input import read_input
@@ -14,11 +14,30 @@ class Solver:
     def __init__(self, data : Data):
         self.data: Data = data
         self.solution = Solution(data)
+        self.sum_demand1 = [[0 for i in range (self.data.horizon)] for j in range (self.data.get_num_rooms())]
+        self.sum_demand2 = [[0 for i in range (self.data.horizon)] for j in range (self.data.get_num_rooms())]
+
+
+        
 
     def init_matrix (self):
         for i in range (self.data.get_num_doctors()):
             if (self.data.day_ol[i] != -1):
-                self.solution.update_matrix(i,self.data.day_ol[i],self.data.room_ol[i])             
+                date = self.data.day_ol[i]
+                room = self.data.room_ol[i]
+                self.update(i,date,room)
+
+    def update (self, doctorID, date, room, level):
+        self.solution.update_matrix(doctorID,date,room)         
+        self.data.l_doctors[doctorID].work_load[room] 
+        
+        # update demand
+        if (level == 1 ):
+            self.sum_demand1[room][date] += 1
+        elif (level == 2) : 
+            self.sum_demand2[room][date] += 1
+
+
     def run (self):
 
         for d in range (self.data.horizon):
@@ -29,9 +48,9 @@ class Solver:
                 l_demand2 = []
 
                 for i in self.data.l_doctors:
-                    if (self.check(r.roomID, i.level1)):
+                    if (self.check_ol(r.roomID, i.level1)):
                         l_demand1.append(i)
-                    elif (self.check(r.roomID, i.level2)):
+                    elif (self.check_ol(r.roomID, i.level2)):
                         l_demand2.append(i)
 
                 'choose demand1'
@@ -77,7 +96,7 @@ class Solver:
         return (res)
         
     
-    def check (self, roomID, list_room):
+    def check_ol (self, roomID, list_room):
         if (roomID in list_room):
             return 1
         else :
@@ -198,9 +217,87 @@ class Solver:
                 # if i == len(list_keys):
                 #     print("BS nay het cuu")
                 # print(first_key , ' - ' , self.check_skill(doc,first_key))
-
                 # self.solution.update_matrix(doc.doctorId,d,first_key)
                 # doc.work_load[first_key] += self.data.l_rooms[first_key].heavy
+    def sort_by_workLoad (self, l_doctor) -> List[Doctor]:
+        temp = sorted(l_doctor, key = lambda x : x.workload_sum())
+        return temp
+    
+    
+    def check_ol (self, shift, doctorID):
+        check = 0
+        for room in range (self.data.get_num_rooms()):
+            if (doctorID in self.solution.schedule_matrix[room][shift]):
+                check = 1
+                return check
+        else :
+            return check
+    
+    def check_off (self, shift, doctorID):
+        if (doctorID in self.data.day_off[shift]):
+            return 1
+        return 0
+
+    # check list doctor off each day 
+    def get_available_doctor(self, shift):
+        temp = self.data.l_doctors.copy()
+
+        for doctor in temp :
+            if (self.check_ol (shift, doctor.doctorId) == 1 or self.check_off (shift, doctor.doctorId) == 1) :
+                temp.remove(doctor)
+        return temp
+    
+    def getLevelSupply(self, doctor, roomID, shift):
+        level = self.check_skill(doctor, roomID)
+        supply1, supply2 = self.sum_demand1[roomID][shift], self.sum_demand2[roomID][shift]
+        demand1, demand2 = self.data.l_rooms[roomID].demand1, self.data.l_rooms[roomID].demand2
+        if (level == 2):
+            if (supply2 < demand2):
+                return level
+            else:
+                return 1
+        else:
+            if (supply1 < demand1):
+                return level
+            else:
+                return -1
+
+    def schedule (self):
+        for shift in range (0,self.data.horizon,2):
+            dump = []
+
+            list_doctor = self.get_available_doctor(shift)
+            list_doctor_sorted = self.sort_by_workLoad(list_doctor)
+            # SANG
+            if (shift % 2 == 0) :
+                for doctor in list_doctor_sorted :
+
+                    possible_rooms = doctor.level1 + doctor.level2
+                    weight = [doctor.work_load[i] for i in possible_rooms]
+
+                    sorted_room = self.sort (possible_rooms, weight)
+
+                    for room in sorted_room :
+                        level= self.getLevelSupply(doctor,room,shift)
+
+                        if (level == -1) : continue
+                        # update for moring and noon at the same time
+                        self.update(doctor.doctorId,shift,room,level)
+
+                        #check if they off in noon
+                        if (self.check_off (shift + 1, doctor.doctorId) == 0 and self.check_ol (shift + 1, doctor.doctorId) == 0):
+                            # check da co nguoi lam hay chua
+                            self.update(doctor.doctorId, shift + 1, room, level)
+                        break
+                            
+
+                        # if doctor has ability = 2, he/she can work in room = 1
+
+                
+
+
+
+
 
 
     
