@@ -18,6 +18,7 @@ def read_input () -> Data:
 
 
     path = "F:\Document\DALN\DALN-DR.Scheduling\instance-generator\\"
+    #path = "F:\Document\DALN\DALN-DR.Scheduling\input\\"
 
     path4 =  path + 'Workload.csv'
 
@@ -38,6 +39,7 @@ def read_input () -> Data:
     with open(path1, 'r') as file1:
         reader = csv.reader(file1)
         next(reader, None)
+        count = 0
         for row in reader :
             level1 = []
             level2 = []
@@ -51,10 +53,10 @@ def read_input () -> Data:
                     level1.append(i - 2)
                 elif (int(row[i]) == 2):
                     level2.append(i - 2)
-            # print(len(workLoad) , " - " ,int(row[0]) )
-            
-            d = Doctor(int(row[0]), level1, level2, workLoad[int(row[0]) - 1])
+        
+            d = Doctor(int(row[0])-1, level1, level2, workLoad[count])
             l_doctors.append(d)
+            count += 1
     
     'ROOM INFO'
     path2 = path + "Room.csv"
@@ -84,10 +86,10 @@ def read_input () -> Data:
 
     with open(path3, 'r') as file3:
         reader = csv.reader(file3)
-        #next(reader, None)
-        for row in reader:
-            day_ol.append(int (row[0]))
+        next(reader, None)
+        for row in reader:       
             room_ol.append(int (row[1]))
+            day_ol.append(int (row[2]))
 
     
 

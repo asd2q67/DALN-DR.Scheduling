@@ -27,10 +27,25 @@ class Solver:
                 date = self.data.day_ol[i]
                 room = self.data.room_ol[i]
 
-                level = self.check_skill(self.data.l_doctors[i], room)
-                self.update(i,date,room, level)
+                skill = self.check_skill(self.data.l_doctors[i],room)
+
+                demand1, demand2 = self.data.l_rooms[room].demand1, self.data.l_rooms[room].demand2
+
+                if (skill == 0 or skill == 1):
+                    if (demand1 != 0):
+                        skill = 1
+                    else :
+                        skill = 2
+                else:
+                    if (demand2 == 0):
+                        skill = 1
+                    
+                self.update(i,date,room, skill)
+
 
     def update (self, doctorID, date, roomID, level):
+
+        print ("\nAssign {} to {} in shift {} ".format(doctorID,roomID,date))
         self.solution.update_matrix(doctorID,date,roomID)         
         # self.data.workLoad[doctorID][roomID] += self.data.l_rooms[roomID].heavy
 
@@ -86,12 +101,10 @@ class Solver:
         return chosen
                 
             
-
-
     def sort (self, list1, list2):
 
         a = list(set(list2))
-        a.sort(reverse=True)
+        a.sort(reverse=False)
         res = []
         for i in a:
             for j in range(0, len(list2)):
@@ -224,7 +237,7 @@ class Solver:
                 # self.solution.update_matrix(doc.doctorId,d,first_key)
                 # doc.work_load[first_key] += self.data.l_rooms[first_key].heavy
     def sort_by_workLoad (self, l_doctor) -> List[Doctor]:
-        temp = sorted(l_doctor, key = lambda x : x.workload_sum())
+        temp = sorted(l_doctor, key = lambda x : x.workload_sum(), reverse=True)
         return temp
     
     
@@ -268,19 +281,37 @@ class Solver:
 
     def schedule (self):
         self.init_matrix()
+        # self.solution.export_solution()
         for shift in range (0,self.data.horizon,2):
             dump = []
 
             list_doctor = self.get_available_doctor(shift)
             list_doctor_sorted = self.sort_by_workLoad(list_doctor)
+            # for doc in list_doctor_sorted:
+            #     print(doc.workload_sum())
             # SANG
             if (shift % 2 == 0) :
                 for doctor in list_doctor_sorted :
 
+                    if (doctor.doctorId == 0) :
+                        print("Found!")
+
                     possible_rooms = doctor.level1 + doctor.level2
+                    print(doctor.doctorId)
+                    print(possible_rooms)
                     weight = [doctor.work_load[i] for i in possible_rooms]
 
+                    # w = dict ()
+
+                    # for i in range (len(possible_rooms)) :
+                    #     w[possible_rooms[i]] = weight[i]
+
                     sorted_room = self.sort (possible_rooms, weight)
+
+
+                    # for room in sorted_room:
+                    #     print(w[room],end=' ')
+                    # print("")
 
                     for room in sorted_room :
                         level= self.getLevelSupply(doctor,room,shift)
@@ -295,6 +326,17 @@ class Solver:
                             # check da co nguoi lam hay chua
                             self.update(doctor.doctorId, shift + 1, room, level)
                         break
+
+
+                    possible_rooms = doctor.level1 + doctor.level2
+                    possible_rooms.sort()
+                    init_weight = self.data.workLoad[doctor.doctorId]
+                    solution_weights = self.solution.room_weights[doctor.doctorId]
+                    print ("Doctor after :")
+
+                    #print ("{:7}{:>18}{:>20}{:>20}\n".format(doctor.doctorId, str(possible_rooms), str(init_weight), str(solution_weights)))
+                    
+                    self.solution.export_solution()
                             
 
                         # if doctor has ability = 2, he/she can work in room = 1

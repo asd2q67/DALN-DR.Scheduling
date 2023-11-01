@@ -13,6 +13,7 @@ class Doctor :
         for i in level2:
             r_list.append(i)
         r_list = sorted(r_list)
+        self.test_list = r_list
         self.work_load = workLoad
 
     def workload_sum(self):

@@ -22,7 +22,7 @@ class Solution :
         '''
 
         f = open ('solution.txt', 'w+')
-        f.write( "{:7}{:>5}{:>18}{:>20}{:>20}\n".format('DoctorID', "Name", "Possible room","Initial_weights", "Solution_Weights"))
+        f.write( "{:7}{:>18}{:>20}{:>20}\n".format('DoctorID', "Possible room","Initial_weights", "Solution_Weights"))
 
         for doctor in self.data.l_doctors :
             possible_rooms = doctor.level1 + doctor.level2
@@ -31,7 +31,14 @@ class Solution :
             init_weight = self.data.workLoad[doctor.doctorId]
             solution_weights = self.room_weights[doctor.doctorId]
 
-            f.write ("{:7}{:>5}{:>18}{:>20}{:>20}\n".format(doctor.doctorId, doctor.name, str(possible_rooms), str(init_weight), str(solution_weights)))
+            f.write ("{:7}{:>18}{:>20}{:>20}\n".format(doctor.doctorId, str(possible_rooms), str(init_weight), str(solution_weights)))
+
+    def export_solution (self):
+        day_list = ['ca{}'.format(i) for i in range(self.data.horizon)]
+
+        df = pd.DataFrame(self.schedule_matrix, columns=day_list)
+        print (df)
+            
                                 
 
 
