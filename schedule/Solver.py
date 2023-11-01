@@ -26,6 +26,7 @@ class Solver:
             if (self.data.day_ol[i] != -1):
                 date = self.data.day_ol[i]
                 room = self.data.room_ol[i]
+                print(room)
 
                 skill = self.check_skill(self.data.l_doctors[i],room)
 

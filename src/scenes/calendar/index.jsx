@@ -66,8 +66,15 @@ const Calendar = () => {
               if (key !== "day") {
                 try {
                   const parsedData = JSON.parse(day[key]);
-                  const doctorNames = parsedData.map((key) => doctorMap[key]);
-                  day[key] = doctorNames;
+
+                  // Check if parsedData is an array before mapping over it
+                  if (Array.isArray(parsedData)) {
+                    const doctorNames = parsedData.map((key) => doctorMap[key]);
+                    day[key] = doctorNames;
+                  } else {
+                    // If parsedData is not an array, handle it accordingly (fallback value or error handling)
+                    day[key] = "Invalid data format"; // Provide a fallback value or handle the error accordingly
+                  }
                 } catch (error) {
                   // Handle JSON parsing error
                   console.error("Error parsing JSON:", error);
@@ -78,11 +85,12 @@ const Calendar = () => {
             }
 
             return {
-              id: index.toString(), // Sử dụng index làm id, chúng ta cần đảm bảo id là duy nhất
-              room: roomName, // Sử dụng tên phòng
+              id: index.toString(),
+              room: roomName,
               ...day,
             };
           });
+
           // console.log(1000, formattedData);
           setCalendarData(formattedData);
           setLoading(false);
@@ -149,7 +157,8 @@ const Calendar = () => {
       render: (room) => (
         <div
           style={{
-            color: colors.greenAccent[300], fontWeight: "bold"
+            color: colors.greenAccent[300],
+            fontWeight: "bold",
           }}
         >
           {room}
@@ -211,7 +220,7 @@ const Calendar = () => {
             dataSource={calendarData}
             rowKey="id"
             pagination={false}
-            scroll={{ x: "max-content" }}
+            scroll={{ x: "max-content", y: window.innerHeight - 350}}
           />
         )}
       </div>
