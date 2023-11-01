@@ -1,11 +1,6 @@
-roomID,name,heavy,priority,demand0,demand1,demand2
-1,"Phòng 309 (KKB)  TH1",2,0,0,0,2
-2,"Phòng 309 (KKB)  TH2",1,0,0,0,1
-3,"Phòng 309 (KKB)  TH3",1,0,0,0,1
-4,"PK nhà K1 703",1,0,0,0,1
-5,"PK nhà K1 704",1,0,0,0,1
-6,"PK nhà K1 705",1,0,0,0,1
-7,"PK nhà K1 707",1,0,0,0,2
-8,"PK nhà K1 708",1,0,0,0,2
-9,"PK nhà K1 709",1,0,0,0,2
-10,"Điều trị tầng 9 K1",1,0,0,0,1
+roomID,priority,heavy,demand1,demand2
+0,4,1,0,2
+1,2,2,2,0
+2,2,2,1,1
+3,1,4,1,1
+4,3,1,1,1

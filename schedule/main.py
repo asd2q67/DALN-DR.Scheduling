@@ -20,7 +20,7 @@ if __name__ == '__main__':
     # print (data.get_num_doctors())
     # print (data.get_num_rooms())
 
-    # print (data.horizon)
+    # print (data.orizon)
     # print (data.get_num_demands())
     # print (data.l_doctors[0].name)
     # print (solver.sort_by_workLoad())

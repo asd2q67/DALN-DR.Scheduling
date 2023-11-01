@@ -32,6 +32,13 @@ class Solution :
             solution_weights = self.room_weights[doctor.doctorId]
 
             f.write ("{:7}{:>5}{:>18}{:>20}{:>20}\n".format(doctor.doctorId, doctor.name, str(possible_rooms), str(init_weight), str(solution_weights)))
+
+    def export_solution (self):
+        day_list = ['ca{}'.format(i) for i in range(self.data.horizon)]
+
+        df = pd.DataFrame(self.schedule_matrix, columns=day_list)
+        print (df)
+            
                                 
 
 

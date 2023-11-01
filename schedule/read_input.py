@@ -38,6 +38,7 @@ def read_input () -> Data:
     with open(path1, 'r') as file1:
         reader = csv.reader(file1)
         next(reader, None)
+        count = 0
         for row in reader :
             level1 = []
             level2 = []
@@ -52,8 +53,9 @@ def read_input () -> Data:
                 elif (int(row[i]) == 2):
                     level2.append(i - 2)
         
-            d = Doctor(int(row[0]), row[1], level1, level2, workLoad[i])
+            d = Doctor(int(row[0]), row[1], level1, level2, workLoad[count])
             l_doctors.append(d)
+            count += 1
     
     'ROOM INFO'
     path2 = path + "Room.csv"
@@ -84,9 +86,9 @@ def read_input () -> Data:
     with open(path3, 'r') as file3:
         reader = csv.reader(file3)
         next(reader, None)
-        for row in reader:
-            day_ol.append(int (row[0]))
+        for row in reader:       
             room_ol.append(int (row[1]))
+            day_ol.append(int (row[2]))
 
     
 
