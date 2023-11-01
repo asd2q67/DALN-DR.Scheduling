@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # print (solver.sort_by_workLoad())
     # solver.init_matrix()
 
-    solver.run1()
+    solver.schedule()
     print(solver.solution.schedule_matrix)
 
     temp = solver.solution.schedule_matrix.copy()

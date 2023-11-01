@@ -84,11 +84,11 @@ def read_input () -> Data:
 
     with open(path3, 'r') as file3:
         reader = csv.reader(file3)
-        next(reader, None)
+        #next(reader, None)
         for row in reader:
             day_ol.append(int (row[0]))
             room_ol.append(int (row[1]))
 
     
 
-    return Data(l_doctors, l_rooms, off, day_ol, room_ol, )
+    return Data(l_doctors, l_rooms, off, day_ol, room_ol, workLoad)

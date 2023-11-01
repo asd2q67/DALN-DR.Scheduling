@@ -8,9 +8,9 @@ import string
 
 
 '-- INSTANCE SETTING'
-num_rooms = 5
-num_doctors = 10
-num_skills = 4
+num_rooms = 10
+num_doctors = 11
+num_skills = 10
 num_priority = 3
 schedule_day = 14
 
