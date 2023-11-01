@@ -8,9 +8,9 @@ import string
 
 
 '-- INSTANCE SETTING'
-num_rooms = 5
-num_doctors = 10
-num_skills = 4
+num_rooms = 10
+num_doctors = 11
+num_skills = 10
 num_priority = 3
 schedule_day = 14
 
@@ -26,6 +26,8 @@ class Map :
         self.skill_list = [i for i in range (num_skills)]
         self.list_day_ol = []
         self.list_day_off = []
+
+        self.un_possible_room = [[]for i in range (num_doctors)]
         # self.doctor_list = self.gen_doctor_list()
         # self.room_list = self.gen_room_list()
 
@@ -49,6 +51,7 @@ class Map :
             for j in range (0, len(ability)) :
                 if ability[j] == 0 :
                     work[j] = 0
+                    self.un_possible_room[i].append(j)
 
             feature.append(i)
             feature.append(doctor_name[i])
@@ -113,7 +116,7 @@ class Map :
                 f.write("{}\n".format(day_off))
 
     def gen_day_work (self):
-        field = ['day', 'room']
+        field = ['doctorID','room', "day"]
 
         with open('instance-generator/Day-ol.csv', 'a') as f:
             write = csv.writer(f)
@@ -125,10 +128,12 @@ class Map :
                 while (self.list_day_ol.count(day_ol) >= 2 or day_ol == self.list_day_off[i]):
                     day_ol = random.randint(0, schedule_day-1)
 
+                
                 room = random.randint(0, num_rooms - 1)
-        
+                while (room in self.un_possible_room[i]):
+                    room = random.randint(0, num_rooms - 1)
                     
-                f.write("{},{}\n".format(day_ol, room))
+                f.write("{},{},{}\n".format(i, room,day_ol))
 
 
         
@@ -140,8 +145,8 @@ if __name__ == '__main__':
     m = Map()
     # m.write_file(i)
     # print (doctor_name)
-    m.gen_doctor_list()
-    m.gen_room_list()
+    # m.gen_doctor_list()
+    # m.gen_room_list()
     m.gen_day_off()
     m.gen_day_work()
 

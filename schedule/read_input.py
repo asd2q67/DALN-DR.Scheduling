@@ -1,5 +1,9 @@
 import sys
+<<<<<<< HEAD
 sys.path.insert(0,'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\schedule')
+=======
+sys.path.insert(0,"F:\Document\DALN\DALN-DR.Scheduling\schedule")
+>>>>>>> d48b52a3a9dee6573a9bb5a1c6d4c5832daea969
 from Data import Data
 import csv
 from Doctor import Doctor
@@ -17,7 +21,12 @@ def read_input () -> Data:
     workLoad = []
 
 
+<<<<<<< HEAD
     path = "D:\Workspace\Doanliennganh\DALN-DR.Scheduling\instance-generator"
+=======
+    path = "F:\Document\DALN\DALN-DR.Scheduling\instance-generator\\"
+    #path = "F:\Document\DALN\DALN-DR.Scheduling\input\\"
+>>>>>>> d48b52a3a9dee6573a9bb5a1c6d4c5832daea969
 
     path4 =  path + '\Workload.csv'
 
@@ -38,6 +47,7 @@ def read_input () -> Data:
     with open(path1, 'r', encoding="utf-8") as file1:
         reader = csv.reader(file1)
         next(reader, None)
+        count = 0
         for row in reader :
             level1 = []
             level2 = []
@@ -52,8 +62,9 @@ def read_input () -> Data:
                 elif (int(row[i]) == 2):
                     level2.append(i - 2)
         
-            d = Doctor(int(row[0]), row[1], level1, level2, workLoad[i])
+            d = Doctor(int(row[0])-1, level1, level2, workLoad[count])
             l_doctors.append(d)
+            count += 1
     
     'ROOM INFO'
     path2 = path + "\Room.csv"
@@ -84,10 +95,10 @@ def read_input () -> Data:
     with open(path3, 'r', encoding="utf-8") as file3:
         reader = csv.reader(file3)
         next(reader, None)
-        for row in reader:
-            day_ol.append(int (row[0]))
+        for row in reader:       
             room_ol.append(int (row[1]))
+            day_ol.append(int (row[2]))
 
     
 
-    return Data(l_doctors, l_rooms, off, day_ol, room_ol, )
+    return Data(l_doctors, l_rooms, off, day_ol, room_ol, workLoad)

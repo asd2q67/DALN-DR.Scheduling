@@ -1,9 +1,8 @@
 import csv
 
 class Doctor :
-    def __init__(self, docID : int, name : str,  level1 : list, level2 : list, workLoad : list) :
+    def __init__(self, docID : int,  level1 : list, level2 : list, workLoad : list) :
         self.doctorId = docID
-        self.name = name
         'list of rooms doctor can work as level 1'
         self.level1 = level1
         'list of rooms doctor can work as level 2'
@@ -14,6 +13,7 @@ class Doctor :
         for i in level2:
             r_list.append(i)
         r_list = sorted(r_list)
+        self.test_list = r_list
         self.work_load = workLoad
 
     def workload_sum(self):

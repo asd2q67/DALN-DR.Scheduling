@@ -5,7 +5,6 @@ import dayjs from "dayjs";
 import { fetchDataFromAPI } from "../../data/api";
 import Header from "../../components/Header";
 import "./styles.css";
-import styled from "@emotion/styled";
 import { useTheme } from "@mui/material";
 
 const Calendar = () => {
