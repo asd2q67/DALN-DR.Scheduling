@@ -31,7 +31,9 @@ if __name__ == '__main__':
     # print (solver.room_weights)
     # print (data.workLoad)
     solver.solution.statis()
-    export_solution(solver.solution.schedule_matrix)
+
+    solver.solution.export_solution()
+    print (solver.solution.dump)
   
 
     # print ("--------------------")

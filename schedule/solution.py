@@ -12,6 +12,9 @@ class Solution :
         # self.night_shift = [[] for i in range (data.horizon/2)]
         self.room_weights = copy.deepcopy(self.data.workLoad) 
 
+        # save list patient can not be assigned for each day
+        self.dump = [[] for i in range (int(data.horizon/2))] 
+
     def update_matrix (self, doctor_id , dateID, roomID):
         self.schedule_matrix[roomID][dateID].append(doctor_id)
 
