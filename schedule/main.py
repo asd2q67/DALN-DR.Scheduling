@@ -27,13 +27,13 @@ if __name__ == '__main__':
 
     # data.display_stats()
     # print (data.workLoad)
-    solver.schedule()
+    solver.build_initial_solution()
     # print (solver.room_weights)
     # print (data.workLoad)
-    solver.solution.statis()
+    solver.current_solution.statis()
 
-    solver.solution.export_solution()
-    print (solver.solution.dump)
+    solver.current_solution.export_solution()
+    print (solver.current_solution.dump)
   
 
     # print ("--------------------")

@@ -15,6 +15,11 @@ class Solution :
         # save list patient can not be assigned for each day
         self.dump = [[] for i in range (int(data.horizon/2))] 
 
+        # max-min (OBJ)
+        self.max_min = [0 for i in range (self.data.get_num_doctors())]
+        self.obj = sum (self.max_min)
+
+ 
     def update_matrix (self, doctor_id , dateID, roomID):
         self.schedule_matrix[roomID][dateID].append(doctor_id)
 
@@ -42,7 +47,11 @@ class Solution :
         df = pd.DataFrame(self.schedule_matrix, columns=day_list)
         print (df)
             
-                                
+    def scoring_function (self):
+        pass
+
+    def cal_objective (self):
+
 
 
 
