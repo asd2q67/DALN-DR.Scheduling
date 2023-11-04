@@ -29,3 +29,9 @@ app.get('/api/data', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+app.post('/save-csv', (req, res) => {
+  const csvData = req.body.data;
+  fs.writeFileSync('D:\\Workspace\\Doanliennganh\\DALN-DR.Scheduling\\solution.csv', csvData, 'utf-8');
+  res.send('File CSV đã được lưu.');
+});
