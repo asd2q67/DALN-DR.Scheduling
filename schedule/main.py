@@ -30,7 +30,7 @@ if __name__ == '__main__':
     solver.build_initial_solution()
     # print (solver.room_weights)
     # print (data.workLoad)
-    solver.current_solution.statis()
+    # solver.current_solution.statis()
 
     solver.current_solution.export_solution()
     print (solver.current_solution.dump)
