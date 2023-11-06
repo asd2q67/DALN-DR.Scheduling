@@ -44,7 +44,7 @@ const Calendar = () => {
         const [drData, rmData, drAssign] = await Promise.all([
           fetchDataFromAPI("/dr_detail.php"),
           fetchDataFromAPI("/room_detail.php"),
-          fetchDataFromAPI("/work_detail.php")
+          fetchDataFromAPI("/work_detail.php"),
         ]);
         setDoctorData(drData);
         if (JSON.stringify(rmData) !== JSON.stringify(roomData)) {
@@ -71,18 +71,22 @@ const Calendar = () => {
 
           // console.log(doctorMap, drAssign, roomMap);
 
-          const assignMap = drAssign.reduce((acc, assign, index) => {
-            const Key = index.toString();
-            const data = {
-              roomName: (assign.room != -1) ? roomMap[assign.room] : "Nghỉ phép",
-              doctorName: doctorMap[parseInt(assign.doctor_id) + 1],
-              shift: assign.session,
-            }
-            acc[Key] = data;
-            return acc;
-          }, {});
+          const assignMap = drAssign
+            .filter((assgin) => {
+              return assgin.room == -1;
+            })
+            .reduce((acc, assign, index) => {
+              const Key = index.toString();
+              const data = {
+                roomName: "Nghỉ phép",
+                doctorName: doctorMap[parseInt(assign.doctor_id) - 1],
+                shift: assign.session,
+              };
+              acc[Key] = data;
+              return acc;
+            }, {});
 
-          setAssignDoctors(assignMap)
+          setAssignDoctors(assignMap);
 
           console.log(6666, assignMap);
 
@@ -184,7 +188,7 @@ const Calendar = () => {
       case "1":
         return "black"; // Background color for skill level 1
       case "2":
-        return "white"; // Background color for skill level 2
+        return "black"; // Background color for skill level 2
       default:
         return "white"; // Background color for skill level 0
     }
@@ -256,13 +260,22 @@ const Calendar = () => {
                     const skill = doctorInfo
                       ? doctorInfo[`R${parseInt(record.id) + 1}`]
                       : null;
-                    const backgroundColor = getTagBackgroundColor(skill); // default color for skill 0
+                      let backgroundColor = getTagBackgroundColor(skill);
+                      let color = getColor(skill);
+        
+                      Object.values(assignDoctors).map((assignment) => {
+                        if (assignment.doctorName === doctor && parseInt(assignment.shift) - 1 == shiftCol.shift) {
+                          backgroundColor = colors.grey[500];
+                          color = "white";
+                        }
+                      }); // default color for skill 0
 
                     return (
                       <Tag
                         key={index}
                         style={{
                           backgroundColor: backgroundColor,
+                          color: color,
                           marginBottom: "5px",
                           borderRadius: "5px",
                         }}
@@ -644,7 +657,7 @@ const Calendar = () => {
 
     return roomList.length > 0 ? roomList : "Available";
   };
-
+  //dropDownBar component
   const DoctorDropdown = () => {
     const doctorSchedules = dataGen();
     //Tạo Status của bác sĩ
@@ -656,7 +669,7 @@ const Calendar = () => {
       const doctorStatus = getDoctorStatus(schedules[i], roomId);
       allStatus.push(doctorStatus);
     }
-    console.log(doctorSchedules);
+    // console.log(doctorSchedules);
     return (
       <div>
         <div>
@@ -699,7 +712,7 @@ const Calendar = () => {
           onClick={handleFormSubmit}
           style={{ background: colors.greenAccent[500] }}
         >
-          Xác nhận
+          Thêm bác sĩ
         </Button>
       </div>
     );
@@ -755,11 +768,34 @@ const Calendar = () => {
       </Box>
 
       <Modal
-        title="Chỉnh sửa lịch làm việc"
+        title="SỬA LỊCH LÀM VIỆC"
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}
       >
+        <b>Các bác sĩ xin nghỉ phép:</b>
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {assignDoctors &&
+            Object.values(assignDoctors).map((assignment) => {
+              // console.log(assignment);
+              if (parseInt(assignment.shift) - 1 == doctorId) {
+                return (
+                  <Tag
+                    style={{
+                      backgroundColor: colors.grey[500],
+                      color: "white",
+                      marginBottom: "5px",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {assignment.doctorName}
+                  </Tag>
+                );
+              }
+            })}
+        </div>
+        <b>Các bác sĩ làm việc tại phòng:</b>
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {selectedDoctorInfo &&
             selectedDoctorInfo.map((doctor, index) => {
@@ -769,8 +805,16 @@ const Calendar = () => {
               const skill = doctorInfo
                 ? doctorInfo[`R${parseInt(roomId) + 1}`]
                 : null;
-              const backgroundColor = getTagBackgroundColor(skill);
-              const color = getColor(skill);
+
+              let backgroundColor = getTagBackgroundColor(skill);
+              let color = getColor(skill);
+
+              Object.values(assignDoctors).map((assignment) => {
+                if (assignment.doctorName === doctor && parseInt(assignment.shift) - 1 == doctorId) {
+                  backgroundColor = colors.grey[500];
+                  color = "white";
+                }
+              });
 
               return (
                 <Tag
@@ -789,7 +833,7 @@ const Calendar = () => {
               );
             })}
         </div>
-        <p>Thêm bác sĩ mới:</p>
+        <b>Thêm bác sĩ mới:</b>
         {/* Dropdown list cho bác sĩ */}
         <DoctorDropdown />
       </Modal>
