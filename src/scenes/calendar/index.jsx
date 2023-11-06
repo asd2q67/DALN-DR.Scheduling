@@ -29,6 +29,7 @@ const Calendar = () => {
   const [roomId, setRoomId] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(undefined);
   const [assignDoctors, setAssignDoctors] = useState({});
+  const [initialState, setInitialState] = useState([]);
 
   // const { exec } = require("child_process");
 
@@ -54,7 +55,9 @@ const Calendar = () => {
         if (rmData.length > 0) {
           const response = await fetch("http://localhost:3001/api/data");
           const jsonData = await response.json();
-          // console.log(1000, response);
+
+          // console.log(1000, jsonData);
+
           // Chuyển đổi dữ liệu từ API để phù hợp với DataGrid và ghép thông tin phòng vào lịch trình
 
           const roomMap = rmData.reduce((acc, room, index) => {
@@ -88,12 +91,14 @@ const Calendar = () => {
 
           setAssignDoctors(assignMap);
 
-          console.log(6666, assignMap);
+          // console.log(6666, assignMap);
 
           const formattedData = jsonData.map((day, index) => {
             const Key = (index + 1).toString();
             const roomName = roomMap[Key] || "";
             // console.log(666, drData);
+            // Create a deep copy of the day object
+            const preservedData = { ...day };
             for (let key in day) {
               if (key !== "day") {
                 try {
@@ -103,16 +108,16 @@ const Calendar = () => {
                   // Check if parsedData is an array before mapping over it
                   if (Array.isArray(parsedData)) {
                     const doctorNames = parsedData.map((key) => doctorMap[key]);
-                    day[key] = doctorNames;
+                    preservedData[key] = doctorNames;
                   } else {
                     // If parsedData is not an array, handle it accordingly (fallback value or error handling)
-                    day[key] = "Invalid data format"; // Provide a fallback value or handle the error accordingly
+                    preservedData[key] = "Invalid data format"; // Provide a fallback value or handle the error accordingly
                   }
                 } catch (error) {
                   // Handle JSON parsing error
                   console.error("Error parsing JSON:", error);
                   // Provide a fallback value or handle the error accordingly
-                  day[key] = "Error parsing data";
+                  preservedData[key] = "Error parsing data";
                 }
               }
             }
@@ -120,12 +125,14 @@ const Calendar = () => {
             return {
               id: index.toString(),
               room: roomName,
-              ...day,
+              ...preservedData,
             };
           });
-
-          // console.log(1234, formattedData);
           setCalendarData(formattedData);
+          setInitialState(...calendarData);
+          // console.log(1111, calendarData);
+          // console.log(1234, initialState);
+
           setLoading(false);
           // console.log("Data from API:", jsonData);
         }
@@ -138,7 +145,7 @@ const Calendar = () => {
 
     fetchData();
   }, [roomData]); // Thêm roomData vào dependency array để useEffect chỉ chạy khi roomData thay đổi
-
+  // console.log(999, initialState);
   const dayOfWeekInVietnamese = {
     Monday: "Thứ 2",
     Tuesday: "Thứ 3",
@@ -218,22 +225,6 @@ const Calendar = () => {
         </div>
       ),
     }, // Cột tên phòng
-    // {
-    //   title: "Absent Doctors",
-    //   dataIndex: "absentDoctors",
-    //   key: "absentDoctors",
-    //   width: 100,
-    //   render: (absentDoctors) => (
-    //     <div style={{ display: "flex", flexDirection: "column" }}>
-    //       {absentDoctors.map((doctor, index) => (
-    //         <div key={index} style={{ marginBottom: "5px" }}>
-    //           {doctor}
-    //         </div>
-    //       ))}
-    //     </div>
-    //   ),
-    //   fixed: "right", // Stick the column to the right side
-    // },
     ...dayColumns.map((dayColumn) => ({
       title: dayColumn.headerName,
       children: dayColumn.children.map((shiftCol) => ({
@@ -260,15 +251,18 @@ const Calendar = () => {
                     const skill = doctorInfo
                       ? doctorInfo[`R${parseInt(record.id) + 1}`]
                       : null;
-                      let backgroundColor = getTagBackgroundColor(skill);
-                      let color = getColor(skill);
-        
-                      Object.values(assignDoctors).map((assignment) => {
-                        if (assignment.doctorName === doctor && parseInt(assignment.shift) - 1 == shiftCol.shift) {
-                          backgroundColor = colors.grey[500];
-                          color = "white";
-                        }
-                      }); // default color for skill 0
+                    let backgroundColor = getTagBackgroundColor(skill);
+                    let color = getColor(skill);
+
+                    Object.values(assignDoctors).map((assignment) => {
+                      if (
+                        assignment.doctorName === doctor &&
+                        parseInt(assignment.shift) - 1 == shiftCol.shift
+                      ) {
+                        backgroundColor = colors.grey[500];
+                        color = "white";
+                      }
+                    }); // default color for skill 0
 
                     return (
                       <Tag
@@ -327,6 +321,7 @@ const Calendar = () => {
   };
 
   const convertData = (data) => {
+    console.log(666, typeof data, data);
     const doctorMap = doctorData.reduce((acc, doctor, index) => {
       const Key = index.toString();
       acc[Key] = doctor.Name;
@@ -356,6 +351,7 @@ const Calendar = () => {
     }
     headerRow = headerRow.slice(0, -1);
     const finalData = [headerRow, ...convertedData];
+    console.log(777, finalData.join("\n"));
     return finalData.join("\n");
   };
 
@@ -430,10 +426,9 @@ const Calendar = () => {
       // Close the modal after submitting the form
       setIsModalVisible(false);
       setSelectedDoctor(null);
-
       const csvData = convertData(calendarData);
-      // console.log(1231231, csvData);
       saveToServer(csvData);
+      console.log(999, initialState);
     }
   };
 
@@ -646,6 +641,20 @@ const Calendar = () => {
       });
   };
 
+  useEffect(() => {}, [initialState]);
+  const cancelChanges = () => {
+    // const { id, room, ...newData } = initialState;
+    // for (const key in newData) {
+    //   if (Array.isArray(newData[key])) {
+    //     newData[key] = [...newData[key]];
+    //   }
+    // }
+    console.log(5555, initialState);
+    const csvData = convertData(initialState);
+    console.log(666, csvData);
+    saveToServer(csvData);
+  };
+
   const getDoctorStatus = (schedule, roomId) => {
     const roomList = [];
 
@@ -733,6 +742,19 @@ const Calendar = () => {
               padding: "10px 20px",
               marginRight: "10px",
             }}
+            onClick={cancelChanges}
+          >
+            Hủy các thay đổi
+          </Btn>
+          <Btn
+            style={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+              marginRight: "10px",
+            }}
             onClick={handleInitCalendar}
           >
             Khởi tạo lịch
@@ -810,7 +832,10 @@ const Calendar = () => {
               let color = getColor(skill);
 
               Object.values(assignDoctors).map((assignment) => {
-                if (assignment.doctorName === doctor && parseInt(assignment.shift) - 1 == doctorId) {
+                if (
+                  assignment.doctorName === doctor &&
+                  parseInt(assignment.shift) - 1 == doctorId
+                ) {
                   backgroundColor = colors.grey[500];
                   color = "white";
                 }
