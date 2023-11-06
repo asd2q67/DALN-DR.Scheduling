@@ -8,11 +8,10 @@ import string
 
 
 '-- INSTANCE SETTING'
-num_rooms = 10
-num_doctors = 11
-num_skills = 10
-num_priority = 3
-schedule_day = 14
+num_rooms = 5
+num_doctors = 10
+num_skills = 4
+schedule_day = 7
 
 doctor_name = list(string.ascii_uppercase)
 room_list = ['r{}'.format(i) for i in range (num_rooms)]
@@ -78,20 +77,20 @@ class Map :
 
     def gen_room_list (self):
         room_lists = []
-        fields = ['roomID', 'priority', 'heavy' , 'demand1', 'demand2']
+        fields = ['roomID', 'heavy' , 'demand1', 'demand2']
 
         for i in range (num_rooms):
             # demand0 = random.randint(0,5)
-            demand1 = random.randint(0,5)
-            demand2 = random.randint(0,5)
+            demand1 = random.randint(0,2)
+            demand2 = random.randint(0,2)
             if (random.uniform(1,100) <= 30):
                 important = True
             else :
                 important = False
             
-            pri = random.randint(0, num_priority + 1)
+            # pri = random.randint(0, num_priority + 1)
             heavy = random.randint(0, 5)
-            room = (i, pri, heavy, demand1, demand2)
+            room = (i, heavy, demand1, demand2)
             room_lists.append(room)
 
         with open('instance-generator/Room.csv', 'w') as f:
@@ -146,9 +145,9 @@ if __name__ == '__main__':
     # m.write_file(i)
     # print (doctor_name)
     # m.gen_doctor_list()
-    # m.gen_room_list()
-    m.gen_day_off()
-    m.gen_day_work()
+    m.gen_room_list()
+    # m.gen_day_off()
+    # m.gen_day_work()
 
 
 

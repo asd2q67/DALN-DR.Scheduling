@@ -3,7 +3,7 @@ import sys
 sys.path.insert(0,'F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\schedule')
 from Doctor import Doctor
 from Room import Room
-from Demand import Demand
+
 
 
 class Data:
