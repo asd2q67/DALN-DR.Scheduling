@@ -25,7 +25,6 @@ class Solution :
 
 
 
- 
     def update_matrix (self, doctor_id , dateID, roomID):
         self.schedule_matrix[roomID][dateID].append(doctor_id)
 

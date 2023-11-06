@@ -6,7 +6,7 @@ from read_input import read_input
 import csv
 from Doctor import Doctor
 from Room import Room
-from Demand import Demand
+
 from solution import Solution
 from typing import List
 import random 
@@ -94,12 +94,17 @@ class Solver:
         random.shuffle(position)
 
         for pos in position :
+
+            #check room is feasible or not
+            if (self.check_room_is_feasible(self.data.l_doctors[doctorID], pos, chosen_shift) == -1 ):
+                continue
             max_min_value = self.get_insertion_cost(s, doctorID, pos)
 
             if (max_min_value < bestGain) :
                 best_room = pos
                 bestGain = max_min_value
         
+        'IF we can not find room for doctor ? '
         s.insert_doctor(doctorID, best_room,chosen_shift)
 
         
@@ -116,7 +121,7 @@ class Solver:
 
 
     def build_initial_solution (self, s : Solution):
-        self.init_matrix()
+        self.init_matrix(s)
         # self.solution.export_solution()
         for shift in range (self.data.horizon):
             if (shift == 10):
@@ -124,7 +129,7 @@ class Solver:
 
             day = int(shift/2)
             
-            list_doctor = self.get_available_doctor(shift)
+            list_doctor = self.get_available_doctor(shift,s)
             list_doctor_sorted = self.sort_by_workLoad(list_doctor)
 
             if (day != 0) :
@@ -137,18 +142,18 @@ class Solver:
             if (shift % 2 == 0) :
 
                 for doctor in list_doctor_sorted :
-                    if (self.is_assigned(shift,doctor) == True) :
+                    if (self.is_assigned(shift,doctor, s) == True) :
                         continue
 
                     if (doctor.doctorId == 9):
                         print ("Found!")
-                    check = self.check_and_assign(doctor,shift)
+                    check = self.check_and_assign(doctor,shift, s)
                     if (check == -1):
                         continue
 
             else:
                 for doctor in list_doctor_sorted :
-                    if (self.is_assigned(shift,doctor) == True) :
+                    if (self.is_assigned(shift,doctor, s) == True) :
                         continue
 
                     chosen_room_morning = self.which_room_is_assigned(doctor.doctorId, shift-1, s)          
@@ -157,7 +162,7 @@ class Solver:
 
                     # ? doctor is assigned in moring and room is not full
                     if (chosen_room_morning != -1 and level != -1):
-                        self.update(doctor.doctorId,shift,chosen_room_morning, level)
+                        self.update(doctor.doctorId,shift,chosen_room_morning, level, s)
                     
                     # ? If chosen room is full or morning, doctor can not be scheduled, choose room again
                     else :
@@ -165,19 +170,24 @@ class Solver:
                         if (check == -1):
                             continue
 
-                
+    def check_room_is_feasible (self, doctor : Doctor, roomID, shift) :
+    
+        if self.getLevelSupply (doctor.doctorId, roomID,shift) == -1 :
+            return False
+        else : 
+            return True
 
     def check_and_assign (self, doctor, shift , s : Solution):
         day = int (shift/2)
 
-        chosen_room = self.choose_room(doctor, shift)
+        chosen_room = self.choose_room(doctor, shift, s )
         if (chosen_room == -1) :
             if (doctor.doctorId not in s.dump[day]):
                 s.dump[day].append(doctor.doctorId)
             return -1                                                                                  
         level= self.getLevelSupply(doctor,chosen_room,shift)
         # update for moring and noon at the same time
-        self.update(doctor.doctorId,shift,chosen_room,level)
+        self.update(doctor.doctorId,shift,chosen_room,level, s)
 
         return 1
                    
@@ -188,8 +198,8 @@ class Solver:
                 return room
         return -1 
 
-    def is_assigned (self, shift, doctor):
-        if (self.check_off (shift , doctor.doctorId) != 0 or self.check_ol (shift, doctor.doctorId) != 0):
+    def is_assigned (self, shift, doctor, s : Solution):
+        if (self.check_off (shift , doctor.doctorId) != 0 or self.check_ol (shift, doctor.doctorId, s) != 0):
             return True 
         else :
             return False
@@ -227,7 +237,7 @@ class Solver:
     
 
 
-    def init_matrix (self):
+    def init_matrix (self, s : Solution):
         for i in range (self.data.get_num_doctors()):
             if (self.data.day_ol[i] != -1):
                 date = self.data.day_ol[i]
@@ -246,7 +256,7 @@ class Solver:
                     if (demand2 == 0):
                         skill = 1
                     
-                self.update(i,date,room, skill)
+                self.update(i,date,room, skill, s)
 
     
     def update (self, doctorID, date, roomID, level, s : Solution):
@@ -304,11 +314,11 @@ class Solver:
         return 0
 
     # check list doctor off each day 
-    def get_available_doctor(self, shift):
+    def get_available_doctor(self, shift, s : Solution):
         temp = self.data.l_doctors.copy()
 
         for doctor in temp :
-            if (self.check_ol (shift, doctor.doctorId) == 1 or self.check_off (shift, doctor.doctorId) == 1) :
+            if (self.check_ol (shift, doctor.doctorId,s) == 1 or self.check_off (shift, doctor.doctorId) == 1) :
                 temp.remove(doctor)
         return temp
     

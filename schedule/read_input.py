@@ -4,8 +4,6 @@ from Data import Data
 import csv
 from Doctor import Doctor
 from Room import Room
-from Demand import Demand
-
 
 def read_input () -> Data:
 
@@ -64,7 +62,7 @@ def read_input () -> Data:
         next(reader, None)
         for row in reader :
 
-            r = Room (int (row[0]), int (row[1]), int(row[2]), int(row[3]), int(row[4]))
+            r = Room (int (row[0]), int (row[1]), int(row[2]), int(row[3]))
 
             l_rooms.append(r)
 
