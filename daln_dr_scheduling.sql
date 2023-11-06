@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2023 at 04:25 PM
+-- Generation Time: Nov 04, 2023 at 05:05 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.5
 
@@ -40,15 +40,15 @@ CREATE TABLE `demand` (
 --
 
 INSERT INTO `demand` (`id`, `room-id`, `demand0`, `demand1`, `demand2`) VALUES
-(22, 1, 0, 0, 2),
-(23, 2, 0, 0, 1),
-(24, 3, 0, 0, 1),
-(25, 4, 0, 0, 1),
+(22, 1, 0, 1, 1),
+(23, 2, 0, 1, 0),
+(24, 3, 0, 1, 0),
+(25, 4, 0, 1, 0),
 (26, 5, 0, 0, 1),
-(27, 6, 0, 0, 1),
-(28, 7, 0, 0, 2),
-(29, 8, 0, 0, 2),
-(30, 9, 0, 0, 2),
+(27, 6, 0, 1, 0),
+(28, 7, 0, 1, 1),
+(29, 8, 0, 1, 1),
+(30, 9, 0, 1, 1),
 (31, 10, 0, 0, 1);
 
 -- --------------------------------------------------------
@@ -77,17 +77,20 @@ CREATE TABLE `dr_detail` (
 --
 
 INSERT INTO `dr_detail` (`id`, `Name`, `R1`, `R2`, `R3`, `R4`, `R5`, `R6`, `R7`, `R8`, `R9`, `R10`) VALUES
-(1, 'Kiều Văn Tuấn', 2, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(2, 'Đỗ Anh Giang', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(1, 'Kiều Văn Tuấn', 2, 2, 2, 1, 2, 2, 0, 2, 0, 2),
+(2, 'Đỗ Anh Giang', 1, 2, 0, 2, 2, 2, 2, 0, 2, 0),
 (3, 'Phạm Thị Thu Hiền', 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
 (4, 'Nguyễn Hoài Nam', 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
 (5, 'Nguyễn Trường Sơn', 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
 (6, 'Lưu Thị Minh Diệp', 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
 (7, 'Nguyễn Thế Phương', 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
 (8, 'Trần Việt Hùng', 2, 2, 1, 2, 0, 2, 1, 0, 2, 0),
-(9, 'Đinh Thị Quỳnh Hương', 1, 2, 1, 1, 0, 0, 2, 2, 0, 1),
+(9, 'Đinh Thị Quỳnh Hương', 1, 2, 1, 1, 1, 0, 2, 2, 0, 1),
 (10, 'Vũ Mạnh Hà', 0, 1, 0, 2, 2, 0, 2, 0, 2, 1),
-(11, 'Trần Tuấn Việt', 2, 0, 1, 2, 0, 0, 1, 2, 1, 2);
+(11, 'Trần Tuấn Việt', 2, 0, 1, 2, 0, 0, 1, 2, 1, 2),
+(12, 'Trần Tuấn Anh', 2, 2, 2, 2, 0, 0, 2, 2, 2, 2),
+(13, 'Vũ Thái Hòa', 2, 2, 2, 1, 2, 0, 2, 0, 2, 2),
+(14, 'Hồng Thu Hà', 0, 1, 2, 0, 2, 2, 2, 1, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -137,19 +140,12 @@ CREATE TABLE `work_assign` (
 --
 
 INSERT INTO `work_assign` (`id`, `room`, `date`, `session`, `doctor_id`) VALUES
-(36, '2', '2023-10-27', 177, 2),
-(37, '-1', '2023-10-27', 177, 3),
-(38, '-1', '2023-10-28', 179, 4),
-(40, '5', '2023-10-28', 179, 5),
-(41, '6', '2023-10-28', 179, 6),
-(42, '-1', '2023-10-28', 179, 7),
-(43, '8', '2023-10-29', 181, 8),
-(44, '10', '2023-10-31', 185, 10),
-(45, '9', '2023-10-31', 185, 11),
-(46, '8', '2023-10-31', 184, 9),
-(48, '9', '2023-08-03', 5, 9),
-(49, '9', '2023-08-03', 6, 9),
-(51, '-1', '2023-08-03', 6, 9);
+(52, '1', '2023-11-01', 2, 1),
+(53, '2', '2023-11-01', 2, 2),
+(54, '-1', '2023-11-03', 6, 5),
+(55, '-1', '2023-11-04', 9, 6),
+(56, '3', '2023-11-03', 7, 6),
+(57, '10', '2023-11-05', 10, 7);
 
 --
 -- Indexes for dumped tables
@@ -193,7 +189,7 @@ ALTER TABLE `demand`
 -- AUTO_INCREMENT for table `dr_detail`
 --
 ALTER TABLE `dr_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `room_detail`
@@ -205,7 +201,7 @@ ALTER TABLE `room_detail`
 -- AUTO_INCREMENT for table `work_assign`
 --
 ALTER TABLE `work_assign`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

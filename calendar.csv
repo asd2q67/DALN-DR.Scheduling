@@ -1,11 +1,91 @@
-﻿0,1,2,3,4,5,6,7,8,9,10,11,12,13
-[Lưu Thị Minh Diệp, Phạm Thị Thu Hiền, Trần Tuấn Anh],[Kiều Văn Tuấn, Lưu Thị Minh Diệp],[Kiều Văn Tuấn, Lưu Thị Minh Diệp, Đinh Thị Quỳnh Hương],[Lưu Thị Minh Diệp, Đinh Thị Quỳnh Hương, Phạm Thị Thu Hiền, Trần Tuấn Anh],[Kiều Văn Tuấn, Lưu Thị Minh Diệp, Đinh Thị Quỳnh Hương, Trần Tuấn Anh],[Kiều Văn Tuấn, Lưu Thị Minh Diệp, Đinh Thị Quỳnh Hương, Phạm Thị Thu Hiền, Trần Tuấn Anh],[Lưu Thị Minh Diệp, Đinh Thị Quỳnh Hương, Trần Tuấn Anh],[Lưu Thị Minh Diệp, Đinh Thị Quỳnh Hương, Trần Tuấn Anh],[Kiều Văn Tuấn, Lưu Thị Minh Diệp, Đinh Thị Quỳnh Hương, Trần Tuấn Anh],[Kiều Văn Tuấn, Đinh Thị Quỳnh Hương, Phạm Thị Thu Hiền, Trần Tuấn Anh],[Kiều Văn Tuấn, Đinh Thị Quỳnh Hương, Phạm Thị Thu Hiền, Trần Tuấn Anh],[Kiều Văn Tuấn, Đinh Thị Quỳnh Hương, Phạm Thị Thu Hiền, Trần Tuấn Anh],[Kiều Văn Tuấn, Lưu Thị Minh Diệp, Đinh Thị Quỳnh Hương, Phạm Thị Thu Hiền, Trần Tuấn Anh],[Kiều Văn Tuấn, Lưu Thị Minh Diệp, Đinh Thị Quỳnh Hương, Phạm Thị Thu Hiền, Trần Tuấn Anh]
-[Nguyễn Trường Sơn],[Nguyễn Trường Sơn],[Đỗ Anh Giang, Nguyễn Trường Sơn],[Nguyễn Trường Sơn],[Nguyễn Trường Sơn],[Nguyễn Trường Sơn],[Nguyễn Trường Sơn],[],[Nguyễn Trường Sơn],[Nguyễn Trường Sơn],[Nguyễn Trường Sơn],[Nguyễn Trường Sơn],[Nguyễn Trường Sơn],[Nguyễn Trường Sơn]
-[Trần Việt Hùng, Vũ Mạnh Hà],[Trần Việt Hùng, Vũ Mạnh Hà],[Trần Việt Hùng, Vũ Mạnh Hà, Trần Tuấn Việt],[Trần Việt Hùng, Vũ Mạnh Hà, Trần Tuấn Việt],[Trần Việt Hùng, Vũ Mạnh Hà, Trần Tuấn Việt],[Trần Việt Hùng, Vũ Mạnh Hà, Trần Tuấn Việt],[Trần Việt Hùng, Vũ Mạnh Hà, Trần Tuấn Việt],[Nguyễn Trường Sơn, Trần Việt Hùng, Vũ Mạnh Hà, Trần Tuấn Việt],[Trần Việt Hùng, Vũ Mạnh Hà, Trần Tuấn Việt],[Trần Việt Hùng, Vũ Mạnh Hà, Trần Tuấn Việt],[Trần Việt Hùng, Vũ Mạnh Hà, Trần Tuấn Việt],[Trần Việt Hùng, Vũ Mạnh Hà, Trần Tuấn Việt],[Trần Việt Hùng, Vũ Mạnh Hà, Trần Tuấn Việt],[Trần Việt Hùng, Vũ Mạnh Hà, Trần Tuấn Việt]
-[Nguyễn Hoài Nam],[Nguyễn Hoài Nam],[Nguyễn Hoài Nam],[Nguyễn Hoài Nam],[Nguyễn Hoài Nam],[Nguyễn Hoài Nam],[Nguyễn Hoài Nam],[Nguyễn Hoài Nam],[Nguyễn Hoài Nam],[],[Nguyễn Hoài Nam],[Nguyễn Hoài Nam],[Nguyễn Hoài Nam],[Nguyễn Hoài Nam]
-[Đỗ Anh Giang],[],[],[],[],[],[],[],[],[],[],[],[],[]
-[Đỗ Anh Giang],[Đỗ Anh Giang],[Nguyễn Thế Phương, Đỗ Anh Giang],[Nguyễn Thế Phương, Đỗ Anh Giang],[Nguyễn Thế Phương, Đỗ Anh Giang],[Nguyễn Thế Phương, Đỗ Anh Giang],[Nguyễn Thế Phương, Đỗ Anh Giang],[Nguyễn Thế Phương, Đỗ Anh Giang],[Nguyễn Thế Phương, Đỗ Anh Giang],[Nguyễn Thế Phương],[Nguyễn Thế Phương, Đỗ Anh Giang],[Nguyễn Thế Phương, Đỗ Anh Giang],[Nguyễn Thế Phương, Đỗ Anh Giang],[Nguyễn Thế Phương, Đỗ Anh Giang]
-[],[],[],[],[],[],[],[],[],[],[],[],[],[]
-[Đỗ Anh Giang],[Nguyễn Thế Phương],[],[],[],[],[],[],[],[],[],[],[],[]
-[],[],[Kiều Văn Tuấn],[],[],[],[Phạm Thị Thu Hiền],[],[],[Nguyễn Hoài Nam],[],[],[],[]
-[Nguyễn Thế Phương, Trần Tuấn Việt, Trần Tuấn Anh],[],[],[],[],[],[],[],[],[],[Lưu Thị Minh Diệp],[],[],[]
+﻿Phòng,Sáng thứ 2,Chiều thứ 2,Sáng thứ 3,Chiều thứ 3,Sáng thứ 4,Chiều thứ 4,Sáng thứ 5,Chiều thứ 5,Sáng thứ 6,Chiều thứ 6,Sáng thứ 7,Chiều thứ 7,Sáng Chủ nhật,Chiều Chủ nhật
+Phòng 309 (KKB)  TH1,"Kiều Văn Tuấn","Kiều Văn Tuấn
+Lưu Thị Minh Diệp
+Phạm Thị Thu Hiền
+Trần Tuấn Anh","Kiều Văn Tuấn
+Lưu Thị Minh Diệp
+Phạm Thị Thu Hiền
+Trần Tuấn Anh
+Vũ Thái Hòa","Lưu Thị Minh Diệp
+Phạm Thị Thu Hiền
+Trần Tuấn Anh
+Vũ Thái Hòa","Kiều Văn Tuấn
+Lưu Thị Minh Diệp
+Phạm Thị Thu Hiền
+Trần Tuấn Anh
+Vũ Thái Hòa","Kiều Văn Tuấn
+Lưu Thị Minh Diệp
+Phạm Thị Thu Hiền
+Trần Tuấn Anh
+Vũ Thái Hòa","Lưu Thị Minh Diệp
+Đinh Thị Quỳnh Hương
+Trần Tuấn Anh
+Vũ Thái Hòa","Lưu Thị Minh Diệp
+Đinh Thị Quỳnh Hương
+Trần Tuấn Anh
+Vũ Thái Hòa","Kiều Văn Tuấn
+Lưu Thị Minh Diệp
+Phạm Thị Thu Hiền
+Trần Tuấn Anh
+Vũ Thái Hòa","Kiều Văn Tuấn
+Lưu Thị Minh Diệp
+Phạm Thị Thu Hiền
+Trần Tuấn Anh
+Vũ Thái Hòa","Kiều Văn Tuấn
+Vũ Mạnh Hà
+Phạm Thị Thu Hiền
+Trần Tuấn Anh
+Vũ Thái Hòa","Kiều Văn Tuấn
+Vũ Mạnh Hà
+Phạm Thị Thu Hiền
+Trần Tuấn Anh
+Vũ Thái Hòa","Kiều Văn Tuấn
+Lưu Thị Minh Diệp
+Phạm Thị Thu Hiền
+Trần Tuấn Anh
+Vũ Thái Hòa","Kiều Văn Tuấn
+Lưu Thị Minh Diệp
+Phạm Thị Thu Hiền
+Trần Tuấn Anh
+Vũ Thái Hòa"
+Phòng 309 (KKB)  TH2,"Nguyễn Trường Sơn","Nguyễn Trường Sơn","Đỗ Anh Giang
+Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn"
+Phòng 309 (KKB)  TH3,"Trần Việt Hùng
+Đỗ Anh Giang","Trần Việt Hùng","Trần Việt Hùng
+Vũ Mạnh Hà","Trần Việt Hùng
+Vũ Mạnh Hà","Trần Việt Hùng
+Vũ Mạnh Hà","Trần Việt Hùng
+Vũ Mạnh Hà","Trần Việt Hùng
+Vũ Mạnh Hà","Nguyễn Trường Sơn
+Trần Việt Hùng
+Vũ Mạnh Hà","Trần Việt Hùng
+Vũ Mạnh Hà","Trần Việt Hùng
+Vũ Mạnh Hà","Trần Việt Hùng","Trần Việt Hùng","Trần Việt Hùng
+Vũ Mạnh Hà","Trần Việt Hùng
+Vũ Mạnh Hà"
+PK nhà K1 703,"Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam"
+PK nhà K1 704,"Nguyễn Trường Sơn","","","","","","","","","","","","",""
+PK nhà K1 705,"Đỗ Anh Giang","Đỗ Anh Giang","Nguyễn Thế Phương
+Đỗ Anh Giang","Nguyễn Thế Phương
+Đỗ Anh Giang","Nguyễn Thế Phương
+Đỗ Anh Giang","Nguyễn Thế Phương
+Đỗ Anh Giang","Nguyễn Thế Phương
+Đỗ Anh Giang","Nguyễn Thế Phương
+Đỗ Anh Giang","Nguyễn Thế Phương
+Đỗ Anh Giang","Nguyễn Thế Phương","Nguyễn Thế Phương
+Đỗ Anh Giang","Nguyễn Thế Phương
+Đỗ Anh Giang","Nguyễn Thế Phương
+Đỗ Anh Giang","Nguyễn Thế Phương
+Đỗ Anh Giang"
+PK nhà K1 707,"Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà"
+PK nhà K1 708,"","","Trần Tuấn Việt","Trần Tuấn Việt","Trần Tuấn Việt","Trần Tuấn Việt","Trần Tuấn Việt","Trần Tuấn Việt","Trần Tuấn Việt","Trần Tuấn Việt","Trần Tuấn Việt","Trần Tuấn Việt","Trần Tuấn Việt","Trần Tuấn Việt"
+PK nhà K1 709,"Vũ Mạnh Hà","Vũ Mạnh Hà","Đinh Thị Quỳnh Hương","Đinh Thị Quỳnh Hương","Đinh Thị Quỳnh Hương","Đinh Thị Quỳnh Hương","Phạm Thị Thu Hiền","","Đinh Thị Quỳnh Hương","Nguyễn Hoài Nam
+Đinh Thị Quỳnh Hương","Đinh Thị Quỳnh Hương","Đinh Thị Quỳnh Hương","Đinh Thị Quỳnh Hương","Đinh Thị Quỳnh Hương"
+Điều trị tầng 9 K1,"Nguyễn Thế Phương
+Trần Việt Hùng
+Đinh Thị Quỳnh Hương
+Vũ Mạnh Hà
+Trần Tuấn Việt
+Trần Tuấn Anh
+Vũ Thái Hòa
+Hồng Thu Hà","","","","","","","","","","Lưu Thị Minh Diệp","","",""

@@ -35,3 +35,21 @@ app.post('/save-csv', (req, res) => {
   fs.writeFileSync('D:\\Workspace\\Doanliennganh\\DALN-DR.Scheduling\\solution.csv', csvData, 'utf-8');
   res.send('File CSV đã được lưu.');
 });
+app.post('/export-csv', (req, res) => {
+  const csvData = req.body.data; // Dữ liệu CSV từ máy khách
+
+  // Ghi dữ liệu CSV vào tệp tin
+  fs.writeFileSync('D:\\Workspace\\Doanliennganh\\DALN-DR.Scheduling\\calendar.csv', csvData, 'utf-8');
+
+  // Phản hồi với thông điệp cho máy khách
+  res.send('File CSV đã được lưu.');
+});
+app.post('/personal-csv', (req, res) => {
+  const csvData = req.body.data; // Dữ liệu CSV từ máy khách
+
+  // Ghi dữ liệu CSV vào tệp tin
+  fs.writeFileSync('D:\\Workspace\\Doanliennganh\\DALN-DR.Scheduling\\calendar1.csv', csvData, 'utf-8');
+
+  // Phản hồi với thông điệp cho máy khách
+  res.send('File CSV đã được lưu.');
+});

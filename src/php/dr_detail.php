@@ -45,8 +45,32 @@ function generateCSV($mysqli)
         fputcsv($output, $rowData);
     }
 
+    $output2 = fopen('../../instance-generator/Workload.csv', 'w');
+    $columnHeaders = array();
+    for ($i = 0; $i <= $result->field_count - 3; $i++) {
+        $columnHeaders[] = 'R' . $i;
+    }
+    fputcsv($output2, $columnHeaders);
+    
+    // Fetch the IDs from the database and count the number of rows
+    $idCountQuery = "SELECT COUNT(id) AS rowCount FROM dr_detail";
+    $rowCountResult = $mysqli->query($idCountQuery);
+    $rowCountData = $rowCountResult->fetch_assoc();
+    $rowCount = $rowCountData['rowCount'];
+
+    // Write data rows for Workload.csv with all 'R' values set to 0
+    for ($rowIndex = 0; $rowIndex < $rowCount; $rowIndex++) {
+        $rowData = array();
+        for ($i = 0; $i < $result->field_count - 2; $i++) {
+            // Set all 'R' values to 0
+            $rowData[] = 0;
+        }
+        fputcsv($output2, $rowData);
+    }
+
     // Close the file pointer
     fclose($output);
+    fclose($output2);
 }
 
 // Handle GET request

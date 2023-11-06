@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Select, Table, Tag } from "antd";
+import { Button, Select, Table, Tag, Tooltip } from "antd";
 import { tokens } from "../../theme";
 import dayjs from "dayjs";
 import { fetchDataFromAPI } from "../../data/api";
@@ -28,6 +28,8 @@ const Calendar = () => {
   const [doctorId, setDoctorId] = useState(null);
   const [roomId, setRoomId] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(undefined);
+  const [assignDoctors, setAssignDoctors] = useState({});
+
   // const { exec } = require("child_process");
 
   const shiftsPerDay = 2; // Morning and Afternoon shifts
@@ -39,9 +41,10 @@ const Calendar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [drData, rmData] = await Promise.all([
+        const [drData, rmData, drAssign] = await Promise.all([
           fetchDataFromAPI("/dr_detail.php"),
           fetchDataFromAPI("/room_detail.php"),
+          fetchDataFromAPI("/work_detail.php")
         ]);
         setDoctorData(drData);
         if (JSON.stringify(rmData) !== JSON.stringify(roomData)) {
@@ -52,7 +55,6 @@ const Calendar = () => {
           const response = await fetch("http://localhost:3001/api/data");
           const jsonData = await response.json();
           // console.log(1000, response);
-          // console.log(2000, jsonData);
           // Chuyển đổi dữ liệu từ API để phù hợp với DataGrid và ghép thông tin phòng vào lịch trình
 
           const roomMap = rmData.reduce((acc, room, index) => {
@@ -67,10 +69,27 @@ const Calendar = () => {
             return acc;
           }, {});
 
+          // console.log(doctorMap, drAssign, roomMap);
+
+          const assignMap = drAssign.reduce((acc, assign, index) => {
+            const Key = index.toString();
+            const data = {
+              roomName: (assign.room != -1) ? roomMap[assign.room] : "Nghỉ phép",
+              doctorName: doctorMap[parseInt(assign.doctor_id) + 1],
+              shift: assign.session,
+            }
+            acc[Key] = data;
+            return acc;
+          }, {});
+
+          setAssignDoctors(assignMap)
+
+          console.log(6666, assignMap);
+
           const formattedData = jsonData.map((day, index) => {
             const Key = (index + 1).toString();
             const roomName = roomMap[Key] || "";
-
+            // console.log(666, drData);
             for (let key in day) {
               if (key !== "day") {
                 try {
@@ -151,6 +170,26 @@ const Calendar = () => {
     return dayColumn;
   });
 
+  const getTagBackgroundColor = (skill) => {
+    if (skill === "1") {
+      return "yellow";
+    } else if (skill === "2") {
+      return colors.greenAccent[500];
+    }
+    return colors.redAccent[500]; // default color for skill 0
+  };
+
+  const getColor = (skill) => {
+    switch (skill) {
+      case "1":
+        return "black"; // Background color for skill level 1
+      case "2":
+        return "white"; // Background color for skill level 2
+      default:
+        return "white"; // Background color for skill level 0
+    }
+  };
+
   const columns = [
     {
       title: "Phòng",
@@ -164,7 +203,7 @@ const Calendar = () => {
           color: colors.greenAccent[300],
         },
       }),
-      render: (room) => (
+      render: (room, roomId) => (
         <div
           style={{
             color: colors.greenAccent[300],
@@ -175,6 +214,22 @@ const Calendar = () => {
         </div>
       ),
     }, // Cột tên phòng
+    // {
+    //   title: "Absent Doctors",
+    //   dataIndex: "absentDoctors",
+    //   key: "absentDoctors",
+    //   width: 100,
+    //   render: (absentDoctors) => (
+    //     <div style={{ display: "flex", flexDirection: "column" }}>
+    //       {absentDoctors.map((doctor, index) => (
+    //         <div key={index} style={{ marginBottom: "5px" }}>
+    //           {doctor}
+    //         </div>
+    //       ))}
+    //     </div>
+    //   ),
+    //   fixed: "right", // Stick the column to the right side
+    // },
     ...dayColumns.map((dayColumn) => ({
       title: dayColumn.headerName,
       children: dayColumn.children.map((shiftCol) => ({
@@ -182,37 +237,54 @@ const Calendar = () => {
         dataIndex: shiftCol.shift,
         key: shiftCol.field,
         width: 100,
-        render: (doctors) => (
-          <div
-            id={`${shiftCol.shift}`}
-            style={{ display: "flex", width: "100%", alignItems: "center" }}
-          >
-            <div>
-              {doctors &&
-                doctors.map((doctor, index) => (
-                  <Tag
-                    key={index}
-                    style={{
-                      backgroundColor: colors.greenAccent[500],
-                      marginBottom: "5px",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    {doctor}
-                  </Tag>
-                ))}
+        render: (doctors, record) => {
+          // console.log(8888, record);
+          return (
+            <div
+              id={`${shiftCol.shift}`}
+              style={{ display: "flex", width: "100%", alignItems: "center" }}
+            >
+              {/* use doctorData.find((doctorInfo) => {if(doctorInfo.Name === doctor) skill = doctorInfo.`R${record.id}`}) */}
+              {/* if(skill === 0) //turn Tag background to red, skill === 1 turn to yellow and skill === 2 turn to green */}
+              <div>
+                {doctors &&
+                  doctors.map((doctor, index) => {
+                    const doctorInfo = doctorData.find(
+                      (info) => info.Name === doctor
+                    );
+                    // console.log(parseInt(record.id)+1, doctorInfo);
+                    const skill = doctorInfo
+                      ? doctorInfo[`R${parseInt(record.id) + 1}`]
+                      : null;
+                    const backgroundColor = getTagBackgroundColor(skill); // default color for skill 0
+
+                    return (
+                      <Tag
+                        key={index}
+                        style={{
+                          backgroundColor: backgroundColor,
+                          marginBottom: "5px",
+                          borderRadius: "5px",
+                        }}
+                      >
+                        {doctor}
+                      </Tag>
+                    );
+                  })}
+              </div>
+
+              <EditOutlined
+                style={{
+                  marginLeft: "auto",
+                  cursor: "pointer",
+                  fontSize: "18px",
+                  color: "#1890ff",
+                }}
+                onClick={(event) => handleEditClick(event, shiftCol.shift)}
+              />
             </div>
-            <EditOutlined
-              style={{
-                marginLeft: "auto",
-                cursor: "pointer",
-                fontSize: "18px",
-                color: "#1890ff",
-              }}
-              onClick={(event) => handleEditClick(event, shiftCol.shift)}
-            />
-          </div>
-        ),
+          );
+        },
         onCell: (record, index) => {
           return {
             onClick: () => {
@@ -288,6 +360,38 @@ const Calendar = () => {
       console.error("Error:", error);
     }
   };
+  const save2Server = async (csvContent) => {
+    try {
+      const response = await fetch("http://localhost:3001/export-csv", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: csvContent }),
+      });
+
+      const result = await response.text();
+      console.log(result); // Hiển thị thông điệp từ máy chủ
+    } catch (error) {
+      console.error("Lỗi khi gửi yêu cầu tới máy chủ:", error);
+    }
+  };
+  const savePersonalCSV = async (csvContent) => {
+    try {
+      const response = await fetch("http://localhost:3001/personal-csv", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: csvContent }),
+      });
+
+      const result = await response.text();
+      console.log(result); // Hiển thị thông điệp từ máy chủ
+    } catch (error) {
+      console.error("Lỗi khi gửi yêu cầu tới máy chủ:", error);
+    }
+  };
 
   const handleFormSubmit = () => {
     if (selectedDoctor && selectedCell !== null && roomId !== null) {
@@ -326,7 +430,7 @@ const Calendar = () => {
       setSelectedDoctorInfo(selectedCell[doctorId]);
       if (doctorId !== null) setIsModalVisible(true);
     }
-  }, [selectedCell, doctorId, isClick]);
+  }, [selectedCell, doctorId, isClick, roomId]);
 
   const handleDoctorChange = (value) => {
     setSelectedDoctor(value);
@@ -360,36 +464,245 @@ const Calendar = () => {
     const csvRows = [];
 
     // Tạo dòng tiêu đề
-    let headerRow = "";
-    for (let i = 0; i <= doctorData.length * 2; i++) {
-      const shiftType = i % 2 === 0 ? "Chiều" : "Sáng";
-      const dayIndex = Math.ceil(i / 2);
-      headerRow += `${shiftType} thứ ${dayIndex},`;
+    let headerRow = "\ufeffPhòng,";
+    for (let i = 3; i <= doctorData.length + 2; i++) {
+      const shiftType = i % 2 === 0 ? "Chiều" : "Sáng"; // Sáng thứ 2 đến chiều Chủ nhật
+      const day = Math.ceil(i / 2);
+      const dayIndex = day === 8 ? "Chủ nhật" : `thứ ${day}`;
+      headerRow += `${shiftType} ${dayIndex},`;
     }
     headerRow = headerRow.slice(0, -1);
+
     csvRows.push(headerRow);
 
     // Tạo các dòng dữ liệu
     calendarData.forEach((roomCalendar) => {
-      let csvRow = [];
+      console.log(1111, roomCalendar);
+      let csvRow = "";
+      csvRow += `${roomCalendar.room},`;
       for (let i = 0; i <= 13; i++) {
-        const shiftData = roomCalendar[i] ? roomCalendar[i].join(", ") : "";
-        console.log(1212, roomCalendar);
-        csvRow += `[${shiftData}],`;
+        csvRow += `"${roomCalendar[i].join("\n")}"`;
+        if (i < 13) {
+          csvRow += ",";
+        }
       }
-      csvRow = csvRow.slice(0, -1);
-      console.log(111);
       csvRows.push(csvRow);
     });
 
     // Ghi file CSV
     const csvContent = csvRows.join("\n");
-    // console.log(12122, csvContent);
-    return csvContent;
+    // console.log(5555, csvContent);
+    save2Server(csvContent);
+  };
+  const dataGen = () => {
+    const roomMap = roomData.reduce((acc, room, index) => {
+      const data = { id: index, Name: room.name };
+      acc[index] = data;
+      return acc;
+    }, {});
+
+    const doctorMap = doctorData.reduce((acc, doctor, index) => {
+      const key = doctor.id - 1;
+      const data = {
+        id: key,
+        Name: doctor.Name,
+        Room: Object.values(roomMap).map((room) => ({ ...room })),
+      };
+      acc[key] = data;
+      return acc;
+    }, {});
+
+    const doctorSchedules = [];
+
+    Object.values(doctorMap)
+      .sort((a, b) => a.id - b.id) // Sắp xếp theo doctorProfile.id
+      .forEach((doctorProfile) => {
+        const schedule = {};
+        calendarData.forEach((roomCalendar, roomId) => {
+          const workingDays = [];
+          Object.values(roomCalendar).forEach((day, dayIndex) => {
+            if (Array.isArray(day)) {
+              day.forEach((workDoctor) => {
+                if (workDoctor === doctorProfile.Name) {
+                  workingDays.push(dayIndex);
+                }
+              });
+            }
+          });
+          schedule[roomId] = workingDays;
+        });
+        doctorSchedules.push({
+          id: doctorProfile.id,
+          Name: doctorProfile.Name,
+          Schedule: schedule,
+        });
+      });
+
+    // Giờ bạn có doctorSchedules đã được sắp xếp theo doctorProfile.id
+    // console.log(11551, doctorSchedules);
+    return doctorSchedules;
+  };
+  const personalCSV = () => {
+    const doctorSchedules = dataGen();
+    const csvRows = [];
+
+    const roomMap = roomData.reduce((acc, room, index) => {
+      const data = { id: index, Name: room.name };
+      acc[index] = data;
+      return acc;
+    }, {});
+
+    const doctorMap = doctorData.reduce((acc, doctor, index) => {
+      const key = doctor.id - 1;
+      const data = {
+        id: key,
+        Name: doctor.Name,
+        Room: Object.values(roomMap).map((room) => ({ ...room })),
+      };
+      acc[key] = data;
+      return acc;
+    }, {});
+
+    // Tạo dòng tiêu đề
+    let headerRow = "\ufeffBác sĩ,";
+    for (let i = 3; i <= doctorData.length + 2; i++) {
+      const shiftType = i % 2 === 0 ? "Chiều" : "Sáng"; // Sáng thứ 2 đến chiều Chủ nhật
+      const day = Math.ceil(i / 2);
+      const dayIndex = day === 8 ? "Chủ nhật" : `thứ ${day}`;
+      headerRow += `${shiftType} ${dayIndex},`;
+    }
+    headerRow = headerRow.slice(0, -1);
+
+    csvRows.push(headerRow);
+    // Tạo các dòng dữ liệu
+    Object.keys(doctorSchedules).forEach((doctorName) => {
+      const schedule = doctorSchedules[doctorName].Schedule;
+      const csvRow = [doctorSchedules[doctorName].Name];
+      for (let roomId = 0; roomId <= roomData.length - 1; roomId++) {
+        //14 ngay
+        //Check xem đã qua phòng mới hay chưa? Nếu đã qua roomId mới tiến hành cộng chuỗi từ đầu
+        let isNewRoom = false;
+        if (schedule[roomId].length !== 0) {
+          let tempSchedule = [...schedule[roomId]];
+          for (let dayId = 0; dayId < 14; dayId++) {
+            //dayId 0-13 là ngày, roomId 0-9 là phòng, workDayNum là số ngày làm của bác sĩ
+            // console.log(dayId, tempSchedule);
+            let isSet = false;
+            for (
+              let workDayNum = 0;
+              workDayNum < tempSchedule.length;
+              workDayNum++
+            ) {
+              // console.log(dayId, csvRow);
+              if (tempSchedule[workDayNum] === dayId) {
+                csvRow.push(`"${roomMap[roomId].Name}"`);
+                isSet = true;
+                tempSchedule = tempSchedule.filter((item) => item !== dayId);
+                break;
+              }
+            }
+            if (!isSet && tempSchedule.length !== 0) csvRow.push(`""`);
+          }
+        }
+
+        // console.log(666, csvRow);
+        isNewRoom = true;
+      }
+      csvRows.push(csvRow.join(","));
+      console.log(444, schedule);
+    });
+    console.log(333, csvRows);
+    const csvContent = csvRows.join("\n");
+    savePersonalCSV(csvContent);
   };
 
   const handleInitCalendar = () => {
+    fetch("http://localhost:5000/init-calendar", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data); // Hiển thị dữ liệu trả về từ API
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
 
+  const getDoctorStatus = (schedule, roomId) => {
+    const roomList = [];
+
+    Object.keys(schedule).forEach((roomIndex) => {
+      if (schedule[roomIndex].includes(roomId)) {
+        roomList.push(roomData[roomIndex].name);
+      }
+    });
+
+    return roomList.length > 0 ? roomList : "Available";
+  };
+
+  const DoctorDropdown = () => {
+    const doctorSchedules = dataGen();
+    //Tạo Status của bác sĩ
+    const schedules = doctorSchedules.map((doctorSchedule) => {
+      return doctorSchedule.Schedule;
+    });
+    const allStatus = [];
+    for (let i = 0; i < doctorData.length; i++) {
+      const doctorStatus = getDoctorStatus(schedules[i], roomId);
+      allStatus.push(doctorStatus);
+    }
+    console.log(doctorSchedules);
+    return (
+      <div>
+        <div>
+          <Select
+            style={{ width: 200, marginBottom: 16, width: "100%" }}
+            placeholder="Chọn Bác Sĩ"
+            onChange={handleDoctorChange}
+            value={selectedDoctor}
+          >
+            {doctorData.map((doctor) => {
+              //Tạo background của từng các sĩ ứng với kinh nghiệm của họ tại phòng đó.
+              const doctorInfo = doctorData.find(
+                (info) => info.Name === doctor.Name
+              );
+              const skill = doctorInfo
+                ? doctorInfo[`R${parseInt(roomId) + 1}`]
+                : null;
+              const backgroundColor = getTagBackgroundColor(skill);
+              const color = getColor(skill);
+              const statusText = Array.isArray(allStatus[doctor.id])
+                ? `Đang làm tại: ${allStatus[doctor.id].join(", ")}`
+                : "Chưa chia lịch";
+              return (
+                <Select.Option
+                  key={doctor.id}
+                  value={doctor.Name}
+                  style={{ backgroundColor: backgroundColor, color: color }}
+                >
+                  <Tooltip
+                    title={statusText}
+                  >{`${doctor.Name} - ${statusText}`}</Tooltip>
+                </Select.Option>
+              );
+            })}
+          </Select>
+        </div>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleFormSubmit}
+          style={{ background: colors.greenAccent[500] }}
+        >
+          Xác nhận
+        </Button>
+      </div>
+    );
   };
 
   return (
@@ -407,24 +720,37 @@ const Calendar = () => {
               padding: "10px 20px",
               marginRight: "10px",
             }}
-            onClick={handleInitCalendar()}
+            onClick={handleInitCalendar}
           >
             Khởi tạo lịch
           </Btn>
-          <CSVLink data={exportCsvData()} filename={"calendar.csv"}>
-            <Btn
-              style={{
-                backgroundColor: colors.blueAccent[700],
-                color: colors.grey[100],
-                fontSize: "14px",
-                fontWeight: "bold",
-                padding: "10px 20px",
-              }}
-            >
-              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-              Tải xuống lịch
-            </Btn>
-          </CSVLink>
+          <Btn
+            style={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+              marginRight: "10px",
+            }}
+            onClick={exportCsvData}
+          >
+            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+            Tải xuống lịch theo phòng
+          </Btn>
+          <Btn
+            style={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }}
+            onClick={personalCSV}
+          >
+            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+            Tải xuống lịch bác sĩ
+          </Btn>
         </Box>
       </Box>
 
@@ -434,46 +760,38 @@ const Calendar = () => {
         onCancel={() => setIsModalVisible(false)}
         footer={null}
       >
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
           {selectedDoctorInfo &&
-            selectedDoctorInfo.map((doctor, index) => (
-              <Tag
-                key={index}
-                style={{
-                  backgroundColor: colors.greenAccent[500],
-                  marginBottom: "5px",
-                  borderRadius: "5px",
-                }}
-                onDoubleClick={(event) => handleTagDoubleClick(event, doctor)}
-              >
-                {doctor}
-              </Tag>
-            ))}
+            selectedDoctorInfo.map((doctor, index) => {
+              const doctorInfo = doctorData.find(
+                (info) => info.Name === doctor
+              );
+              const skill = doctorInfo
+                ? doctorInfo[`R${parseInt(roomId) + 1}`]
+                : null;
+              const backgroundColor = getTagBackgroundColor(skill);
+              const color = getColor(skill);
+
+              return (
+                <Tag
+                  key={index}
+                  style={{
+                    backgroundColor: backgroundColor,
+                    color: color,
+                    marginBottom: "5px",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                  onDoubleClick={(event) => handleTagDoubleClick(event, doctor)}
+                >
+                  {doctor}
+                </Tag>
+              );
+            })}
         </div>
         <p>Thêm bác sĩ mới:</p>
         {/* Dropdown list cho bác sĩ */}
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Select
-            style={{ width: 200, marginBottom: 16 }}
-            placeholder="Chọn Bác Sĩ"
-            value={selectedDoctor}
-            onChange={handleDoctorChange}
-          >
-            {doctorData.map((doctor) => (
-              <Select.Option key={doctor.id} value={doctor.Name}>
-                {doctor.Name}
-              </Select.Option>
-            ))}
-          </Select>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleFormSubmit}
-            style={{ background: colors.greenAccent[500] }}
-          >
-            Xác nhận
-          </Button>
-        </div>
+        <DoctorDropdown />
       </Modal>
 
       <div style={{ margin: "20px 0 0 0", overflowX: "auto", width: "auto" }}>
