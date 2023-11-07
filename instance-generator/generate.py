@@ -11,7 +11,7 @@ import string
 num_rooms = 5
 num_doctors = 10
 num_skills = 4
-schedule_day = 7
+schedule_day = 14
 
 doctor_name = list(string.ascii_uppercase)
 room_list = ['r{}'.format(i) for i in range (num_rooms)]
@@ -144,10 +144,10 @@ if __name__ == '__main__':
     m = Map()
     # m.write_file(i)
     # print (doctor_name)
-    # m.gen_doctor_list()
+    m.gen_doctor_list()
     m.gen_room_list()
-    # m.gen_day_off()
-    # m.gen_day_work()
+    m.gen_day_off()
+    m.gen_day_work()
 
 
 

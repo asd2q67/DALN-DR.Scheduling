@@ -17,7 +17,6 @@ class Solution :
 
         # max-min (OBJ)
         self.max_min = [0 for i in range (self.data.get_num_doctors())]
-        self.obj = sum (self.max_min)
 
         self.deleted_doctor = [[] for d in range (self.data.horizon)]
 
@@ -66,6 +65,7 @@ class Solution :
         self.max_min[doctorID] = max (self.room_weights[doctorID]) - min(self.room_weights[doctorID])
 
         self.available_room[day].append(roomID)
+        self.update_obj()
 
     def insert_doctor (self, doctorID, roomID, day):
         self.deleted_doctor[day].remove(doctorID)
@@ -74,6 +74,14 @@ class Solution :
         self.room_weights[doctorID][roomID] += self.data.l_rooms[roomID].heavy
         self.max_min[doctorID] = max (self.room_weights[doctorID]) - min(self.room_weights[doctorID])
 
+        self.update_obj()
 
+    def update_obj (self):
+        self.cal_max_min()
+        # self.obj = sum(self.max_min)
+
+    def get_obj (self):
+        obj = sum(self.max_min)
+        return obj
 
 
