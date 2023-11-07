@@ -13,6 +13,8 @@ import CreateRoom from "./scenes/CreateRoom";
 import CreateDoctor from "./scenes/CreateDoctor";
 import WorkAssign from "./scenes/workAssign";
 import WorkAssignment from "./scenes/workAssignment";
+import CSVComponent from "./notification/CSVComponent";
+import DropDownNotification from "./notification/notification";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -26,6 +28,8 @@ function App() {
           <Sidebar isSidebar={isSidebar}/>
           <main className="content">
             <Topbar setIsSidebar={setIsSidebar}/>
+            <CSVComponent />
+            <DropDownNotification data={data} />
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/doctor" element={<Doctor />} />
