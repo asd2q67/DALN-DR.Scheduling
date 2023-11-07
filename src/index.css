@@ -33,3 +33,64 @@ body,
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.notification{
+  position: absolute;
+  top: 70px;
+  right: 10px;
+  width: 250px;
+  padding: 15px;
+  border-radius: 15px;
+  background-color: #A4A9FC;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.notification .notification-header{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 5px;
+  padding: 5px;
+}
+.notification::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: 84px;
+  width: 25px;
+  height: 25px;
+  transform: rotate(45deg);
+  background-color: #A4A9FC;
+}
+
+.notification-item p{
+  margin: 0;
+  padding: 10px;
+  font-weight: bold;
+  border-bottom: 2px solid #555;
+}
+
+.notification .select {
+  margin-left: 5px;
+}
+.notification .select .all{
+  padding: 7px;
+}
+.notification .select .all:hover{
+  background-color: #797eff;
+  border-radius: 40px;
+}
+.notification .select .unread{
+  padding: 7px;
+  margin-left: 10px;
+}
+.notification .select .unread:hover{
+  background-color: #797eff;
+  border-radius: 40px;
+}
+.notification .hyperlink{
+  text-decoration: none;
+  font-weight: bold;
+}
+.focus{
+  background-color: #3a41ff;
+  border-radius: 40px;
+}
