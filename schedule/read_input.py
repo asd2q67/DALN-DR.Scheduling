@@ -74,6 +74,7 @@ def read_input () -> Data:
     off = [[] for i in range (num_day)]
     with open(path3, 'r') as file3:
         reader = csv.reader(file3)
+        next(reader, None)
         for row in reader :
             if (int(row[0]) not in off[int(row[1])] ):
                 off[int (row[1])].append(int (row[0]))

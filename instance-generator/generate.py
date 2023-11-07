@@ -8,13 +8,13 @@ import string
 
 
 '-- INSTANCE SETTING'
-num_rooms = 5
-num_doctors = 10
+num_rooms = 10
+num_doctors = 30
 num_skills = 4
 schedule_day = 14
 
-doctor_name = list(string.ascii_uppercase)
-room_list = ['r{}'.format(i) for i in range (num_rooms)]
+doctor_name = list(string.ascii_uppercase) + list (string.ascii_lowercase)
+room_list = ['R{}'.format(i) for i in range (num_rooms)]
 
 '-- DATA'
 
@@ -81,8 +81,8 @@ class Map :
 
         for i in range (num_rooms):
             # demand0 = random.randint(0,5)
-            demand1 = random.randint(0,2)
-            demand2 = random.randint(0,2)
+            demand1 = random.randint(1,2)
+            demand2 = random.randint(1,2)
             if (random.uniform(1,100) <= 30):
                 important = True
             else :
@@ -101,17 +101,20 @@ class Map :
             write.writerows(room_lists)
 
     def gen_day_off (self):
-        field = ['']
+        field = ['doctorID', "day"]
 
-        for i in range (num_doctors):
-            day_off = random.randint(-1, schedule_day-1)
-            while (self.list_day_off.count(day_off) >= 2):
-                day_off = random.randint(0, schedule_day-1)
-            
-            # days.append(day_off)
-            self.list_day_off.append(day_off)
+        with open('instance-generator/Day-off.csv', 'a') as f:
+            write = csv.writer(f)
+            write.writerow(field)
 
-            with open('instance-generator/Day-off.csv', 'a') as f:
+            for i in range (num_doctors):
+                day_off = random.randint(-1, schedule_day-1)
+                while (self.list_day_off.count(day_off) >= 2):
+                    day_off = random.randint(0, schedule_day-1)
+                
+                # days.append(day_off)
+                self.list_day_off.append(day_off)
+
                 f.write("{},{}\n".format(i,day_off))
 
     def gen_day_work (self):
@@ -146,9 +149,9 @@ if __name__ == '__main__':
     # print (doctor_name)
     m.gen_doctor_list()
     # m.gen_room_list()
-    # m.gen_day_off()
-    # m.gen_day_work()
-
+    m.gen_day_off()
+    m.gen_day_work()
+# 
 
 
 
