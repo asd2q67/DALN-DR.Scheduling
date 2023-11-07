@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\schedule')
+sys.path.insert(0,'/home/toto/Code/DALN-DR.Scheduling/schedule')
 import copy
 from Data import Data
 from read_input import read_input
@@ -48,8 +48,8 @@ class Solver:
                 if (self.current_solution.get_obj() < self.best_solution.get_obj()) :
                     self.best_solution = copy.deepcopy (self.current_solution)
 
-                    print ("\n Best solution obj : ")
-                    print (self.best_solution.get_obj())
+                    # print ("\n Best solution obj : ")
+                    # print (self.best_solution.get_obj())
 
         # print ("\n FINALL OBJ : ")
         # print (self.best_solution.get_obj())
@@ -57,7 +57,7 @@ class Solver:
     def destroy (self, s : Solution):
         # random choose a day 
         self.chosen_shifts = []
-        num_chosen_shift = random.randint(3,6)
+        num_chosen_shift = random.randint(4,9)
         count = 0
         while (count < num_chosen_shift):
             shift = random.randint(0, self.data.horizon-1)
@@ -71,9 +71,9 @@ class Solver:
 
             #get list doctor work that day
             for r in range  (self.data.get_num_rooms()):
-                print ("{},{}".format(chosen_shift,r))
+                # print ("{},{}".format(chosen_shift,r))
                 list_doctors_today += (s.schedule_matrix[r][chosen_shift])
-                print (list_doctors_today)
+                # print (list_doctors_today)
 
             num_deleted_doctor = 3
 
@@ -97,7 +97,7 @@ class Solver:
 
             for doctorID in pool:
                 self.Greedy_insertion(s, doctorID,chosen_shift)
-                print (s.get_obj())
+                # print (s.get_obj())
 
 
     def Greedy_insertion (self, s : Solution, doctorID, chosen_shift):
@@ -141,8 +141,6 @@ class Solver:
         self.init_matrix(s)
         # self.solution.export_solution()
         for shift in range (self.data.horizon):
-            if (shift == 10):
-                print ("")
 
             day = int(shift/2)
             
@@ -256,6 +254,8 @@ class Solver:
 
     def init_matrix (self, s : Solution):
         for i in range (self.data.get_num_doctors()):
+
+
             if (self.data.day_ol[i] != -1):
                 date = self.data.day_ol[i]
                 room = self.data.room_ol[i]

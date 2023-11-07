@@ -112,7 +112,7 @@ class Map :
             self.list_day_off.append(day_off)
 
             with open('instance-generator/Day-off.csv', 'a') as f:
-                f.write("{}\n".format(day_off))
+                f.write("{},{}\n".format(i,day_off))
 
     def gen_day_work (self):
         field = ['doctorID','room', "day"]
@@ -145,9 +145,9 @@ if __name__ == '__main__':
     # m.write_file(i)
     # print (doctor_name)
     m.gen_doctor_list()
-    m.gen_room_list()
-    m.gen_day_off()
-    m.gen_day_work()
+    # m.gen_room_list()
+    # m.gen_day_off()
+    # m.gen_day_work()
 
 
 

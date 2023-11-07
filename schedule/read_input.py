@@ -1,9 +1,12 @@
 import sys
-sys.path.insert(0,'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\schedule')
+sys.path.insert(0,'/home/toto/Code/DALN-DR.Scheduling/schedule/')
 from Data import Data
 import csv
 from Doctor import Doctor
 from Room import Room
+
+num_day = 14
+
 
 def read_input () -> Data:
 
@@ -15,7 +18,7 @@ def read_input () -> Data:
     workLoad = []
 
 
-    path = 'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\instance-generator\\'
+    path = '/home/toto/Code/DALN-DR.Scheduling/instance-generator/'
 
     path4 =  path + 'Workload.csv'
 
@@ -68,17 +71,16 @@ def read_input () -> Data:
 
     path3 = path +  "Day-off.csv"
 
-    off = [[] for i in range (14)]
+    off = [[] for i in range (num_day)]
     with open(path3, 'r') as file3:
         reader = csv.reader(file3)
-        id = 0
         for row in reader :
-            if (id not in off[int(row[0])] ):
-                off[int (row[0])].append(id)
+            if (int(row[0]) not in off[int(row[1])] ):
+                off[int (row[1])].append(int (row[0]))
             else :
-                off[int (row[0])] = id
-            id += 1
+                off[int (row[1])] = int (row[0])
 
+    ol = [[] for i in range (num_day)]
     path3 = path + "Day-ol.csv"
 
     with open(path3, 'r') as file3:
@@ -87,6 +89,13 @@ def read_input () -> Data:
         for row in reader:       
             room_ol.append(int (row[1]))
             day_ol.append(int (row[2]))
+
+            if (int(row[0]) not in ol[int(row[1])]):
+                ol[int (row[1])].append(int (row[0]))
+            else :
+                ol[int (row[1])] = int (row[0])
+
+            
 
     
 

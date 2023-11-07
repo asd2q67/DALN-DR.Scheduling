@@ -49,6 +49,7 @@ class Solution :
         day_list = ['ca{}'.format(i) for i in range(self.data.horizon)]
 
         df = pd.DataFrame(self.schedule_matrix, columns=day_list)
+        df.to_csv('solution.csv')
         print (df)
             
 

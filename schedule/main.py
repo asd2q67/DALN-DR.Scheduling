@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\schedule')
+sys.path.insert(0,'/home/toto/Code/DALN-DR.Scheduling/schedule')
 from Data import Data
 from read_input import read_input
 import csv
@@ -32,6 +32,8 @@ if __name__ == '__main__':
     solver.best_solution.export_solution()
     # print (solver.current_solution.dump)
     # export_solution()
+
+    # print (data.day_off)
   
 
     # print ("--------------------")
