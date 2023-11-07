@@ -8,12 +8,14 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import DropdownNotification from "../../notification/notification";
+import { useState } from "react";
 
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
-
+  const [openNoti, setOpenNoti] = useState(false);
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
       {/* SEARCH BAR */}
@@ -37,9 +39,13 @@ const Topbar = () => {
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => setOpenNoti((prev) => !prev)}>
           <NotificationsOutlinedIcon />
         </IconButton>
+        {
+          openNoti && <DropdownNotification />
+        }
+
         <IconButton>
           <SettingsOutlinedIcon />
         </IconButton>
