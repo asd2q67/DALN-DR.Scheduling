@@ -18,7 +18,7 @@ if ($mysqli->connect_error) {
 function generateCSV($mysqli)
 {
     // Query to select data from work_assign
-    $query1 = "SELECT dd.id AS doctor_id, COALESCE(wa.room, 0) AS room, COALESCE(wa.session, 0) AS session
+    $query1 = "SELECT dd.id AS doctor_id, COALESCE(wa.room, -1) AS room, COALESCE(wa.session, -1) AS session
     FROM dr_detail dd
     LEFT JOIN work_assign wa ON dd.id = wa.doctor_id
     ORDER BY dd.id";

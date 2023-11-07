@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, '/home/toto/Code/DALN-DR.Scheduling/checker/')
+sys.path.insert(0, 'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\cheker')
 from Data_checker import Data
 from Room_checker import Room
 from Doctor_checker import Doctor
@@ -19,7 +19,7 @@ class Checker :
     def check (self):
 
 
-        f = open ('noti.txt', 'w+')
+        f = open ('noti.txt', 'w+', encoding="utf-8")
         for d in range (self.data.horizon):
 
             for r in range (self.data.get_num_rooms()):

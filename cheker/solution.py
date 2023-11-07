@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, '/home/toto/Code/DALN-DR.Scheduling/checker/')
+sys.path.insert(0, 'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\cheker')
 from Data_checker import Data
 from Room_checker import Room
 from Doctor_checker import Doctor
@@ -16,7 +16,7 @@ class Solution :
 
     def read_solution (self) :
 
-        path = '/home/toto/Code/DALN-DR.Scheduling/solution.csv'
+        path = 'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\solution.csv'
 
         with open (path, 'r') as file :
             reader = csv.reader(file)
@@ -26,7 +26,7 @@ class Solution :
             for row in reader :
                 
                 for i in range (len(row )):    
-                    if (i == 0) : continue
+                    # if (i == 0) : continue
                     # print (row[i])
                     self.solution[count][i - 1] = json.loads(row[i])
                 count +=1 

@@ -1,6 +1,6 @@
 from typing import List
 import sys
-sys.path.insert(0,'F:\Document\Đồ án liên ngành\DALN-DR.Scheduling\schedule')
+sys.path.insert(0,'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\schedule')
 from Doctor_checker import Doctor
 from Room_checker import Room
 
@@ -14,7 +14,7 @@ class Data:
         self.day_off = day_off
         self.day_ol = day_ol
         self.room_ol = room_ol
-        self.horizon = 7
+        self.horizon = 14
         self.workLoad= workLoad
         
     def get_num_rooms (self):

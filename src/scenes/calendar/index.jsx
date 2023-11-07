@@ -8,10 +8,9 @@ import "./styles.css";
 import { Box, Button as Btn, useTheme } from "@mui/material";
 import { Modal } from "antd";
 import { EditOutlined } from "@mui/icons-material";
-import { CSVLink } from "react-csv";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 
-const Calendar = () => {
+const Calendar = ({ isCollapsed }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -56,8 +55,6 @@ const Calendar = () => {
           const response = await fetch("http://localhost:3001/api/data");
           const jsonData = await response.json();
 
-          // console.log(1000, jsonData);
-
           // Chuyển đổi dữ liệu từ API để phù hợp với DataGrid và ghép thông tin phòng vào lịch trình
 
           const roomMap = rmData.reduce((acc, room, index) => {
@@ -75,8 +72,8 @@ const Calendar = () => {
           // console.log(doctorMap, drAssign, roomMap);
 
           const assignMap = drAssign
-            .filter((assgin) => {
-              return assgin.room == -1;
+            .filter((assign) => {
+              return assign.room == -1;
             })
             .reduce((acc, assign, index) => {
               const Key = index.toString();
@@ -129,7 +126,9 @@ const Calendar = () => {
             };
           });
           setCalendarData(formattedData);
-          setInitialState(...calendarData);
+          if (initialState.length === 0) {
+            setInitialState(JSON.parse(JSON.stringify(formattedData)));
+          }
           // console.log(1111, calendarData);
           // console.log(1234, initialState);
 
@@ -214,7 +213,7 @@ const Calendar = () => {
           color: colors.greenAccent[300],
         },
       }),
-      render: (room, roomId) => (
+      render: (room) => (
         <div
           style={{
             color: colors.greenAccent[300],
@@ -351,7 +350,7 @@ const Calendar = () => {
     }
     headerRow = headerRow.slice(0, -1);
     const finalData = [headerRow, ...convertedData];
-    console.log(777, finalData.join("\n"));
+    // console.log(777, finalData.join("\n"));
     return finalData.join("\n");
   };
 
@@ -428,7 +427,7 @@ const Calendar = () => {
       setSelectedDoctor(null);
       const csvData = convertData(calendarData);
       saveToServer(csvData);
-      console.log(999, initialState);
+      // console.log(999, initialState);
     }
   };
 
@@ -641,18 +640,15 @@ const Calendar = () => {
       });
   };
 
-  useEffect(() => {}, [initialState]);
+  useEffect(() => {
+    console.log(1000, isCollapsed);
+  }, [initialState, isCollapsed]);
   const cancelChanges = () => {
-    // const { id, room, ...newData } = initialState;
-    // for (const key in newData) {
-    //   if (Array.isArray(newData[key])) {
-    //     newData[key] = [...newData[key]];
-    //   }
-    // }
-    console.log(5555, initialState);
+    // console.log(5555, initialState);
     const csvData = convertData(initialState);
     console.log(666, csvData);
     saveToServer(csvData);
+    window.location.reload();
   };
 
   const getDoctorStatus = (schedule, roomId) => {
@@ -864,7 +860,12 @@ const Calendar = () => {
       </Modal>
 
       <div style={{ margin: "20px 0 0 0", overflowX: "auto", width: "auto" }}>
-        {loading && <p>Loading...</p>}
+        {loading && (
+          <div>
+            <div className="loading-spinner"></div>
+            <div>Loading...</div>
+          </div>
+        )}
         {error && <p>Error: {error}</p>}
         {!loading && !error && (
           <Table
@@ -873,6 +874,7 @@ const Calendar = () => {
             rowKey="id"
             pagination={false}
             scroll={{ x: "max-content", y: window.innerHeight - 350 }}
+            style={{ maxWidth: isCollapsed ? "93vw" : "80vw" }}
           />
         )}
       </div>
