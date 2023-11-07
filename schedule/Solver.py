@@ -24,44 +24,56 @@ class Solver:
 
         self.chosen_shifts = []
 
+        self.max_iter = 100
+
     def schedule (self):
 
         self.build_initial_solution (self.best_solution)
 
+
         self.current_solution = copy.deepcopy(self.best_solution)
 
-        self.temp_solution = copy.deepcopy(self.current_solution)
+        for iter in range (self.max_iter):
 
-        num_chosen_shift = 4
-        count = 0
-        while (count < num_chosen_shift):
-            shift = random.randint(0, self.data.horizon)
-            self.chosen_shifts.append(shift)
-            count += 1
+            self.temp_solution = copy.deepcopy(self.current_solution)
+            
 
-        self.destroy(self.temp_solution)
-        self.repair (self.temp_solution)
+            self.destroy(self.temp_solution)
+            self.repair (self.temp_solution)
 
-        if (self.temp_solution.obj < self.current_solution.obj) :
-            self.current_solution = copy.deepcopy(self.temp_solution)
+            'add threshold'
+            if (self.temp_solution.get_obj() < self.current_solution.get_obj()) :
+                self.current_solution = copy.deepcopy(self.temp_solution)
 
-            if (self.current_solution.obj < self.best_solution.obj) :
-                self.best_solution = copy.deepcopy (self.current_solution)
+                if (self.current_solution.get_obj() < self.best_solution.get_obj()) :
+                    self.best_solution = copy.deepcopy (self.current_solution)
 
-                print ("\n Best solution obj : ")
-                print (self.best_solution.obj)
+                    print ("\n Best solution obj : ")
+                    print (self.best_solution.get_obj())
 
+        # print ("\n FINALL OBJ : ")
+        # print (self.best_solution.get_obj())
 
     def destroy (self, s : Solution):
         # random choose a day 
+        self.chosen_shifts = []
+        num_chosen_shift = random.randint(3,6)
+        count = 0
+        while (count < num_chosen_shift):
+            shift = random.randint(0, self.data.horizon-1)
+            if (shift not in self.chosen_shifts):
+                self.chosen_shifts.append(shift)
+                count += 1
         
         for chosen_shift in self.chosen_shifts : 
             removed_doctor = []
             list_doctors_today = []
 
             #get list doctor work that day
-            for r in range  (self.data.get_num_rooms):
-                list_doctors_today.append(s.schedule_matrix[r][chosen_shift])
+            for r in range  (self.data.get_num_rooms()):
+                print ("{},{}".format(chosen_shift,r))
+                list_doctors_today += (s.schedule_matrix[r][chosen_shift])
+                print (list_doctors_today)
 
             num_deleted_doctor = 3
 
@@ -71,6 +83,8 @@ class Solver:
                 removed_doctor.append(doctorId)
 
                 roomid = self.which_room_is_assigned(doctorId, chosen_shift,s)
+                if (roomid == -1 ):
+                    print ("")
                 s.delete_doctor(doctorId,roomid,chosen_shift)
 
 
@@ -82,7 +96,8 @@ class Solver:
             random.shuffle(pool)
 
             for doctorID in pool:
-                self.Greedy_insertion(s, doctorID)
+                self.Greedy_insertion(s, doctorID,chosen_shift)
+                print (s.get_obj())
 
 
     def Greedy_insertion (self, s : Solution, doctorID, chosen_shift):
@@ -109,6 +124,8 @@ class Solver:
 
         
     def get_insertion_cost (self, s : Solution, doctorID, roomID):
+
+        'add cost if room is not full'
 
         temp_max_min_matrix = copy.deepcopy(s.room_weights[doctorID])
 
@@ -145,8 +162,8 @@ class Solver:
                     if (self.is_assigned(shift,doctor, s) == True) :
                         continue
 
-                    if (doctor.doctorId == 9):
-                        print ("Found!")
+                    # if (doctor.doctorId == 9):
+                    #     print ("Found!")
                     check = self.check_and_assign(doctor,shift, s)
                     if (check == -1):
                         continue
@@ -172,7 +189,7 @@ class Solver:
 
     def check_room_is_feasible (self, doctor : Doctor, roomID, shift) :
     
-        if self.getLevelSupply (doctor.doctorId, roomID,shift) == -1 :
+        if self.getLevelSupply (doctor, roomID,shift) == -1 :
             return False
         else : 
             return True
@@ -217,10 +234,10 @@ class Solver:
         cumulative_w = [doctor.work_load[i] for i in possible_rooms]
         sorted_room = self.sort (possible_rooms, cumulative_w)
 
-        for r in sorted_room:
-            www = self.data.l_doctors[doctor.doctorId].work_load[r]
-            heavy = self.data.l_rooms[r].heavy
-            print(r, www, heavy)
+        # for r in sorted_room:
+        #     www = self.data.l_doctors[doctor.doctorId].work_load[r]
+        #     heavy = self.data.l_rooms[r].heavy
+        #     print(r, www, heavy)
         chosen_room = self.get_easiest_room(sorted_room)
         # w_before_test = copy.deepcopy(s.room_weights[doctor.doctorId])
         # possible_rooms.sort()
@@ -262,7 +279,7 @@ class Solver:
     
     def update (self, doctorID, date, roomID, level, s : Solution):
 
-        print ("\nAssign {} to {} in shift {} ".format(doctorID,roomID,date))
+        # print ("\nAssign {} to {} in shift {} ".format(doctorID,roomID,date))
         s.update_matrix(doctorID,date,roomID)         
         # self.data.workLoad[doctorID][roomID] += self.data.l_rooms[roomID].heavy
 
