@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'/home/toto/Code/DALN-DR.Scheduling/schedule/')
+sys.path.insert(0,'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\schedule')
 from Data import Data
 import csv
 from Doctor import Doctor
@@ -18,7 +18,7 @@ def read_input () -> Data:
     workLoad = []
 
 
-    path = '/home/toto/Code/DALN-DR.Scheduling/instance-generator/'
+    path = 'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\instance-generator\\'
 
     path4 =  path + 'Workload.csv'
 

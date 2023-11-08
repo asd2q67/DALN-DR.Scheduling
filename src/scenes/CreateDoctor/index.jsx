@@ -27,7 +27,7 @@ const CreateDoctor = () => {
   const colors = tokens(theme.palette.mode);
   const [isSuccess, setIsSuccess] = useState(false);
   const [roomDetails, setRoomDetails] = useState([]);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     // Gọi API để lấy chi tiết các phòng và cập nhật vào state roomDetails
@@ -66,7 +66,7 @@ const CreateDoctor = () => {
       setTimeout(() => {
         setIsSuccess(false);
         resetForm();
-        navigate("/doctor");
+        // navigate("/doctor");
       }, 2000);
     } catch (error) {
       console.error("Error submitting form:", error);

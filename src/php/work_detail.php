@@ -36,17 +36,17 @@ function generateCSV($mysqli)
     }
 
     // Query to select data from work_assign where room = -1
-    $query2 = "SELECT wa.session
-    FROM work_assign AS wa
-    INNER JOIN dr_detail AS dd ON wa.doctor_id = dd.id
-    WHERE wa.room = -1
+    $query2 = "SELECT dd.id AS doctor_id, COALESCE(wa.session, -1) AS session
+    FROM dr_detail dd
+    LEFT JOIN work_assign wa ON dd.id = wa.doctor_id
     ORDER BY dd.id";
 
     $result = $mysqli->query($query2);
     $dayOffData = [];
     while ($row = $result->fetch_assoc()) {
+        $doctorId = $row['doctor_id'];
         $session = $row['session'];
-        $dayOffData[] = [$session];
+        $dayOffData[] = [$doctorId, $session];
     }
 
     // Create Day-ol.csv
@@ -59,7 +59,7 @@ function generateCSV($mysqli)
 
     // Create Day-off.csv
     $dayOffCsvFile = fopen('../../instance-generator/Day-off.csv', 'w');
-    fputcsv($dayOffCsvFile, ['day']);
+    fputcsv($dayOffCsvFile, ['doctorID','day']);
     foreach ($dayOffData as $row) {
         fputcsv($dayOffCsvFile, $row);
     }

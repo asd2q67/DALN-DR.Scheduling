@@ -33,11 +33,11 @@ function generateCSV($mysqli)
     for ($i = 1; $i <= $result->field_count - 2; $i++) {
         $columnHeaders[] = 'R' . $i;
     }
-    fputcsv($output, array_merge(['Id'], $columnHeaders));
+    fputcsv($output, array_merge(['doctorID', 'doctorName'], $columnHeaders));
 
     // Write data rows from the database to the CSV file
     while ($row = $result->fetch_assoc()) {
-        $rowData = array($row['id']);
+        $rowData = array($row['id'], $row['Name']);
         for ($i = 1; $i <= $result->field_count - 2; $i++) {
             $columnName = 'R' . $i;
             $rowData[] = $row[$columnName];
@@ -47,7 +47,7 @@ function generateCSV($mysqli)
 
     $output2 = fopen('../../instance-generator/Workload.csv', 'w');
     $columnHeaders = array();
-    for ($i = 0; $i <= $result->field_count - 3; $i++) {
+    for ($i = 1; $i <= $result->field_count - 2; $i++) {
         $columnHeaders[] = 'R' . $i;
     }
     fputcsv($output2, $columnHeaders);
