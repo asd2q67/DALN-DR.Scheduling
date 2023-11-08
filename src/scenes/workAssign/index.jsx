@@ -54,7 +54,7 @@ const WorkAssign = () => {
     const fetchDoctorDetails = async () => {
       try {
         const response = await fetchDataFromAPI("/dr_detail.php");
-        // console.log("doctor", response);
+        console.log("doctor", response);
         setDoctorDetails(response);
       } catch (error) {
         console.error("Error fetching doctor details:", error);
@@ -100,6 +100,7 @@ const WorkAssign = () => {
         date: selectedDate,
         doctor_id: selectedDoctor,
         apm: isMorning ? 0 : isAfternoon ? 1 : null,
+        doctorNum: doctorDetails.length,
       };
       const response = await postDataToAPI("/work_assign.php", data, {
         headers: {

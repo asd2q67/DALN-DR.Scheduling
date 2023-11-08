@@ -75,9 +75,6 @@ const EditAssignModal = ({ open, handleClose, rowData, handleUpdate }) => {
     };
     fetchDoctorDetails();
     fetchRoomDetails();
-    console.log(1111, rowData);
-    console.log(2222, updatedData);
-    console.log(3333, roomDetails);
   }, []);
 
   const handleInputChange = (e) => {

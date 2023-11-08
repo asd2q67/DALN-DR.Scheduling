@@ -13,7 +13,7 @@ app.use(cors());
 
 app.get('/api/data', (req, res) => {
   const results = [];
-  fs.createReadStream('D:\\Workspace\\Đồ án liên ngành\\DALN-DR.Scheduling\\solution.csv')
+  fs.createReadStream('D:\\Workspace\\Doanliennganh\\DALN-DR.Scheduling\\solution.csv')
     .pipe(csv())
     .on('data', (row) => {
       results.push(row);
@@ -28,4 +28,28 @@ app.get('/api/data', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+});
+
+app.post('/save-csv', (req, res) => {
+  const csvData = req.body.data;
+  fs.writeFileSync('D:\\Workspace\\Doanliennganh\\DALN-DR.Scheduling\\solution.csv', csvData, 'utf-8');
+  res.send('File CSV đã được lưu.');
+});
+app.post('/export-csv', (req, res) => {
+  const csvData = req.body.data; // Dữ liệu CSV từ máy khách
+
+  // Ghi dữ liệu CSV vào tệp tin
+  fs.writeFileSync('D:\\Workspace\\Doanliennganh\\DALN-DR.Scheduling\\calendar.csv', csvData, 'utf-8');
+
+  // Phản hồi với thông điệp cho máy khách
+  res.send('File CSV đã được lưu.');
+});
+app.post('/personal-csv', (req, res) => {
+  const csvData = req.body.data; // Dữ liệu CSV từ máy khách
+
+  // Ghi dữ liệu CSV vào tệp tin
+  fs.writeFileSync('D:\\Workspace\\Doanliennganh\\DALN-DR.Scheduling\\calendar1.csv', csvData, 'utf-8');
+
+  // Phản hồi với thông điệp cho máy khách
+  res.send('File CSV đã được lưu.');
 });
