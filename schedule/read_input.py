@@ -22,7 +22,7 @@ def read_input () -> Data:
 
     path4 =  path + 'Workload.csv'
 
-    with open(path4, 'r') as file4:
+    with open(path4, 'r', encoding="utf-8") as file4:
         reader = csv.reader(file4)
         next(reader, None)
 
@@ -36,7 +36,7 @@ def read_input () -> Data:
 
 
     'DOCTOR INFO'
-    with open(path1, 'r') as file1:
+    with open(path1, 'r', encoding="utf-8") as file1:
         reader = csv.reader(file1)
         next(reader, None)
         count = 0
@@ -60,7 +60,7 @@ def read_input () -> Data:
     
     'ROOM INFO'
     path2 = path + "Room.csv"
-    with open(path2, 'r') as file2:
+    with open(path2, 'r', encoding="utf-8") as file2:
         reader = csv.reader(file2)
         next(reader, None)
         for row in reader :
@@ -72,7 +72,7 @@ def read_input () -> Data:
     path3 = path +  "Day-off.csv"
 
     off = [[] for i in range (num_day)]
-    with open(path3, 'r') as file3:
+    with open(path3, 'r', encoding="utf-8") as file3:
         reader = csv.reader(file3)
         next(reader, None)
         for row in reader :
@@ -84,7 +84,7 @@ def read_input () -> Data:
     ol = [[] for i in range (num_day)]
     path3 = path + "Day-ol.csv"
 
-    with open(path3, 'r') as file3:
+    with open(path3, 'r', encoding="utf-8") as file3:
         reader = csv.reader(file3)
         next(reader, None)
         for row in reader:       

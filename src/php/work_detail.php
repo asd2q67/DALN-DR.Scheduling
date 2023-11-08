@@ -18,7 +18,7 @@ if ($mysqli->connect_error) {
 function generateCSV($mysqli)
 {
     // Query to select data from work_assign
-    $query1 = "SELECT dd.id AS doctor_id, COALESCE(wa.room, -1) AS room, COALESCE(wa.session, -1) AS session
+    $query1 = "SELECT dd.id AS doctor_id, COALESCE(wa.room, 0) AS room, COALESCE(wa.session, 0) AS session
     FROM dr_detail dd
     LEFT JOIN work_assign wa ON dd.id = wa.doctor_id
     ORDER BY dd.id";
@@ -29,14 +29,14 @@ function generateCSV($mysqli)
     // Initialize arrays for Day-ol.csv and Day-off.csv
     $dayOlData = [];
     while ($row = $result->fetch_assoc()) {
-        $doctorId = $row['doctor_id'];
-        $room = $row['room'];
-        $session = $row['session'];
+        $doctorId = $row['doctor_id'] -1;
+        $room = $row['room']-1;
+        $session = $row['session']-1;
         $dayOlData[] = [$doctorId, $room, $session];
     }
 
     // Query to select data from work_assign where room = -1
-    $query2 = "SELECT dd.id AS doctor_id, COALESCE(wa.session, -1) AS session
+    $query2 = "SELECT dd.id AS doctor_id, COALESCE(wa.session, 0) AS session
     FROM dr_detail dd
     LEFT JOIN work_assign wa ON dd.id = wa.doctor_id
     ORDER BY dd.id";
@@ -44,8 +44,8 @@ function generateCSV($mysqli)
     $result = $mysqli->query($query2);
     $dayOffData = [];
     while ($row = $result->fetch_assoc()) {
-        $doctorId = $row['doctor_id'];
-        $session = $row['session'];
+        $doctorId = $row['doctor_id'] - 1;
+        $session = $row['session'] - 1;
         $dayOffData[] = [$doctorId, $session];
     }
 

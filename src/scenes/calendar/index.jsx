@@ -209,14 +209,14 @@ const Calendar = ({ isCollapsed }) => {
       onHeaderCell: () => ({
         //phòng
         style: {
-          backgroundColor: colors.blueAccent[600],
-          color: colors.greenAccent[300],
+          backgroundColor: "#00C8FF",
+          color: colors.primary[500],
         },
       }),
       render: (room) => (
         <div
           style={{
-            color: colors.greenAccent[300],
+            color: colors.primary[500],
             fontWeight: "bold",
           }}
         >
@@ -301,14 +301,14 @@ const Calendar = ({ isCollapsed }) => {
         },
         onHeaderCell: () => ({
           //header sáng chiều
-          style: { backgroundColor: colors.grey[600], color: "yellow" },
+          style: { backgroundColor: "#3CEE80", color: "#000000" },
         }),
       })),
       onHeaderCell: () => ({
         //Header ngày trong tuần
         style: {
-          color: colors.greenAccent[300],
-          backgroundColor: colors.blueAccent[600],
+          color: "#000000",
+          backgroundColor: "#00C8FF",
         },
       }),
     })),
@@ -697,15 +697,18 @@ const Calendar = ({ isCollapsed }) => {
               const statusText = Array.isArray(allStatus[doctor.id])
                 ? `Đang làm tại: ${allStatus[doctor.id].join(", ")}`
                 : "Chưa chia lịch";
+              const isUnassigned = statusText === "Chưa chia lịch";
               return (
                 <Select.Option
                   key={doctor.id}
                   value={doctor.Name}
                   style={{ backgroundColor: backgroundColor, color: color }}
                 >
-                  <Tooltip
-                    title={statusText}
-                  >{`${doctor.Name} - ${statusText}`}</Tooltip>
+                  <Tooltip title={statusText}>
+                    <span
+                      className={isUnassigned ? "unassigned" : ""}
+                    >{`${doctor.Name} - ${statusText}`}</span>
+                  </Tooltip>
                 </Select.Option>
               );
             })}
@@ -861,9 +864,8 @@ const Calendar = ({ isCollapsed }) => {
 
       <div style={{ margin: "20px 0 0 0", overflowX: "auto", width: "auto" }}>
         {loading && (
-          <div>
+          <div className="container" style={{ display: "flex" }}>
             <div className="loading-spinner"></div>
-            <div>Loading...</div>
           </div>
         )}
         {error && <p>Error: {error}</p>}

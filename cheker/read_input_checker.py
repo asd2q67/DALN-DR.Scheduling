@@ -5,6 +5,8 @@ import csv
 from Doctor_checker import Doctor
 from Room_checker import Room
 
+num_day = 14
+
 def read_input_checker () -> Data:
 
     l_doctors = []
@@ -68,16 +70,15 @@ def read_input_checker () -> Data:
 
     path3 = path +  "Day-off.csv"
 
-    off = [[] for i in range (14)]
+    off = [[] for i in range (num_day)]
     with open(path3, 'r', encoding="utf-8") as file3:
         reader = csv.reader(file3)
-        id = 0
+        next(reader, None)
         for row in reader :
-            if (id not in off[int(row[0])] ):
-                off[int (row[0])].append(id)
+            if (int(row[0]) not in off[int(row[1])] ):
+                off[int (row[1])].append(int (row[0]))
             else :
-                off[int (row[0])] = id
-            id += 1
+                off[int (row[1])] = int (row[0])
 
     path3 = path + "Day-ol.csv"
 

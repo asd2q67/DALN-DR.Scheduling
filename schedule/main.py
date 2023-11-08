@@ -24,16 +24,18 @@ if __name__ == '__main__':
     # data.display_stats()
     # print (data.workLoad)
     # solver.build_initial_solution(solver.best_solution)
-    solver.schedule()
     # print (solver.room_weights)
     # print (data.workLoad)
-    solver.best_solution.statis()
 
-    solver.best_solution.export_solution()
+    # solver.schedule()
+    # solver.best_solution.statis()
+    # solver.best_solution.export_solution()
+
     # print (solver.current_solution.dump)
+
     # export_solution()
 
-    # print (data.day_off)
+    print (data.l_doctors[0].name)
   
 
     # print ("--------------------")

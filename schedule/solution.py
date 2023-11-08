@@ -33,7 +33,7 @@ class Solution :
         Export info related to doctors 
         '''
 
-        f = open ('solution.txt', 'w+')
+        f = open ('solution.txt', 'w+', encoding="utf-8")
         f.write( "{:7}{:>5}{:>18}{:>20}{:>20}\n".format('DoctorID', "Name", "Possible room","Initial_weights", "Solution_Weights"))
 
         for doctor in self.data.l_doctors :

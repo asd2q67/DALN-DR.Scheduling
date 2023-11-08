@@ -37,7 +37,7 @@ function generateCSV($mysqli)
 
     // Write data rows from the database to the CSV file
     while ($row = $result->fetch_assoc()) {
-        $rowData = array($row['id'], $row['Name']);
+        $rowData = array($row['id']-1, $row['Name']);
         for ($i = 1; $i <= $result->field_count - 2; $i++) {
             $columnName = 'R' . $i;
             $rowData[] = $row[$columnName];
