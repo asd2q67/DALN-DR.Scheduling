@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'F:\Document\DALN\DALN1\DALN-DR.Scheduling\cheker')
+sys.path.insert(0,'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\cheker')
 from Data_checker import Data
 import csv
 from Doctor_checker import Doctor
@@ -17,7 +17,7 @@ def read_input_checker () -> Data:
     workLoad = []
 
 
-    path = 'F:\Document\DALN\DALN1\DALN-DR.Scheduling\instance-generator\\'
+    path = 'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\instance-generator\\\\'
 
     path4 =  path + 'Workload.csv'
 

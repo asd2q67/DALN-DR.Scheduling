@@ -29,7 +29,7 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
   const [selectedDoctor, setSelectedDoctor] = useState(undefined);
   const [assignDoctors, setAssignDoctors] = useState({});
   const [initialState, setInitialState] = useState([]);
-  const [notifications, setNotifications] = useState([]);
+  const [doctorSchedule, setDoctorSchedule] = useState([]);
 
   // const { exec } = require("child_process");
 
@@ -42,12 +42,14 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [drData, rmData, drAssign] = await Promise.all([
+        const [drData, rmData, drAssign, res] = await Promise.all([
           fetchDataFromAPI("/dr_detail.php"),
           fetchDataFromAPI("/room_detail.php"),
           fetchDataFromAPI("/work_detail.php"),
+          fetchServerAPI("/api/doctor-schedules")
         ]);
         setDoctorData(drData);
+        setDoctorSchedule(res);
         if (JSON.stringify(rmData) !== JSON.stringify(roomData)) {
           setRoomData(rmData);
         }
@@ -142,19 +144,18 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
     fetchData();
   }, [roomData]); // Thêm roomData vào dependency array để useEffect chỉ chạy khi roomData thay đổi
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await Promise.all([fetchServerAPI("/api/noti")]);
-        setNotifications(res);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setError(error.message);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [updateCheck]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await Promise.all([fetchServerAPI("/api/noti")]);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //       setError(error.message);
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [updateCheck]);
 
   // const dayOfWeekInVietnamese = {
   //   Monday: "Thứ 2",
@@ -417,7 +418,7 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
       console.error("Lỗi khi gửi yêu cầu tới máy chủ:", error);
     }
   };
-  
+
   const handleRunChecker = async () => {
     const response = await fetch("http://localhost:5000/calendar-checker", {
       method: "POST",
@@ -587,10 +588,20 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
     // console.log(11551, doctorSchedules);
     return doctorSchedules;
   };
-  const personalCSV = () => {
-    const doctorSchedules = dataGen();
-    const csvRows = [];
+  const personalCSV = async () => {
+    // const doctorSchedules = dataGen();
+    try {
+      const res = await Promise.all([fetchServerAPI("/api/doctor-schedules")]);
+      console.log(777, res);
+      setDoctorSchedule(res);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError(error.message);
+      setLoading(false);
+    }
 
+    const csvRows = [];
+    // console.log(666, doctorSchedules);
     const roomMap = roomData.reduce((acc, room, index) => {
       const data = { id: index, Name: room.name };
       acc[index] = data;
@@ -610,7 +621,7 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
 
     // Tạo dòng tiêu đề
     let headerRow = "\ufeffBác sĩ,";
-    for (let i = 3; i <= doctorData.length + 2; i++) {
+    for (let i = 3; i < 17; i++) {
       const shiftType = i % 2 === 0 ? "Chiều" : "Sáng"; // Sáng thứ 2 đến chiều Chủ nhật
       const day = Math.ceil(i / 2);
       const dayIndex = day === 8 ? "Chủ nhật" : `thứ ${day}`;
@@ -619,44 +630,31 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
     headerRow = headerRow.slice(0, -1);
 
     csvRows.push(headerRow);
-    // Tạo các dòng dữ liệu
-    Object.keys(doctorSchedules).forEach((doctorName) => {
-      const schedule = doctorSchedules[doctorName].Schedule;
-      const csvRow = [doctorSchedules[doctorName].Name];
-      for (let roomId = 0; roomId <= roomData.length - 1; roomId++) {
-        //14 ngay
-        //Check xem đã qua phòng mới hay chưa? Nếu đã qua roomId mới tiến hành cộng chuỗi từ đầu
-        let isNewRoom = false;
-        if (schedule[roomId].length !== 0) {
-          let tempSchedule = [...schedule[roomId]];
-          for (let dayId = 0; dayId < 14; dayId++) {
-            //dayId 0-13 là ngày, roomId 0-9 là phòng, workDayNum là số ngày làm của bác sĩ
-            // console.log(dayId, tempSchedule);
-            let isSet = false;
-            for (
-              let workDayNum = 0;
-              workDayNum < tempSchedule.length;
-              workDayNum++
-            ) {
-              // console.log(dayId, csvRow);
-              if (tempSchedule[workDayNum] === dayId) {
-                csvRow.push(`"${roomMap[roomId].Name}"`);
-                isSet = true;
-                tempSchedule = tempSchedule.filter((item) => item !== dayId);
-                break;
-              }
-            }
-            if (!isSet && tempSchedule.length !== 0) csvRow.push(`""`);
-          }
+    console.log(111, doctorMap);
+    doctorSchedule.map((list, index) => {
+      console.log(doctorSchedule, list);
+      let csvRow =  "";
+      const doctorName = doctorMap[index].Name;
+      csvRow += `${doctorName},`;
+      const dataArray = Object.values(list).map(item => {
+        // Sử dụng JSON.parse() để chuyển chuỗi JSON thành mảng
+        const parsedArray = JSON.parse(item);
+        // Nếu parsedArray là mảng, trả về mảng, ngược lại trả về mảng có một phần tử với giá trị parsedArray
+        return Array.isArray(parsedArray) ? parsedArray : [parsedArray];
+      });
+      for (let i = 0; i < dataArray.length; i++) {
+        const currentArray = dataArray[i];
+        let tempArray = [];
+        for (let j = 0; j < currentArray.length; j++) {
+          const currentValue = currentArray[j];
+          console.log(777, doctorMap[i].Room[currentValue].Name);
+          tempArray.push(doctorMap[i].Room[currentValue].Name);
         }
-
-        // console.log(666, csvRow);
-        isNewRoom = true;
+        csvRow += tempArray.join(",") + ",";
       }
-      csvRows.push(csvRow.join(","));
-      console.log(444, schedule);
+      csvRows.push(csvRow + "\n");
     });
-    console.log(333, csvRows);
+    console.log(444, csvRows);
     const csvContent = csvRows.join("\n");
     savePersonalCSV(csvContent);
   };
