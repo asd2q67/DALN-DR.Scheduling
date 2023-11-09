@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { notification } from "antd";
+import { Button, notification } from "antd";
 import { Box, IconButton, useTheme } from "@mui/material";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import { tokens } from "../theme";
 
-const NotificationComponent = ({ notifications, roomData }) => {
+const NotificationComponent = ({
+  notifications,
+  roomData,
+  setNotifications,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const workday = [
@@ -27,21 +31,29 @@ const NotificationComponent = ({ notifications, roomData }) => {
 
   function findDifferentStrings(notifications, oldNotifications) {
     // Find differences between new and old notifications
-    const differentStrings = notifications.filter(notification => !oldNotifications.includes(notification));
-    console.log(999, differentStrings);
-  
+    const differentStrings = notifications.filter(
+      (notification) => !oldNotifications.includes(notification)
+    );
+    // console.log(999, differentStrings);
+
     // Join the different strings into a single string
-    const differentString = differentStrings.join(", ");
-  
-    return differentString;
+    // const differentString = differentStrings.join(", ");
+
+    return differentStrings;
   }
 
   useEffect(() => {
-    const differentString = findDifferentStrings(notifications, oldNotifications);
-    if (differentString !== null, differentString.length>0)
-      showNote(differentString);
+    const differentStrings = findDifferentStrings(
+      notifications,
+      oldNotifications
+    );
+    differentStrings.map((string) => {
+      if ((string !== null, string.length > 0)) {
+        showNote(string);
+        console.log(222, string);
+      }
+    });
     // console.log(111, (notifications[0]));
-    console.log(222, differentString);
     setOldNotifications(notifications);
   }, [notifications]);
 
@@ -106,12 +118,21 @@ const NotificationComponent = ({ notifications, roomData }) => {
   };
 
   const openNotification = () => {
-    notification.open({
+    const key = notification.open({
       message: "Cảnh báo",
       description: (
         <div style={{ maxHeight: "300px", overflowY: "auto" }}>
           {renderNotifications(notifications)}
           {/* {console.log(888, notifications[0])} */}
+          <Button
+            style={{ marginTop: "10px" }}
+            onClick={() => {
+              setNotifications([]); // Cài đặt lại notifications thành mảng rỗng
+              notification.destroy(key); // Đóng thông báo khi nút "Xóa" được nhấp
+            }}
+          >
+            Xóa
+          </Button>
         </div>
       ),
     });

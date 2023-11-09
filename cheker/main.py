@@ -17,7 +17,7 @@ if __name__ == '__main__':
     checker = Checker(data)
     checker.solution.read_solution()
 
-    checker.check()
+    # checker.check()
 
     day_list = ['ca{}'.format(i) for i in range(data.horizon)]
 

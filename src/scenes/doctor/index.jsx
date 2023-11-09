@@ -22,7 +22,7 @@
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRowData, setSelectedRowData] = useState(null);
     const [roomDetails, setRoomDetails] = useState([]);
-    const [doctorDetails, setDoctorDetails] = useState([]);
+  const [isUpdate, setIsUpdate] = useState(false);
 
     const handleRowClick = (params) => {
       const selectedId = params.row.id;
@@ -79,12 +79,7 @@
           updatedData
         );
         console.log(`Successfully updated item with ID ${updatedData.id}`);
-        window.location.reload();
-        // Fetch updated doctor data after successful update
-        // const updatedDoctorData = await fetchDataFromAPI("/dr_detail.php");
-        // setDoctorData(updatedDoctorData);
-    
-        // Đóng modal sau khi cập nhật thành công
+        setIsUpdate(!isUpdate);
         setIsModalOpen(false);
       } catch (error) {
         console.error("Error during update:", error);
@@ -108,7 +103,7 @@
         cellClassName: "skill-column--cell",
         renderCell: (params) => {
           const skills = roomDetails.map((room) => {
-            const doctorDetail = doctorDetails.find(
+            const doctorDetail = doctorData.find(
               (doctor) => doctor.id === params.row.id
             );
             const level = doctorDetail ? doctorDetail[`R${room.id}`] : "0";
@@ -151,27 +146,13 @@
     ];
 
     useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const data = await fetchDataFromAPI("/dr_detail.php");
-          setDoctorData(data);
-          setLoading(false);
-        } catch (error) {
-          setError(error.message);
-          setLoading(false);
-        }
-      };
-      fetchData();
-    }, []);
-
-    useEffect(() => {
-      const fetchRoomAndDoctorDetails = async () => {
+      const fetchRoomAnddoctorData = async () => {
         try {
           const roomResponse = await fetchDataFromAPI("/room_detail.php");
           const doctorResponse = await fetchDataFromAPI("/dr_detail.php");
 
           setRoomDetails(roomResponse);
-          setDoctorDetails(doctorResponse);
+          setDoctorData(doctorResponse);
           setLoading(false);
         } catch (error) {
           setError(error.message);
@@ -179,8 +160,8 @@
         }
       };
 
-      fetchRoomAndDoctorDetails();
-    }, []); 
+      fetchRoomAnddoctorData();
+    }, [isUpdate]); 
 
     useEffect(() => {
       // Code để fetch và cập nhật doctorData

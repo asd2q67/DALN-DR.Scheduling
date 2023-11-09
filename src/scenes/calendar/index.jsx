@@ -233,7 +233,6 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
             width: "100%",
             padding: 0,
             color: colors.primary[500],
-            backgroundColor: "#753AD5",
             fontWeight: "bold",
           }}
         >
@@ -273,7 +272,7 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
                     Object.values(assignDoctors).map((assignment) => {
                       if (
                         assignment.doctorName === doctor &&
-                        parseInt(assignment.shift) - 1 == shiftCol.shift
+                        parseInt(assignment.shift) == shiftCol.shift
                       ) {
                         backgroundColor = colors.grey[500];
                         color = "white";
@@ -418,6 +417,7 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
       console.error("Lỗi khi gửi yêu cầu tới máy chủ:", error);
     }
   };
+  
   const handleRunChecker = async () => {
     const response = await fetch("http://localhost:5000/calendar-checker", {
       method: "POST",
@@ -677,10 +677,14 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
         console.error("Error:", error);
       });
     handleRunChecker();
+    setTimeout(() => {
+      setUpdateCheck(true);
+    }, 1500);
+    window.location.reload();
   };
 
   useEffect(() => {
-    console.log(1000, isCollapsed);
+    // console.log(1000, isCollapsed);
   }, [initialState, isCollapsed]);
 
   const cancelChanges = () => {
@@ -842,8 +846,7 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {assignDoctors &&
             Object.values(assignDoctors).map((assignment) => {
-              // console.log(assignment);
-              if (parseInt(assignment.shift) - 1 == doctorId) {
+              if (parseInt(assignment.shift) == doctorId) {
                 return (
                   <Tag
                     style={{
@@ -877,7 +880,7 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
               Object.values(assignDoctors).map((assignment) => {
                 if (
                   assignment.doctorName === doctor &&
-                  parseInt(assignment.shift) - 1 == doctorId
+                  parseInt(assignment.shift) == doctorId
                 ) {
                   backgroundColor = colors.grey[500];
                   color = "white";

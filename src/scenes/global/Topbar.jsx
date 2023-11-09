@@ -33,7 +33,7 @@ const Topbar = ({setIsSidebar, updateCheck, setUpdateCheck}) => {
         console.error("Error fetching notifications:", error);
       }
     };
-    console.log(444, updateCheck);
+    // console.log(444, updateCheck);
     fetchData();
     setUpdateCheck(false);
     // console.log(555, updateCheck);
@@ -65,6 +65,7 @@ const Topbar = ({setIsSidebar, updateCheck, setUpdateCheck}) => {
         <NotificationComponent
           notifications={notifications}
           roomData={roomData}
+          setNotifications={setNotifications}
         />
         <IconButton>
           <SettingsOutlinedIcon />

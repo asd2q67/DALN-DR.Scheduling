@@ -29,26 +29,28 @@ function generateCSV($mysqli)
     // Initialize arrays for Day-ol.csv and Day-off.csv
     $dayOlData = [];
     while ($row = $result->fetch_assoc()) {
-        $doctorId = $row['doctor_id'] -1;
-        if($row['room'] > 0) $room = $row['room']-1;
-        else $room = $row['room'];
-        if($row['session'] > 0)  $session = $row['session']-1;
-        else $session = $row['session'];
+        $doctorId = $row['doctor_id'] - 1;
+        if ($row['room'] == -1) {
+            $room = -1;
+            $session = -1;
+        } else {
+            $room = $row['room'];
+            $session = $row['session'];
+        }
         $dayOlData[] = [$doctorId, $room, $session];
     }
 
     // Query to select data from work_assign where room = -1
     $query2 = "SELECT dd.id AS doctor_id, COALESCE(wa.session, -1) AS session
     FROM dr_detail dd
-    LEFT JOIN work_assign wa ON dd.id = wa.doctor_id
+    LEFT JOIN work_assign wa ON dd.id = wa.doctor_id AND wa.room = -1
     ORDER BY dd.id";
 
     $result = $mysqli->query($query2);
     $dayOffData = [];
     while ($row = $result->fetch_assoc()) {
         $doctorId = $row['doctor_id'] - 1;
-        if($row['session'] > 0)  $session = $row['session']-1;
-        else $session = $row['session'];
+        $session = $row['session'];
         $dayOffData[] = [$doctorId, $session];
     }
 
