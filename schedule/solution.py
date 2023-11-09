@@ -22,6 +22,8 @@ class Solution :
 
         self.available_room = [[] for d in range (self.data.horizon)]
 
+        
+
 
 
     def update_matrix (self, doctor_id , dateID, roomID):
@@ -33,8 +35,8 @@ class Solution :
         Export info related to doctors 
         '''
 
-        f = open ('solution.txt', 'w+', encoding="utf-8")
-        f.write( "{:7}{:>5}{:>18}{:>20}{:>20}\n".format('DoctorID', "Name", "Possible room","Initial_weights", "Solution_Weights"))
+        f = open ('solution.txt', 'w', encoding="utf-8")
+        f.write( "{:<7}{:>25}{:>35}{:>35}{:>35}\n".format('DoctorID', "Name", "Possible room","Initial_weights", "Solution_Weights"))
 
         for doctor in self.data.l_doctors :
             possible_rooms = doctor.level1 + doctor.level2
@@ -43,15 +45,33 @@ class Solution :
             init_weight = self.data.workLoad[doctor.doctorId]
             solution_weights = self.room_weights[doctor.doctorId]
 
-            f.write ("{:7}{:>5}{:>18}{:>20}{:>20}\n".format(doctor.doctorId, doctor.name, str(possible_rooms), str(init_weight), str(solution_weights)))
+            f.write ("{:<7}{:>25}{:>35}{:>35}{:>35}\n".format(doctor.doctorId, doctor.name, str(possible_rooms), str(init_weight), str(solution_weights)))
 
     def export_solution (self):
-        day_list = ['ca{}'.format(i) for i in range(self.data.horizon)]
+        day_list = ['{}'.format(i) for i in range(self.data.horizon)]
 
         df = pd.DataFrame(self.schedule_matrix, columns=day_list)
-        df.to_csv('solution.csv')
+        df.to_csv('solution.csv', index=False)
         print (df)
-            
+
+    def export_by_doctor (self):
+
+        doctor_analysis = [[[] for j in range (self.data.horizon)] for i in range (self.data.get_num_doctors()) ]
+
+        for d in range (self.data.horizon):
+
+            for r in range (self.data.get_num_rooms()):
+                for doctorID in self.schedule_matrix[r][d]:
+
+                    if (r not in doctor_analysis[doctorID][d]) :
+                        doctor_analysis[doctorID][d].append(r)
+    
+        day_list = ['{}'.format(i) for i in range(self.data.horizon)]
+
+        df = pd.DataFrame(doctor_analysis, columns=day_list)
+        df.to_csv('doctor_calendar.csv', index=False)
+        print (df)
+                
 
     def cal_max_min (self):
         for doctorID in range (self.data.get_num_doctors()):
@@ -84,5 +104,4 @@ class Solution :
     def get_obj (self):
         obj = sum(self.max_min)
         return obj
-
 

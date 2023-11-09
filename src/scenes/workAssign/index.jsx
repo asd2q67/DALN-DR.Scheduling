@@ -8,6 +8,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  useTheme,
 } from "@mui/material";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc"; // Import plugin UTC
@@ -20,11 +21,15 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Header from "../../components/Header";
 import { fetchDataFromAPI, postDataToAPI } from "../../data/api"; // Import các hàm gửi yêu cầu API từ module api của bạn
 import "./style.css";
+import { tokens } from "../../theme";
 
 dayjs.extend(utc); // Enable UTC plugin
 dayjs.extend(timezone); // Enable Timezone plugin
 
 const WorkAssign = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const [isSuccess, setIsSuccess] = useState(false);
   const [roomDetails, setRoomDetails] = useState([]);
   const [doctorDetails, setDoctorDetails] = useState([]);
@@ -33,7 +38,7 @@ const WorkAssign = () => {
   const [selectedDate, setSelectedDate] = React.useState(
     dayjs().utcOffset(7 * 60)
   );
-  const [isMorning, setIsMorning] = useState(false);
+  const [isMorning, setIsMorning] = useState(true);
   const [isAfternoon, setIsAfternoon] = useState(false);
   const [isOnLeave, setIsOnLeave] = useState(false);
   const [roomDropdownDisabled, setRoomDropdownDisabled] = useState(false);
@@ -126,7 +131,7 @@ const WorkAssign = () => {
       // Hide the alert after 5 seconds
       timer = setTimeout(() => {
         setIsSuccess(false);
-      }, 5000);
+      }, 4000);
     }
 
     // Clear the timer if the component unmounts or if isSuccess becomes false
@@ -143,78 +148,118 @@ const WorkAssign = () => {
         Cập nhật lịch làm việc thành công!
       </div>
 
-      <FormControl fullWidth sx={{ mb: 2 }}>
-        <InputLabel id="room-label">Chọn Phòng</InputLabel>
-        <Select
-          labelId="room-label"
-          id="room-select"
-          value={selectedRoom}
-          label="Chọn Phòng"
-          onChange={handleRoomChange}
-          disabled={roomDropdownDisabled}
+      <Box
+        sx={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          padding: "20px",
+          borderColor: colors.blueAccent[400],
+          borderWidth: "1px",
+          borderStyle: "solid",
+        }}
+      >
+        <Box>
+          <FormControl sx={{ mb: 2, width: "200px" }}>
+            <InputLabel sx={{ color: colors.blueAccent[400] }} id="room-label">
+              Chọn Phòng
+            </InputLabel>
+            <Select
+              labelId="room-label"
+              id="room-select"
+              value={selectedRoom}
+              label="Chọn Phòng"
+              onChange={handleRoomChange}
+              disabled={roomDropdownDisabled}
+            >
+              {roomDetails.map((room) => (
+                <MenuItem key={room.id} value={room.id}>
+                  {room.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Box>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isOnLeave}
+                  onChange={handleLeaveChange}
+                  sx={{ color: colors.blueAccent[400] }}
+                />
+              }
+              label="Nghỉ phép"
+              sx={{ color: colors.blueAccent[400] }} 
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isMorning}
+                  onChange={handleMorningChange}
+                  sx={{ color: colors.blueAccent[400] }} 
+                />
+              }
+              label="Buổi Sáng"
+              sx={{ color: colors.blueAccent[400] }}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isAfternoon}
+                  onChange={handleAfternoonChange}
+                  sx={{ color: colors.blueAccent[400] }}
+                />
+              }
+              label="Buổi Chiều"
+              sx={{ color: colors.blueAccent[400] }} 
+            />
+          </Box>
+          {/* chọn ngày */}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer
+              components={["DatePicker", "DatePicker"]}
+              sx={{ width: "200px" }}
+            >
+              <DatePicker
+                label="Chọn Ngày"
+                value={selectedDate}
+                onChange={handleDateChange}
+                sx={{ color: colors.blueAccent[400] }} 
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+          {/* Dropdown list cho bác sĩ */}
+          <FormControl sx={{ mb: 2, mt: 2, width: "200px" }}>
+            <InputLabel
+              sx={{ color: colors.blueAccent[400] }}
+              id="doctor-label"
+            >
+              Chọn Bác Sĩ
+            </InputLabel>
+            <Select
+              labelId="doctor-label"
+              id="doctor-select"
+              value={selectedDoctor}
+              label="Chọn Bác Sĩ"
+              onChange={handleDoctorChange}
+            >
+              {doctorDetails.map((doctor) => (
+                <MenuItem key={doctor.id} value={doctor.id}>
+                  {doctor.Name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleFormSubmit}
         >
-          {roomDetails.map((room) => (
-            <MenuItem key={room.id} value={room.id}>
-              {room.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      <FormControlLabel
-        control={<Checkbox checked={isOnLeave} onChange={handleLeaveChange} />}
-        label="Nghỉ phép"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={isMorning}
-            onChange={handleMorningChange}
-          />
-        }
-        label="Buổi Sáng"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={isAfternoon}
-            onChange={handleAfternoonChange}
-          />
-        }
-        label="Buổi Chiều"
-      />
-      {/* chọn ngày */}
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer components={["DatePicker", "DatePicker"]}>
-          <DatePicker
-            label="Chọn Ngày"
-            value={selectedDate}
-            onChange={handleDateChange}
-          />
-        </DemoContainer>
-      </LocalizationProvider>
-
-      {/* Dropdown list cho bác sĩ */}
-      <FormControl fullWidth sx={{ mb: 2, mt: 2 }}>
-        <InputLabel id="doctor-label">Chọn Bác Sĩ</InputLabel>
-        <Select
-          labelId="doctor-label"
-          id="doctor-select"
-          value={selectedDoctor}
-          label="Chọn Bác Sĩ"
-          onChange={handleDoctorChange}
-        >
-          {doctorDetails.map((doctor) => (
-            <MenuItem key={doctor.id} value={doctor.id}>
-              {doctor.Name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      <Button variant="contained" color="secondary" onClick={handleFormSubmit}>
-        Xác nhận
-      </Button>
+          Xác nhận
+        </Button>
+      </Box>
     </Box>
   );
 };

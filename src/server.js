@@ -25,6 +25,18 @@ app.get('/api/data', (req, res) => {
       res.status(500).json({ error: 'Error reading CSV file.' });
     });
 });
+app.get('/api/noti', (req, res) => {
+  const filename = 'D:\\Workspace\\Doanliennganh\\DALN-DR.Scheduling\\noti.txt';
+  fs.readFile(filename, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error reading file');
+    } else {
+      const notis = data.toString().split('\n').filter(line => line.trim() !== '');
+      res.json(notis);
+    }
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
@@ -39,7 +51,7 @@ app.post('/export-csv', (req, res) => {
   const csvData = req.body.data; // Dữ liệu CSV từ máy khách
 
   // Ghi dữ liệu CSV vào tệp tin
-  fs.writeFileSync('D:\\Workspace\\Doanliennganh\\DALN-DR.Scheduling\\calendar.csv', csvData, 'utf-8');
+  fs.writeFileSync('C:\\Users\\Lenovo\\OneDrive\\OneDrive - Phenikaa\\Desktop\\calendar.csv', csvData, 'utf-8');
 
   // Phản hồi với thông điệp cho máy khách
   res.send('File CSV đã được lưu.');

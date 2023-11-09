@@ -1,120 +1,30 @@
-Phòng 1 đang thiếu 1 bác sĩ trong ca 0
-Bác sĩ Nguyễn Hoài Nam đăng kí nghỉ ca 0 nhưng vẫn được xếp lịch
-Bác sĩ Nguyễn Trường Sơn đăng kí nghỉ ca 0 nhưng vẫn được xếp lịch
-Phòng 3 đang thiếu 1 bác sĩ trong ca 0
-Phòng 5 đang thiếu 1 bác sĩ trong ca 0
-Bác sĩ Vũ Mạnh Hà đăng kí nghỉ ca 0 nhưng vẫn được xếp lịch
-Bác sĩ Vũ Hải Hậu đăng kí nghỉ ca 0 nhưng vẫn được xếp lịch
-Bác sĩ Vũ Hải Hậu không có kinh nghiệm làm phòng 6 ca 0
-Phòng 8 đang thiếu 1 bác sĩ trong ca 0
-Phòng 9 đang thiếu 1 bác sĩ trong ca 0
-Phòng 1 đang thiếu 1 bác sĩ trong ca 1
-Phòng 2 đang thiếu 1 bác sĩ trong ca 1
-Bác sĩ Hoàng Mạnh Hùng đăng kí nghỉ ca 1 nhưng vẫn được xếp lịch
-Phòng 3 đang thiếu 1 bác sĩ trong ca 1
-Phòng 5 đang thiếu 1 bác sĩ trong ca 1
-Phòng 8 đang thiếu 1 bác sĩ trong ca 1
-Phòng 9 đang thiếu 1 bác sĩ trong ca 1
-Bác sĩ Hồng Thu Hà đăng kí nghỉ ca 2 nhưng vẫn được xếp lịch
-Phòng 1 đang thiếu 1 bác sĩ trong ca 2
-Bác sĩ Phạm Thị Thu Hiền đăng kí nghỉ ca 2 nhưng vẫn được xếp lịch
-Phòng 2 đang thiếu 1 bác sĩ trong ca 2
-Phòng 3 đang thiếu 1 bác sĩ trong ca 2
-Bác sĩ Đinh Thị Quỳnh Hương đăng kí nghỉ ca 2 nhưng vẫn được xếp lịch
-Phòng 5 đang thiếu 1 bác sĩ trong ca 2
-Phòng 8 đang thiếu 1 bác sĩ trong ca 2
-Phòng 9 đang thiếu 1 bác sĩ trong ca 2
-Bác sĩ Đỗ Anh Giang đăng kí nghỉ ca 3 nhưng vẫn được xếp lịch
-Bác sĩ Đỗ Anh Giang không có kinh nghiệm làm phòng 1 ca 3
-Phòng 1 đang thiếu 1 bác sĩ trong ca 3
-Phòng 2 đang thiếu 1 bác sĩ trong ca 3
-Phòng 3 đang thiếu 1 bác sĩ trong ca 3
-Bác sĩ Vũ Thái Hòa đăng kí nghỉ ca 3 nhưng vẫn được xếp lịch
-Phòng 5 đang thiếu 1 bác sĩ trong ca 3
-Bác sĩ Nguyễn Thế Phương đăng kí nghỉ ca 3 nhưng vẫn được xếp lịch
-Bác sĩ Nguyễn Thế Phương không có kinh nghiệm làm phòng 8 ca 3
-Phòng 8 đang thiếu 1 bác sĩ trong ca 3
-Phòng 9 đang thiếu 1 bác sĩ trong ca 3
-Phòng 1 đang thiếu 1 bác sĩ trong ca 4
-Phòng 2 đang thiếu 1 bác sĩ trong ca 4
-Phòng 3 đang thiếu 1 bác sĩ trong ca 4
-Phòng 5 đang thiếu 1 bác sĩ trong ca 4
-Phòng 8 đang thiếu 1 bác sĩ trong ca 4
-Phòng 9 đang thiếu 1 bác sĩ trong ca 4
-Bác sĩ Võ Thị Thùy Trang đăng kí nghỉ ca 5 nhưng vẫn được xếp lịch
-Phòng 1 đang thiếu 1 bác sĩ trong ca 5
-Phòng 2 đang thiếu 1 bác sĩ trong ca 5
-Phòng 3 đang thiếu 1 bác sĩ trong ca 5
-Bác sĩ Đặng Trung Hiếu đăng kí nghỉ ca 5 nhưng vẫn được xếp lịch
-Bác sĩ Đặng Trung Hiếu không có kinh nghiệm làm phòng 5 ca 5
-Phòng 5 đang thiếu 1 bác sĩ trong ca 5
-Phòng 8 đang thiếu 1 bác sĩ trong ca 5
-Phòng 9 đang thiếu 1 bác sĩ trong ca 5
-Phòng 1 đang thiếu 1 bác sĩ trong ca 6
-Phòng 2 đang thiếu 1 bác sĩ trong ca 6
-Bác sĩ Lưu Thị Minh Diệp đăng kí nghỉ ca 6 nhưng vẫn được xếp lịch
-Phòng 3 đang thiếu 1 bác sĩ trong ca 6
-Bác sĩ Lê Tú Anh đăng kí nghỉ ca 6 nhưng vẫn được xếp lịch
-Phòng 5 đang thiếu 1 bác sĩ trong ca 6
-Bác sĩ Trần Tuấn Việt đăng kí nghỉ ca 6 nhưng vẫn được xếp lịch
-Bác sĩ Trần Tuấn Việt không có kinh nghiệm làm phòng 6 ca 6
-Phòng 8 đang thiếu 1 bác sĩ trong ca 6
-Phòng 9 đang thiếu 1 bác sĩ trong ca 6
-Phòng 1 đang thiếu 1 bác sĩ trong ca 7
-Phòng 2 đang thiếu 1 bác sĩ trong ca 7
-Bác sĩ Nguyễn Thị Thu Hiền đăng kí nghỉ ca 7 nhưng vẫn được xếp lịch
-Bác sĩ Nguyễn Thị Thu Hiền không có kinh nghiệm làm phòng 3 ca 7
-Phòng 3 đang thiếu 1 bác sĩ trong ca 7
-Bác sĩ Trần Tuấn Anh đăng kí nghỉ ca 7 nhưng vẫn được xếp lịch
-Bác sĩ Trần Tuấn Anh không có kinh nghiệm làm phòng 5 ca 7
-Phòng 5 đang thiếu 1 bác sĩ trong ca 7
-Phòng 8 đang thiếu 1 bác sĩ trong ca 7
-Phòng 9 đang thiếu 1 bác sĩ trong ca 7
-Phòng 1 đang thiếu 1 bác sĩ trong ca 8
-Phòng 2 đang thiếu 1 bác sĩ trong ca 8
-Bác sĩ Phạm Bình Nguyên đăng kí nghỉ ca 8 nhưng vẫn được xếp lịch
-Phòng 3 đang thiếu 1 bác sĩ trong ca 8
-Phòng 5 đang thiếu 1 bác sĩ trong ca 8
-Phòng 8 đang thiếu 1 bác sĩ trong ca 8
-Phòng 9 đang thiếu 1 bác sĩ trong ca 8
-Phòng 1 đang thiếu 1 bác sĩ trong ca 9
-Phòng 2 đang thiếu 1 bác sĩ trong ca 9
-Phòng 3 đang thiếu 1 bác sĩ trong ca 9
-Phòng 5 đang thiếu 1 bác sĩ trong ca 9
-Bác sĩ Thang Văn Năm đăng kí nghỉ ca 9 nhưng vẫn được xếp lịch
-Bác sĩ Thang Văn Năm không có kinh nghiệm làm phòng 6 ca 9
-Bác sĩ Nguyễn Thị Thu Duyên đăng kí nghỉ ca 9 nhưng vẫn được xếp lịch
-Bác sĩ Nguyễn Thị Thu Duyên không có kinh nghiệm làm phòng 8 ca 9
-Phòng 8 đang thiếu 1 bác sĩ trong ca 9
-Bác sĩ Trần Việt Hùng đăng kí nghỉ ca 9 nhưng vẫn được xếp lịch
-Phòng 9 đang thiếu 1 bác sĩ trong ca 9
-Phòng 1 đang thiếu 1 bác sĩ trong ca 10
-Phòng 2 đang thiếu 1 bác sĩ trong ca 10
-Phòng 3 đang thiếu 1 bác sĩ trong ca 10
-Phòng 5 đang thiếu 1 bác sĩ trong ca 10
-Phòng 8 đang thiếu 1 bác sĩ trong ca 10
-Bác sĩ Vũ Công Thắng đăng kí nghỉ ca 10 nhưng vẫn được xếp lịch
-Phòng 9 đang thiếu 1 bác sĩ trong ca 10
-Phòng 1 đang thiếu 1 bác sĩ trong ca 11
-Phòng 2 đang thiếu 1 bác sĩ trong ca 11
-Phòng 3 đang thiếu 1 bác sĩ trong ca 11
-Phòng 5 đang thiếu 1 bác sĩ trong ca 11
-Bác sĩ Lê Ngọc Thanh đăng kí nghỉ ca 11 nhưng vẫn được xếp lịch
-Phòng 8 đang thiếu 1 bác sĩ trong ca 11
-Phòng 9 đang thiếu 1 bác sĩ trong ca 11
-Bác sĩ Kiều Văn Tuấn đăng kí nghỉ ca 12 nhưng vẫn được xếp lịch
-Phòng 1 đang thiếu 1 bác sĩ trong ca 12
-Phòng 2 đang thiếu 1 bác sĩ trong ca 12
-Bác sĩ Đặng Quang Nam đăng kí nghỉ ca 12 nhưng vẫn được xếp lịch
-Phòng 3 đang thiếu 1 bác sĩ trong ca 12
-Phòng 5 đang thiếu 1 bác sĩ trong ca 12
-Phòng 8 đang thiếu 1 bác sĩ trong ca 12
-Bác sĩ Nguyễn Nghệ Tĩnh đăng kí nghỉ ca 12 nhưng vẫn được xếp lịch
-Phòng 9 đang thiếu 1 bác sĩ trong ca 12
-Phòng 1 đang thiếu 1 bác sĩ trong ca 13
-Phòng 2 đang thiếu 1 bác sĩ trong ca 13
-Phòng 3 đang thiếu 1 bác sĩ trong ca 13
-Bác sĩ Nguyễn Thị Phương đăng kí nghỉ ca 13 nhưng vẫn được xếp lịch
-Phòng 5 đang thiếu 1 bác sĩ trong ca 13
-Phòng 8 đang thiếu 1 bác sĩ trong ca 13
-Phòng 9 đang thiếu 1 bác sĩ trong ca 13
+Bác sĩ Kiều Văn Tuấn đang làm việc ở nhiều hơn hai phòng trong ca 1--> (Bác sĩ Kiều Văn Tuấn đang làm ở phòng 0, phòng 9 )
+Bác sĩ Lưu Thị Minh Diệp đang làm việc ở nhiều hơn hai phòng trong ca 0--> (Bác sĩ Lưu Thị Minh Diệp đang làm ở phòng 0, phòng 3 )
+Bác sĩ Lưu Thị Minh Diệp không có kinh nghiệm làm phòng 0 ca 0
+phòng 8 đang thiếu 2 bác sĩ trong ca 0
+Bác sĩ Kiều Văn Tuấn đăng kí nghỉ ca 0 nhưng vẫn được xếp lịch
+Bác sĩ Vũ Mạnh Hà đăng kí nghỉ ca 1 nhưng vẫn được xếp lịch
+phòng 8 đang thiếu 2 bác sĩ trong ca 1
+phòng 8 đang thiếu 2 bác sĩ trong ca 2
+phòng 8 đang thiếu 2 bác sĩ trong ca 3
+phòng 8 đang thiếu 2 bác sĩ trong ca 4
+phòng 8 đang thiếu 2 bác sĩ trong ca 5
+phòng 8 đang thiếu 2 bác sĩ trong ca 6
+phòng 8 đang thiếu 2 bác sĩ trong ca 7
+phòng 8 đang thiếu 2 bác sĩ trong ca 8
+Bác sĩ Trần Tuấn Việt đăng kí nghỉ ca 9 nhưng vẫn được xếp lịch
+phòng 8 đang thiếu 1 bác sĩ trong ca 9
+phòng 8 đang thiếu 2 bác sĩ trong ca 10
+Bác sĩ Trần Việt Hùng đăng kí nghỉ ca 11 nhưng vẫn được xếp lịch
+phòng 8 đang thiếu 1 bác sĩ trong ca 11
+phòng 8 đang thiếu 2 bác sĩ trong ca 12
+phòng 0 đang thiếu 2 bác sĩ trong ca 13
+phòng 1 đang thiếu 3 bác sĩ trong ca 13
+phòng 2 đang thiếu 3 bác sĩ trong ca 13
+phòng 3 đang thiếu 3 bác sĩ trong ca 13
+phòng 4 đang thiếu 3 bác sĩ trong ca 13
+phòng 5 đang thiếu 3 bác sĩ trong ca 13
+phòng 6 đang thiếu 2 bác sĩ trong ca 13
+phòng 7 đang thiếu 1 bác sĩ trong ca 13
+phòng 8 đang thiếu 4 bác sĩ trong ca 13
+phòng 9 đang thiếu 2 bác sĩ trong ca 13

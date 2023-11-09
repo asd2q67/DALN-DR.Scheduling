@@ -16,21 +16,23 @@ import WorkAssignment from "./scenes/workAssignment";
 
 function App() {
   const [theme, colorMode] = useMode();
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const [isSidebar, setIsSidebar] = useState(true);
+  const [updateCheck, setUpdateCheck] = useState(false);
  
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <Sidebar isSidebar={isSidebar}/>
+          <Sidebar isSidebar={isSidebar} isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed}/>
           <main className="content">
-            <Topbar setIsSidebar={setIsSidebar}/>
+            <Topbar setIsSidebar={setIsSidebar} updateCheck={updateCheck} setUpdateCheck={setUpdateCheck}/>
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/doctor" element={<Doctor />} />
               <Route path="/create_doctor" element={<CreateDoctor />} />
-              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/calendar" element={<Calendar isCollapsed={isCollapsed} updateCheck={updateCheck} setUpdateCheck={setUpdateCheck}/>} />
               <Route path="/room" element={<Room />} />
               <Route path="/create_room" element={<CreateRoom />} />
               <Route path="/demand" element={<Demand />} />

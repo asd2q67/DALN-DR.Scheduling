@@ -1,7 +1,16 @@
 import axios from "axios";
-import { API_BASE_URL } from "./config";
+import { API_BASE_URL, API_NODE_URL } from "./config";
 
 
+export const fetchServerAPI = async (endpoint) => {
+  try {
+    const response = await axios.get(`${API_NODE_URL}${endpoint}`);
+    // console.log(111, response);
+    return response.data;
+  } catch (error) {
+    throw error; // Handle errors in the component where the function is used
+  }
+};
 // Function to fetch data from the API using GET request
 export const fetchDataFromAPI = async (endpoint) => {
   try {

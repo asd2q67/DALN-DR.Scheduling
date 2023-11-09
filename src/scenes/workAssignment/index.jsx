@@ -65,6 +65,7 @@ const WorkAssignment = () => {
 
       // Hiển thị modal chỉnh sửa với thông tin của bản ghi được chọn
       setSelectedRowData(selectedRow);
+      console.log(555, selectedRowData);
       setIsModalOpen(true);
     } catch (error) {
       console.error("Error during fetch:", error);
@@ -78,7 +79,7 @@ const WorkAssignment = () => {
         `/assignment_update.php?id=${updatedData.id}`,
         updatedData
       );
-      console.log(`Successfully updated room with ID ${updatedData.id}`);
+      console.log(updatedData);
       const updatedWorkAssignments = await fetchDataFromAPI("/work_detail.php");
       setWorkAssignments(updatedWorkAssignments);
     } catch (error) {
@@ -88,7 +89,7 @@ const WorkAssignment = () => {
 
   useEffect(() => {
     // Gọi API để lấy chi tiết các phòng và cập nhật vào state roomData
-    const fetchroomData = async () => {
+    const fetchRoomData = async () => {
       try {
         const response = await fetchDataFromAPI("/room_detail.php");
         // console.log("room", response);
@@ -117,7 +118,7 @@ const WorkAssignment = () => {
       }
     };
 
-    fetchroomData();
+    fetchRoomData();
     fetchDoctorDetails();
     fetchWorkAssignments();
   }, []);
@@ -165,7 +166,7 @@ const WorkAssignment = () => {
       flex: 1,
       valueGetter: (params) => {
         // console.log(555, params.row);
-        const shift = parseInt(params.row.session) % 2 === 1 ? "Sáng" : "Chiều";
+        const shift = parseInt(params.row.session) % 2 === 0 ? "Sáng" : "Chiều";
         return shift ? shift : "";
       },
     },

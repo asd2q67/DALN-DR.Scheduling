@@ -39,10 +39,10 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-const Sidebar = () => {
+const Sidebar = ({isSideBar, isCollapsed, setIsCollapsed}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  // const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const location = useLocation();
 
@@ -61,8 +61,6 @@ const Sidebar = () => {
       setSelected("Demand");
     } else if (currentPath === "/calendar") {
       setSelected("Calendar");
-    } else if (currentPath === "/?") {
-      setSelected("?");
     }
     // Add more conditions as needed for other routes
   }, [location.pathname]);
@@ -95,13 +93,6 @@ const Sidebar = () => {
           color: "#6870fa !important",
         },
       }}
-      style={
-        {
-          // position: "fixed",
-          // top: 0,
-          // left: 0,
-        }
-      }
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
@@ -230,27 +221,6 @@ const Sidebar = () => {
               title="Calendar"
               to="/calendar"
               icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="?"
-              to="/?"
-              icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />

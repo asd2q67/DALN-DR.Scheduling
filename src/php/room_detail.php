@@ -18,9 +18,10 @@ if ($mysqli->connect_error) {
 function generateCSV($mysqli)
 {
     // Build the SQL query to select data from room_detail and demand tables
-    $query = "SELECT rd.id AS roomID, rd.load AS heavy, d.demand1, d.demand2
-              FROM room_detail rd
-              JOIN demand d ON rd.id = d.`room-id`";
+    $query = "SELECT CASE WHEN rd.id > 0 THEN rd.id - 1 ELSE rd.id END AS roomID, rd.load AS heavy, d.demand1, d.demand2
+    FROM room_detail rd
+    JOIN demand d ON rd.id = d.`room-id`";
+
 
     // Execute the query
     $result = $mysqli->query($query);

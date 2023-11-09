@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Select, Table, Tag, Tooltip } from "antd";
+import { Button, Select, Table, Tag, Tooltip, notification } from "antd";
 import { tokens } from "../../theme";
 import dayjs from "dayjs";
-import { fetchDataFromAPI } from "../../data/api";
+import { fetchDataFromAPI, fetchServerAPI } from "../../data/api";
 import Header from "../../components/Header";
 import "./styles.css";
 import { Box, Button as Btn, useTheme } from "@mui/material";
@@ -10,7 +10,7 @@ import { Modal } from "antd";
 import { EditOutlined } from "@mui/icons-material";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 
-const Calendar = ({ isCollapsed }) => {
+const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -29,6 +29,7 @@ const Calendar = ({ isCollapsed }) => {
   const [selectedDoctor, setSelectedDoctor] = useState(undefined);
   const [assignDoctors, setAssignDoctors] = useState({});
   const [initialState, setInitialState] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   // const { exec } = require("child_process");
 
@@ -36,7 +37,7 @@ const Calendar = ({ isCollapsed }) => {
   const daysPerWeek = 7;
 
   // Ngày bắt đầu (30/10/2023 là một ngày thứ Hai)
-  const startDate = dayjs("2023-10-30");
+  const startDate = dayjs("2023-11-6");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,11 +53,7 @@ const Calendar = ({ isCollapsed }) => {
         }
         // Kiểm tra xem có dữ liệu phòng hay không
         if (rmData.length > 0) {
-          const response = await fetch("http://localhost:3001/api/data");
-          const jsonData = await response.json();
-
-          // Chuyển đổi dữ liệu từ API để phù hợp với DataGrid và ghép thông tin phòng vào lịch trình
-
+          const response = await fetchServerAPI("/api/data");
           const roomMap = rmData.reduce((acc, room, index) => {
             const roomKey = (index + 1).toString();
             acc[roomKey] = room.name;
@@ -90,7 +87,7 @@ const Calendar = ({ isCollapsed }) => {
 
           // console.log(6666, assignMap);
 
-          const formattedData = jsonData.map((day, index) => {
+          const formattedData = response.map((day, index) => {
             const Key = (index + 1).toString();
             const roomName = roomMap[Key] || "";
             // console.log(666, drData);
@@ -133,7 +130,7 @@ const Calendar = ({ isCollapsed }) => {
           // console.log(1234, initialState);
 
           setLoading(false);
-          // console.log("Data from API:", jsonData);
+          // console.log("Data from API:", response);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -144,22 +141,37 @@ const Calendar = ({ isCollapsed }) => {
 
     fetchData();
   }, [roomData]); // Thêm roomData vào dependency array để useEffect chỉ chạy khi roomData thay đổi
-  // console.log(999, initialState);
-  const dayOfWeekInVietnamese = {
-    Monday: "Thứ 2",
-    Tuesday: "Thứ 3",
-    Wednesday: "Thứ 4",
-    Thursday: "Thứ 5",
-    Friday: "Thứ 6",
-    Saturday: "Thứ 7",
-    Sunday: "Chủ Nhật",
-  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await Promise.all([fetchServerAPI("/api/noti")]);
+        setNotifications(res);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [updateCheck]);
+
+  // const dayOfWeekInVietnamese = {
+  //   Monday: "Thứ 2",
+  //   Tuesday: "Thứ 3",
+  //   Wednesday: "Thứ 4",
+  //   Thursday: "Thứ 5",
+  //   Friday: "Thứ 6",
+  //   Saturday: "Thứ 7",
+  //   Sunday: "Chủ Nhật",
+  // };
 
   const dayColumns = Array.from({ length: daysPerWeek }, (_, dayIndex) => {
     const dayName = dayjs(startDate).add(dayIndex, "day").format("dddd"); // Use startDate to calculate dayName
+    // console.log(777, dayName);
     const dayColumn = {
       field: `day-${dayName}`, // Use dayName in the field name
-      headerName: `${dayOfWeekInVietnamese[dayName]} (${startDate
+      headerName: `${dayName} (${startDate
         .add(dayIndex, "day")
         .format("DD/MM/YYYY")})`, // Use dayName and formatted date in the header
       width: 300, // Width of the day column
@@ -206,17 +218,22 @@ const Calendar = ({ isCollapsed }) => {
       dataIndex: "room",
       key: "room",
       width: 100,
+      fixed: "left",
       onHeaderCell: () => ({
         //phòng
         style: {
-          backgroundColor: "#00C8FF",
+          backgroundColor: "#753AD5",
           color: colors.primary[500],
         },
       }),
       render: (room) => (
         <div
           style={{
+            height: "100%",
+            width: "100%",
+            padding: 0,
             color: colors.primary[500],
+            backgroundColor: "#753AD5",
             fontWeight: "bold",
           }}
         >
@@ -232,7 +249,7 @@ const Calendar = ({ isCollapsed }) => {
         key: shiftCol.field,
         width: 100,
         render: (doctors, record) => {
-          // console.log(8888, record);
+          // console.log(8888, shiftCol);
           return (
             <div
               id={`${shiftCol.shift}`}
@@ -320,7 +337,7 @@ const Calendar = ({ isCollapsed }) => {
   };
 
   const convertData = (data) => {
-    console.log(666, typeof data, data);
+    // console.log(666, typeof data, data);
     const doctorMap = doctorData.reduce((acc, doctor, index) => {
       const Key = index.toString();
       acc[Key] = doctor.Name;
@@ -350,6 +367,7 @@ const Calendar = ({ isCollapsed }) => {
     }
     headerRow = headerRow.slice(0, -1);
     const finalData = [headerRow, ...convertedData];
+    // console.log(999, headerRow);
     // console.log(777, finalData.join("\n"));
     return finalData.join("\n");
   };
@@ -400,6 +418,25 @@ const Calendar = ({ isCollapsed }) => {
       console.error("Lỗi khi gửi yêu cầu tới máy chủ:", error);
     }
   };
+  const handleRunChecker = async () => {
+    const response = await fetch("http://localhost:5000/calendar-checker", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data); // Hiển thị dữ liệu trả về từ API
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    setTimeout(() => {
+      setUpdateCheck(true);
+    }, 1500);
+  };
 
   const handleFormSubmit = () => {
     if (selectedDoctor && selectedCell !== null && roomId !== null) {
@@ -428,6 +465,7 @@ const Calendar = ({ isCollapsed }) => {
       const csvData = convertData(calendarData);
       saveToServer(csvData);
       // console.log(999, initialState);
+      handleRunChecker();
     }
   };
 
@@ -472,19 +510,19 @@ const Calendar = ({ isCollapsed }) => {
 
     // Tạo dòng tiêu đề
     let headerRow = "\ufeffPhòng,";
-    for (let i = 3; i <= doctorData.length + 2; i++) {
+    for (let i = 3; i <= 16; i++) {
       const shiftType = i % 2 === 0 ? "Chiều" : "Sáng"; // Sáng thứ 2 đến chiều Chủ nhật
       const day = Math.ceil(i / 2);
       const dayIndex = day === 8 ? "Chủ nhật" : `thứ ${day}`;
       headerRow += `${shiftType} ${dayIndex},`;
     }
     headerRow = headerRow.slice(0, -1);
+    console.log(1111, headerRow);
 
     csvRows.push(headerRow);
 
     // Tạo các dòng dữ liệu
     calendarData.forEach((roomCalendar) => {
-      console.log(1111, roomCalendar);
       let csvRow = "";
       csvRow += `${roomCalendar.room},`;
       for (let i = 0; i <= 13; i++) {
@@ -638,16 +676,19 @@ const Calendar = ({ isCollapsed }) => {
       .catch((error) => {
         console.error("Error:", error);
       });
+    handleRunChecker();
   };
 
   useEffect(() => {
     console.log(1000, isCollapsed);
   }, [initialState, isCollapsed]);
+
   const cancelChanges = () => {
     // console.log(5555, initialState);
     const csvData = convertData(initialState);
     console.log(666, csvData);
     saveToServer(csvData);
+    handleRunChecker();
     window.location.reload();
   };
 
@@ -729,6 +770,9 @@ const Calendar = ({ isCollapsed }) => {
   return (
     <div style={{ margin: "20px" }}>
       {/* {console.log(2222, calendarData)} */}
+      {/* <div className={`custom-alert ${updateCheck ? "" : "hide-alert"}`}>
+        {notifications[0]}
+      </div> */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="CALENDAR" subtitle="Lịch làm việc trong tháng" />
         <Box>

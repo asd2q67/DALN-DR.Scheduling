@@ -9,6 +9,7 @@ from solution import Solution
 from Solver import Solver
 
 
+
 if __name__ == '__main__':
     data : Data= read_input()
     solver = Solver (data)
@@ -24,24 +25,18 @@ if __name__ == '__main__':
     # data.display_stats()
     # print (data.workLoad)
     # solver.build_initial_solution(solver.best_solution)
+    solver.schedule()
     # print (solver.room_weights)
     # print (data.workLoad)
+    solver.best_solution.statis()
+    solver.best_solution.export_by_doctor()
 
-    # solver.schedule()
-    # solver.best_solution.statis()
-    # solver.best_solution.export_solution()
-
+    solver.best_solution.export_solution()
     # print (solver.current_solution.dump)
-
     # export_solution()
 
-    print (data.l_doctors[0].name)
+    # print (data.workLoad)
+
+    # print(solver.best_solution.room_weights)
   
-
-    # print ("--------------------")
-
-    # print (export_solution(solver.solution.schedule_matrix))
-
-
-
 

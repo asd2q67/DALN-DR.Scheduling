@@ -91,10 +91,10 @@ def read_input () -> Data:
             room_ol.append(int (row[1]))
             day_ol.append(int (row[2]))
 
-            if (int(row[0]) not in ol[int(row[1])]):
-                ol[int (row[1])].append(int (row[0]))
+            if (int(row[0]) not in ol[int(row[2])]):
+                ol[int (row[2])].append(int (row[0]))
             else :
-                ol[int (row[1])] = int (row[0])
+                ol[int (row[2])] = int (row[0])
 
             
 

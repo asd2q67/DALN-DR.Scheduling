@@ -32,7 +32,7 @@ class Checker :
         for doctor in range(self.data.get_num_doctors()):
             for d in range (self.data.horizon):
                 if (len (self.solution.doctor_analysis[doctor][d]) > 1) :
-                    f.write("Bác sĩ {} đang làm việc ở nhiều hơn hai phòng trong ca {}--> (Bác sĩ {} đang làm ở {})\n".format(self.data.l_doctors[doctor].name, d, self.data.l_doctors[doctor].name, self.solution.doctor_analysis[doctor][d]))
+                    f.write("Bác sĩ {} đang làm việc ở nhiều hơn hai phòng trong ca {}--> (Bác sĩ {} đang làm ở {} )\n".format(self.data.l_doctors[doctor].name,d,self.data.l_doctors[doctor].name,", ".join("phòng {}".format(room) for room in self.solution.doctor_analysis[doctor][d])))
 
         ' Check Skill is fit or not'
         for d in range (self.data.horizon):
@@ -49,10 +49,10 @@ class Checker :
 
 
                 num_doctor_in_room = len(self.solution.solution[r][d])
-                demand = self.data.l_rooms[r].demand1 + self.data.l_rooms[r].demand1 
+                demand = self.data.l_rooms[r].demand1 + self.data.l_rooms[r].demand2
 
                 if (demand > num_doctor_in_room) :
-                    f.write("Phòng {} đang thiếu {} bác sĩ trong ca {}\n".format(r, demand -num_doctor_in_room, d))
+                    f.write("phòng {} đang thiếu {} bác sĩ trong ca {}\n".format(r, demand -num_doctor_in_room, d))
 
                 
 
@@ -105,3 +105,8 @@ class Checker :
                 return level
             else:
                 return -1
+    def print_demand(self):
+        for r in range (self.data.get_num_rooms()):
+            for d in range (self.data.horizon):
+                print (self.solution.solution[r][d]," ",end="")
+            print()

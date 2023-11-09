@@ -57,7 +57,7 @@ const Demand = () => {
     };
 
     fetchData();
-  }, []);
+  }, [demandData]);
 
   const handleRowClick = (params) => {
     const selectedId = params.row.id;
