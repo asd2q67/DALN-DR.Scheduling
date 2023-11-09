@@ -92,14 +92,19 @@ def read_input () -> Data:
     with open(path3, 'r', encoding="utf-8") as file3:
         reader = csv.reader(file3)
         next(reader, None)
-        for row in reader:       
-            room_ol.append(int (row[1]))
-            day_ol.append(int (row[2]))
+        for row in reader:     
+            
+            if (int(row[1]) != -1) and (int(row[2]) !=1):   
+                room_ol.append(int (row[1]))
+                day_ol.append(int (row[2])) 
+            else:
+                room_ol.append(-1)
+                day_ol.append(-1) 
 
-            if (int(row[0]) not in ol[int(row[2])]):
-                ol[int (row[2])].append(int (row[0]))
-            else :
-                ol[int (row[2])] = int (row[0])
+
+
+        
+
 
             
 

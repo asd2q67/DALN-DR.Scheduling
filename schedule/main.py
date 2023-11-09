@@ -17,7 +17,8 @@ if __name__ == '__main__':
     # print (data.get_num_doctors())
     # print (data.get_num_rooms())
 
-    # print(data.day_off)
+    # print(data.day_ol)
+    # print()
     # print (data.orizon)
     # print (data.get_num_demands())
     # print (data.l_doctors[0].name)

@@ -41,7 +41,7 @@ class Checker :
                 for doctorID in self.solution.solution[r][d]:
                     if (self.check_off(d,doctorID) == 1) :
 
-                        f.write ("Bác sĩ {} đăng kí nghỉ ca {} nhưng vẫn được xếp lịch\n".format(self.data.l_doctors[doctorID].name,d))
+                        f.write ("Bác sĩ {} đăng kí nghỉ ca {} nhưng vẫn được xếp lịch\n".format(self.data.l_doctors[doctorID].doctorId,d))
 
                     if (self.check_skill (self.data.l_doctors[doctorID],r) == 0) :
                         print ("Bác sĩ {} không có kinh nghiệm làm phòng {} ca {}\n".format(self.data.l_doctors[doctorID].name, r, d))

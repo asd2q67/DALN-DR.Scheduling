@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\cheker')
+sys.path.insert(0,'F:\Document\DALN\DALN1\DALN-DR.Scheduling\cheker')
 from Data_checker import Data
 import csv
 from Doctor_checker import Doctor
@@ -17,7 +17,7 @@ def read_input_checker () -> Data:
     workLoad = []
 
 
-    path = 'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\instance-generator\\'
+    path = 'F:\Document\DALN\DALN1\DALN-DR.Scheduling\instance-generator\\'
 
     path4 =  path + 'Workload.csv'
 
@@ -87,8 +87,12 @@ def read_input_checker () -> Data:
         reader = csv.reader(file3)
         next(reader, None)
         for row in reader:       
-            room_ol.append(int (row[1]))
-            day_ol.append(int (row[2]))
+            if (int(row[1]) != -1) and (int(row[2]) !=1):   
+                room_ol.append(int (row[1]))
+                day_ol.append(int (row[2])) 
+            else:
+                room_ol.append(-1)
+                day_ol.append(-1) 
 
     
 

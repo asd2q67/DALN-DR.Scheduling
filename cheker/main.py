@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\cheker')
+sys.path.insert(0,'F:\Document\DALN\DALN1\DALN-DR.Scheduling\cheker')
 
 from Data_checker import Data
 from Room_checker import Room
@@ -17,16 +17,16 @@ if __name__ == '__main__':
     checker = Checker(data)
     checker.solution.read_solution()
 
+    # checker.check()
+
+    # day_list = ['ca{}'.format(i) for i in range(data.horizon)]
+
+    # df = pd.DataFrame(checker.solution.solution, columns=day_list)
+    # print (df)
+
+    # print ("\n")
     checker.check()
-
-    day_list = ['ca{}'.format(i) for i in range(data.horizon)]
-
-    df = pd.DataFrame(checker.solution.solution, columns=day_list)
-    print (df)
-
-    print ("\n")
-    checker.check()
-    checker.print_demand()
+    # checker.print_demand()
     # print (data.day_off)
 
 
