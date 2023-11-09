@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\cheker')
+sys.path.insert(0,'F:\Document\DALN\DALN1\DALN-DR.Scheduling\cheker')
 
 from Data_checker import Data
 from Room_checker import Room

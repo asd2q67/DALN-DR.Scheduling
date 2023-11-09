@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, 'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\cheker')
+sys.path.insert(0, 'F:\Document\DALN\DALN1\DALN-DR.Scheduling\cheker')
 from Data_checker import Data
 from Room_checker import Room
 from Doctor_checker import Doctor
@@ -16,7 +16,7 @@ class Solution :
 
     def read_solution (self) :
 
-        path = 'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\solution.csv'
+        path = 'F:\Document\DALN\DALN1\solution.csv'
 
         with open (path, 'r') as file :
             reader = csv.reader(file)
