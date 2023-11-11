@@ -6,12 +6,13 @@ import pandas as pd
 
 class Solution :
     def __init__(self, data : Data):
-        self.data = data
+        self.data = copy.deepcopy(data)
         self.schedule_matrix = [[[] for i in range (data.horizon)] for i in range (data.get_num_rooms())]
 
-        # self.night_shift = [[] for i in range (data.horizon/2)]
-        self.room_weights = copy.deepcopy(self.data.workLoad) 
+        self.sum_supply1 = [[0 for i in range (self.data.horizon)] for j in range (self.data.get_num_rooms())]
+        self.sum_supply2 = [[0 for i in range (self.data.horizon)] for j in range (self.data.get_num_rooms())]
 
+        self.room_weights = [row[:] for row in self.data.workLoad]
         # save list patient can not be assigned for each day
         self.dump = [[] for i in range (int(data.horizon/2))] 
 
@@ -22,8 +23,9 @@ class Solution :
 
         self.available_room = [[] for d in range (self.data.horizon)]
 
-        
+        self.demand_cost = -1
 
+        # self.obj = -1
 
 
     def update_matrix (self, doctor_id , dateID, roomID):
@@ -43,7 +45,8 @@ class Solution :
             possible_rooms.sort()
             
             init_weight = self.data.workLoad[doctor.doctorId]
-            solution_weights = self.room_weights[doctor.doctorId]
+            # solution_weights = self.room_weights[doctor.doctorId]
+            solution_weights = doctor.work_load
 
             f.write ("{:<7}{:>25}{:>35}{:>35}{:>35}\n".format(doctor.doctorId, doctor.name, str(possible_rooms), str(init_weight), str(solution_weights)))
 
@@ -52,6 +55,7 @@ class Solution :
 
         df = pd.DataFrame(self.schedule_matrix, columns=day_list)
         df.to_csv('solution.csv', index=False)
+        df.to_csv('solution_backup.csv', index=False)
         print (df)
 
     def export_by_doctor (self):
@@ -70,39 +74,82 @@ class Solution :
 
         df = pd.DataFrame(doctor_analysis, columns=day_list)
         df.to_csv('doctor_calendar.csv', index=False)
+        df.to_csv('doctor_calendar_backup.csv', index=False)
         print (df)
                 
 
-    def cal_max_min (self):
+    def cal_obj (self):
         for doctorID in range (self.data.get_num_doctors()):
             self.max_min[doctorID] = max (self.room_weights[doctorID]) - min(self.room_weights[doctorID])
 
-    def delete_doctor (self, doctorID, roomID, day):
-        self.deleted_doctor[day].append(doctorID)
+        'calculate room_not_full cost'
 
-        self.schedule_matrix[roomID][day].remove(doctorID)
+        total_supply = self.cal_sum(self.sum_supply1) + self.cal_sum(self.sum_supply2)
+        total_demand = self.cal_total_demand() * self.data.horizon
+
+        self.demand_cost = (total_demand - total_supply) * 1000
+
+        print (self.demand_cost, total_supply - total_demand)
+    
+    def reset_shift (self, shift):
+        for room in range (self.data.get_num_rooms()):
+            self.schedule_matrix[room][shift] = []
+        
+
+    def delete_doctor (self, doctorID, roomID, day):
+        # self.deleted_doctor[day].append(doctorID)
+
+        # self.schedule_matrix[roomID][day].remove(doctorID)
         self.room_weights[doctorID][roomID] -= self.data.l_rooms[roomID].heavy
 
         self.max_min[doctorID] = max (self.room_weights[doctorID]) - min(self.room_weights[doctorID])
 
-        self.available_room[day].append(roomID)
-        self.update_obj()
+        # if (roomID not in self.available_room[day]):
+        #     self.available_room[day].append(roomID)
 
-    def insert_doctor (self, doctorID, roomID, day):
-        self.deleted_doctor[day].remove(doctorID)
+        # self.cal_obj()
+        
 
-        self.update_matrix(doctorID,day,roomID)
-        self.room_weights[doctorID][roomID] += self.data.l_rooms[roomID].heavy
+    def update_supply (self, shift):
+        for r in range (self.data.get_num_rooms()):
+            self.sum_supply1[r][shift] = 0
+            self.sum_supply2[r][shift] = 0
+        self.cal_obj()
+        
+
+    def insert_doctor (self, doctorID, roomID, shift):
+        self.deleted_doctor[shift].remove(doctorID)
+
+        # self.update_matrix(doctorID,day,roomID)
+        # self.room_weights[doctorID][roomID] += self.data.l_rooms[roomID].heavy
         self.max_min[doctorID] = max (self.room_weights[doctorID]) - min(self.room_weights[doctorID])
 
-        self.update_obj()
+        # self.cal_obj()
 
-    def update_obj (self):
-        self.cal_max_min()
-        # self.obj = sum(self.max_min)
 
     def get_obj (self):
         obj = sum(self.max_min)
+
+        obj += self.demand_cost
+
         return obj
+
+    def cal_sum (self, A):
+
+        sum = 0
+        for i in range (len(A)):
+            for j in range (len(A[0])):
+                sum += A[i][j]
+        return sum
+    
+    def cal_total_demand (self):
+
+        sum = 0
+        for room in self.data.l_rooms:
+            sum += room.demand1 
+            sum += room.demand2
+
+        return sum
+
 
 

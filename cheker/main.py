@@ -14,6 +14,7 @@ def export_by_doctor (checker : Checker):
 
     df = pd.DataFrame(checker.solution.doctor_analysis, columns=day_list)
     df.to_csv('doctor_calendar.csv', index=False)
+    df.to_csv('doctor_calendar_bk.csv', index=False)
     print (df)
 
 
@@ -28,10 +29,10 @@ if __name__ == '__main__':
     
     checker.check()
 
-    # day_list = ['ca{}'.format(i) for i in range(data.horizon)]
+    day_list = ['ca{}'.format(i) for i in range(data.horizon)]
 
-    # df = pd.DataFrame(checker.solution.solution, columns=day_list)
-    # print (df)
+    df = pd.DataFrame(checker.solution.solution, columns=day_list)
+    print (df)
 
     # print ("\n")
     # checker.check()

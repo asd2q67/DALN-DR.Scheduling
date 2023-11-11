@@ -4,6 +4,7 @@ from Data import Data
 import csv
 from Doctor import Doctor
 from Room import Room
+import copy
 
 num_day = 14
 
@@ -55,7 +56,7 @@ def read_input () -> Data:
                 elif (int(row[i]) == 2):
                     level2.append(i - 2)
         
-            d = Doctor(int(row[0]), row[1], level1, level2, workLoad[count])
+            d = Doctor(int(row[0]), row[1], level1, level2,copy.deepcopy(workLoad[count]) )
             l_doctors.append(d)
             count += 1
     
@@ -77,6 +78,8 @@ def read_input () -> Data:
         reader = csv.reader(file3)
         next(reader, None)
         for row in reader :
+            if (int(row[1]) == -1) :
+                continue
             if (int(row[0]) not in off[int(row[1])] ):
                 off[int (row[1])].append(int (row[0]))
             else :
@@ -97,8 +100,5 @@ def read_input () -> Data:
             else :
                 ol[int (row[1])] = int (row[0])
 
-            
-
-    
 
     return Data(l_doctors, l_rooms, off, day_ol, room_ol, workLoad)

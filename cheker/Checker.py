@@ -49,7 +49,7 @@ class Checker :
 
 
                 num_doctor_in_room = len(self.solution.solution[r][d])
-                demand = self.data.l_rooms[r].demand1 + self.data.l_rooms[r].demand1 
+                demand = self.data.l_rooms[r].demand1 + self.data.l_rooms[r].demand2 
 
                 if (demand > num_doctor_in_room) :
                     f.write("Phòng {} đang thiếu {} bác sĩ trong ca {}\n".format(r, demand -num_doctor_in_room, d))

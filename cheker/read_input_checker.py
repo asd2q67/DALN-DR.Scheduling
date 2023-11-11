@@ -74,6 +74,8 @@ def read_input_checker () -> Data:
         next(reader, None)
         id = 0
         for row in reader :
+            if (int(row[1]) == -1) :
+                continue
             if (int(row[0]) not in off[int(row[1])] ):
                 off[int (row[1])].append(int (row[0]))
             else :

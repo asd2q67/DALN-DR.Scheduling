@@ -26,7 +26,7 @@ class Solution :
             for row in reader :
                 
                 for i in range (len(row )):    
-                    if (i == 0) : continue
+                    # if (i == 0) : continue
                     # print (row[i])
-                    self.solution[count][i - 1] = json.loads(row[i])
+                    self.solution[count][i ] = json.loads(row[i])
                 count +=1 
