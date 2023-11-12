@@ -10,7 +10,7 @@ from Room import Room
 from solution import Solution
 from typing import List
 import random 
-
+random.seed(0)
 class Solver:
     def __init__(self, data : Data):
         self.data: Data = data
@@ -36,21 +36,34 @@ class Solver:
             self.temp_solution = copy.deepcopy(self.current_solution)
             self.temp_solution.cal_obj()
 
-            print (iter, self.temp_solution.get_obj())
+            # print (iter, self.temp_solution.get_obj())
+            # print ("Before destroy : ")
+            # for i in range(len(self.temp_solution.total_workLoad)):
+                # print (i, self.temp_solution.total_workLoad[i])
+
             self.destroy(self.temp_solution)
-
-
             self.temp_solution.cal_obj()
-            print (iter,self.temp_solution.get_obj())
+            # self.temp_solution.export_solution()
+            # print ("After destroy : ")
+            # for i in range(len(self.temp_solution.total_workLoad)):
+                # print (i, self.temp_solution.total_workLoad[i])
+
+
+            
+            # print (iter,self.temp_solution.get_obj())
 
             self.repair (self.temp_solution)
-
             self.temp_solution.cal_obj()
-            print ("after repair", iter, self.temp_solution.get_obj())
+            # self.temp_solution.export_solution()
+            # for i in range(len(self.temp_solution.total_workLoad)):
+                # print (i, self.temp_solution.total_workLoad[i])
+
+            
+            # print ("after repair", iter, self.temp_solution.get_obj())
 
 
-            print (iter, self.temp_solution.get_obj())
-            self.temp_solution.export_solution()
+            # print (iter, self.temp_solution.get_obj())
+            # self.temp_solution.export_solution()
 
             'add threshold'
             if (self.temp_solution.get_obj() < self.current_solution.get_obj()) :
@@ -59,7 +72,7 @@ class Solver:
                 if (self.current_solution.get_obj() < self.best_solution.get_obj()) :
                     self.best_solution = copy.deepcopy (self.current_solution)
 
-                    print ("\n Best solution obj : ")
+                    print ("\n Best solution obj found: ")
                     print (self.best_solution.get_obj())
 
         # print ("\n FINALL OBJ : ")
@@ -68,38 +81,38 @@ class Solver:
     def destroy (self, s : Solution):
         # random choose a day 
         self.chosen_shifts = []
-        # num_chosen_shift = random.randint(4,9)
-        num_chosen_shift = 3
+        num_chosen_shift = random.randint(1,4)
+        # num_chosen_shift = 1
         count = 0
         while (count < num_chosen_shift ):
             shift = random.randint(0, self.data.horizon-1)
+            # print ("CHOSEN shift : ", shift)
 
             if (shift not in self.chosen_shifts):
-                self.chosen_shifts.append(shift)
+                
                 if (shift % 2 == 0) :
+                    self.chosen_shifts.append(shift)
                     self.chosen_shifts.append(shift + 1)
                 else:
                     self.chosen_shifts.append(shift - 1)
+                    self.chosen_shifts.append(shift)
                 count += 1
         
-        for chosen_shift in self.chosen_shifts : 
+        for shift in self.chosen_shifts : 
             removed_doctor = []
             list_doctors_today = []
 
             #get list doctor work that day
             for r in range  (self.data.get_num_rooms()):
                 # print ("{},{}".format(chosen_shift,r))
-                list_doctors_today += (s.schedule_matrix[r][chosen_shift])
+                list_doctors_today += (s.schedule_matrix[r][shift])
                 # print (list_doctors_today)
 
-            num_deleted_doctor = len (list_doctors_today)
-
-
             for doctorId in list_doctors_today:
-                roomid = self.which_room_is_assigned(doctorId, chosen_shift,s)
-                s.delete_doctor(doctorId,roomid,chosen_shift)
-            s.reset_shift(chosen_shift)
-            s.update_supply(chosen_shift)
+                roomid = self.which_room_is_assigned(doctorId, shift,s)
+                s.delete_doctor(doctorId,roomid,shift)
+            s.reset_shift(shift)
+            s.update_supply(shift)
             
 
     def repair (self, s: Solution):
@@ -121,6 +134,10 @@ class Solver:
                     check = self.check_and_assign(doctor,shift, s)
                     if (check == -1):
                         continue
+
+                    level = self.getLevelSupply(doctor,check,shift + 1,s) 
+                    if (self.check_off(shift,doctor.doctorId) != 1 or self.check_ol (shift,doctor.doctorId,s) != 1 or level != -1) :
+                        self.update(doctor.doctorId,shift + 1, check, level, s)
 
             else:
                 for doctor in list_doctor_sorted :
@@ -213,6 +230,13 @@ class Solver:
                     check = self.check_and_assign(doctor,shift, s)
                     if (check == -1):
                         continue
+                    
+                    # then assign same room in the afternoon
+
+                    level = self.getLevelSupply(doctor,check,shift + 1,s) 
+                    if (self.check_off(shift,doctor.doctorId) != 1 or self.check_ol (shift,doctor.doctorId,s) != 1 or level != -1) :
+                        self.update(doctor.doctorId,shift + 1, check, level, s)
+
 
             else:
                 for doctor in list_doctor_sorted :
@@ -232,7 +256,8 @@ class Solver:
                         check = self.check_and_assign(doctor,shift,s)
                         if (check == -1):
                             continue
-
+            
+            # s.export_solution()
         s.cal_obj()
 
     def check_room_is_feasible (self, doctor : Doctor, roomID, shift, s : Solution) :
@@ -256,7 +281,7 @@ class Solver:
         # update for moring and noon at the same time
         self.update(doctor.doctorId,shift,chosen_room,level, s)
 
-        return 1
+        return chosen_room
                    
             
     def which_room_is_assigned (self, doctorID, shift, s: Solution):

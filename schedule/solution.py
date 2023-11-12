@@ -25,6 +25,8 @@ class Solution :
 
         self.demand_cost = -1
 
+        self.total_workLoad = [0 for i in range (self.data.get_num_doctors())]
+
         # self.obj = -1
 
 
@@ -79,8 +81,12 @@ class Solution :
                 
 
     def cal_obj (self):
-        for doctorID in range (self.data.get_num_doctors()):
-            self.max_min[doctorID] = max (self.room_weights[doctorID]) - min(self.room_weights[doctorID])
+        for doctor in self.data.l_doctors:
+
+            # room_can_work = 
+
+            # self.max_min[doctor.doctorId] = max (self.room_weights[doctor.doctorId]) - 
+            self.total_workLoad[doctor.doctorId] = sum (self.room_weights[doctor.doctorId])
 
         'calculate room_not_full cost'
 
@@ -89,17 +95,20 @@ class Solution :
 
         self.demand_cost = (total_demand - total_supply) * 1000
 
-        print (self.demand_cost, total_supply - total_demand)
+        # print (self.demand_cost, total_supply - total_demand)
+    
+    # def filter_room_can_work (self, doctor, room):
+    #     demand1 = room
     
     def reset_shift (self, shift):
         for room in range (self.data.get_num_rooms()):
             self.schedule_matrix[room][shift] = []
         
 
-    def delete_doctor (self, doctorID, roomID, day):
+    def delete_doctor (self, doctorID, roomID, shift):
         # self.deleted_doctor[day].append(doctorID)
 
-        # self.schedule_matrix[roomID][day].remove(doctorID)
+        self.schedule_matrix[roomID][shift].remove(doctorID)
         self.room_weights[doctorID][roomID] -= self.data.l_rooms[roomID].heavy
 
         self.max_min[doctorID] = max (self.room_weights[doctorID]) - min(self.room_weights[doctorID])
@@ -128,7 +137,8 @@ class Solution :
 
 
     def get_obj (self):
-        obj = sum(self.max_min)
+        # obj = sum(self.max_min)
+        obj = max (self.total_workLoad) - min (self.total_workLoad)
 
         obj += self.demand_cost
 

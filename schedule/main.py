@@ -26,18 +26,18 @@ if __name__ == '__main__':
     # print (data.workLoad)
     # solver.build_initial_solution(solver.best_solution)
     solver.schedule()
-    print(solver.best_solution.get_obj())
+    # print(solver.best_solution.get_obj())
     # print (solver.room_weights)
     # print (data.workLoad)
     solver.best_solution.statis()
 
 
     # print (solver.best_solution.get_obj())
-    #solver.best_solution.export_by_doctor()
+    # solver.best_solution.export_by_doctor()
 
     solver.best_solution.export_solution()
 
-    for i in solver.best_solution.max_min:
+    for i in solver.best_solution.total_workLoad:
         print (i)
     # print (solver.current_solution.dump)
     # export_solution()
