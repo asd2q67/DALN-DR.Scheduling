@@ -36,9 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $room = $mysqli->real_escape_string($data['room']);
     $date = $mysqli->real_escape_string($data['date']);
     $doctor_id = $mysqli->real_escape_string($data['doctor_id']);
+    $apm = floatval($mysqli->real_escape_string($data['apm']));
+
+    $start_date = '2023-11-6'; // Format: YYYY-MM-DD
+    $session = floor((strtotime($date) - strtotime($start_date)) / (60 * 60 * 12)) + 1 + $apm;
+    $date = date('Y-m-d', strtotime($date . ' + 1 day'));
 
     // Build the SQL query dynamically based on input data
-    $query = "UPDATE work_assign SET room='$room', date='$date', doctor_id='$doctor_id' WHERE id='$id'";
+    $query = "UPDATE work_assign SET room='$room', date='$date', doctor_id='$doctor_id', session='$session' WHERE id='$id'";
 
     // Update assignment data
     if ($mysqli->query($query)) {

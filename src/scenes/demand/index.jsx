@@ -14,6 +14,7 @@ const Demand = () => {
   const [loading, setLoading] = useState(true);
   const [selectedRowIds, setSelectedRowIds] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
 
   const columns = [
@@ -55,9 +56,10 @@ const Demand = () => {
         setLoading(false); // Set loading state to false when data fetching is completed
       }
     };
+    console.log(666, demandData);
 
     fetchData();
-  }, []);
+  }, [isUpdate]);
 
   const handleRowClick = (params) => {
     const selectedId = params.row.id;
@@ -90,6 +92,7 @@ const Demand = () => {
       console.log(`Successfully updated demand with ID ${updatedData.id}`);
       const updatedDemandData = await fetchDataFromAPI("/demand.php");
       setDemandData(updatedDemandData);
+      setIsUpdate(!isUpdate);
     } catch (error) {
       console.error("Error during update:", error);
     }

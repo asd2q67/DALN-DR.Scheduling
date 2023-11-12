@@ -35,14 +35,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $room = $mysqli->real_escape_string($data['room']);
     $date = $mysqli->real_escape_string($data['date']);
     $doctor_id = $mysqli->real_escape_string($data['doctor_id']);
-    $apm = $mysqli->real_escape_string($data['apm']);
+    $apm = floatval($mysqli->real_escape_string($data['apm']));
+    $doctorNum = $mysqli->real_escape_string($data['doctorNum']);
 
     // Calculate session based on date and start date (1/8/2023)
-    $start_date = '2023-08-01'; // Format: YYYY-MM-DD
-    $session = floor((strtotime($date) - strtotime($start_date)) / (60 * 60 * 12)) + 1 + $apm;
+    $start_date = '2023-11-6'; // Format: YYYY-MM-DD
+    $session = floor((strtotime($date) - strtotime($start_date)) / (60 * 60 * 12)) + $apm;
 
     // Prepare the SQL query
-    $query = "INSERT INTO work_assign (room, date, doctor_id, session) VALUES ('$room', '$date', '$doctor_id', '$session')";
+    $query = "INSERT INTO work_assign (room, date, doctor_id, session, doctorNum) VALUES ('$room', '$date', '$doctor_id', '$session', '$doctorNum')";
 
     // Insert new work assignment data
     if ($mysqli->query($query)) {

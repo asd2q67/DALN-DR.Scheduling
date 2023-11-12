@@ -18,33 +18,45 @@ if ($mysqli->connect_error) {
 function generateCSV($mysqli)
 {
     // Query to select data from work_assign
-    $query = "SELECT room, session, doctor_id FROM work_assign";
+    $query1 = "SELECT dd.id AS doctor_id, COALESCE(wa.room, -1) AS room, COALESCE(wa.session, -1) AS session
+    FROM dr_detail dd
+    LEFT JOIN work_assign wa ON dd.id = wa.doctor_id
+    ORDER BY dd.id";
 
     // Execute the query
-    $result = $mysqli->query($query);
+    $result = $mysqli->query($query1);
 
     // Initialize arrays for Day-ol.csv and Day-off.csv
     $dayOlData = [];
-    $dayOffData = [];
-
     while ($row = $result->fetch_assoc()) {
-        $room = $row['room'];
-        $session = $row['session'];
-        $doctorId = $row['doctor_id'];
-
-        if ($room == -1) {
-            // If room is -1, it's a day off (Day-off)
-            $dayOffData[] = [$session, $doctorId];
-            
+        $doctorId = $row['doctor_id'] - 1;
+        if ($row['room'] == -1) {
+            $room = -1;
+            $session = -1;
         } else {
-            // If room is not -1, it's a working day (Day-ol)
-            $dayOlData[] = [$room, $session, $doctorId];
+            $room = $row['room'];
+            $session = $row['session'];
         }
+        $dayOlData[] = [$doctorId, $room, $session];
+    }
+
+    // Query to select data from work_assign where room = -1
+    $query2 = "SELECT dd.id AS doctor_id, COALESCE(wa.session, -1) AS session
+    FROM dr_detail dd
+    LEFT JOIN work_assign wa ON dd.id = wa.doctor_id AND wa.room = -1
+    ORDER BY dd.id";
+
+    $result = $mysqli->query($query2);
+    $dayOffData = [];
+    while ($row = $result->fetch_assoc()) {
+        $doctorId = $row['doctor_id'] - 1;
+        $session = $row['session'];
+        $dayOffData[] = [$doctorId, $session];
     }
 
     // Create Day-ol.csv
     $dayOlCsvFile = fopen('../../instance-generator/Day-ol.csv', 'w');
-    fputcsv($dayOlCsvFile, ['roomId', 'session', 'doctorId']);
+    fputcsv($dayOlCsvFile, ['doctorID', 'room', 'day']);
     foreach ($dayOlData as $row) {
         fputcsv($dayOlCsvFile, $row);
     }
@@ -52,7 +64,7 @@ function generateCSV($mysqli)
 
     // Create Day-off.csv
     $dayOffCsvFile = fopen('../../instance-generator/Day-off.csv', 'w');
-    fputcsv($dayOffCsvFile, ['session', 'doctorId']);
+    fputcsv($dayOffCsvFile, ['doctorID','day']);
     foreach ($dayOffData as $row) {
         fputcsv($dayOffCsvFile, $row);
     }

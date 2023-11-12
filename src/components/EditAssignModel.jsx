@@ -14,13 +14,14 @@ import {
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc"; // Import plugin UTC
 import timezone from "dayjs/plugin/timezone"; // Import plugin Timezone
-import "dayjs/locale/en"; // Import English locale for dayjs
+import "dayjs/locale/vi";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { fetchDataFromAPI, postDataToAPI } from "../data/api";
+import { fetchDataFromAPI } from "../data/api";
 
+dayjs.locale("vi");
 dayjs.extend(utc); // Enable UTC plugin
 dayjs.extend(timezone); // Enable Timezone plugin
 
@@ -28,9 +29,10 @@ const EditAssignModal = ({ open, handleClose, rowData, handleUpdate }) => {
   const [updatedData, setUpdatedData] = useState({
     id: rowData.id,
     room: rowData.room,
-    date: rowData.date,
+    date: dayjs(rowData.date).tz("Asia/Ho_Chi_Minh"),
     doctor_id: rowData.doctor_id,
     isOnLeave: rowData.room === -1,
+    apm: rowData.session % 2,
   });
 
   const [roomDropdownDisabled, setRoomDropdownDisabled] = useState(
@@ -38,17 +40,23 @@ const EditAssignModal = ({ open, handleClose, rowData, handleUpdate }) => {
   );
   const [roomDetails, setRoomDetails] = useState([]);
   const [doctorDetails, setDoctorDetails] = useState([]);
+  const [isMorning, setIsMorning] = useState(false);
+  const [isAfternoon, setIsAfternoon] = useState(false);
+  // console.log(rowData.session, isMorning, isAfternoon);
 
   useEffect(() => {
     const parsedDate = dayjs(rowData.date);
     // console.log(111, rowData);
     // Update the state when the rowData prop changes
+    setIsMorning(rowData.session % 2 === 0);
+    setIsAfternoon(rowData.session % 2 === 1);
     setUpdatedData({
       id: rowData.id,
       room: rowData.room,
       date: parsedDate,
       doctor_id: rowData.doctor_id,
       isOnLeave: rowData.room === -1,
+      apm: isMorning ? 0 : isAfternoon ? 1 : null,
     });
     setRoomDropdownDisabled(rowData.room === -1);
   }, [rowData]);
@@ -75,9 +83,6 @@ const EditAssignModal = ({ open, handleClose, rowData, handleUpdate }) => {
     };
     fetchDoctorDetails();
     fetchRoomDetails();
-    console.log(1111, rowData);
-    console.log(2222, updatedData);
-    console.log(3333, roomDetails);
   }, []);
 
   const handleInputChange = (e) => {
@@ -93,12 +98,30 @@ const EditAssignModal = ({ open, handleClose, rowData, handleUpdate }) => {
       room: checked ? -1 : rowData.room,
     });
     setRoomDropdownDisabled(checked);
+    console.log(111, updatedData);
   };
 
   const handleConfirmUpdate = () => {
     // Call API to update data
+    console.log(updatedData.date);
     handleUpdate(updatedData);
     handleClose();
+  };
+
+  const handleMorningChange = (event) => {
+    setIsMorning(event.target.checked);
+    setIsAfternoon(!event.target.checked); // Uncheck afternoon if morning is checked
+  };
+
+  const handleAfternoonChange = (event) => {
+    setIsAfternoon(event.target.checked);
+    setIsMorning(!event.target.checked); // Uncheck morning if afternoon is checked
+  };
+
+  const handleDateChange = (value) => {
+    // console.log(111, value);
+    const indochinaDate = dayjs(value).tz("Asia/Ho_Chi_Minh");
+    setUpdatedData({ ...updatedData, date: indochinaDate });
   };
 
   return (
@@ -146,16 +169,26 @@ const EditAssignModal = ({ open, handleClose, rowData, handleUpdate }) => {
           }
           label="Nghỉ phép"
         />
+        <FormControlLabel
+          control={
+            <Checkbox checked={isMorning} onChange={handleMorningChange} />
+          }
+          label="Buổi Sáng"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox checked={isAfternoon} onChange={handleAfternoonChange} />
+          }
+          label="Buổi Chiều"
+        />
 
         {/* chọn ngày */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DatePicker", "DatePicker"]}>
             <DatePicker
               label="Controlled picker"
-              value={dayjs(updatedData.date)}
-              onChange={(date) => {
-                setUpdatedData({ ...updatedData, date: date });
-              }}
+              value={updatedData.date}
+              onChange={handleDateChange}
             />
           </DemoContainer>
         </LocalizationProvider>

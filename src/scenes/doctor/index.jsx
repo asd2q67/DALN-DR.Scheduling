@@ -22,7 +22,7 @@
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRowData, setSelectedRowData] = useState(null);
     const [roomDetails, setRoomDetails] = useState([]);
-    const [doctorDetails, setDoctorDetails] = useState([]);
+  const [isUpdate, setIsUpdate] = useState(false);
 
     const handleRowClick = (params) => {
       const selectedId = params.row.id;
@@ -41,24 +41,30 @@
     };
 
     const handleDeleteClick = async () => {
-      try {
-        for (const id of selectedRowIds) {
-          // Use deleteDataFromAPI function to delete data by ID
-          await deleteDataFromAPI(`/dr_delete.php?id=${id}`);
-          console.log(`Successfully deleted item with ID ${id}`);
+      // Kiểm tra xem người dùng đã xác nhận muốn xóa hay không
+      const confirmed = window.confirm("Bạn có chắc chắn muốn xóa các mục đã chọn?");
+      
+      if (confirmed) {
+        try {
+          for (const id of selectedRowIds) {
+            // Sử dụng hàm deleteDataFromAPI để xóa dữ liệu theo ID
+            await deleteDataFromAPI(`/dr_delete.php?id=${id}`);
+            console.log(`Successfully deleted item with ID ${id}`);
+          }
+    
+          // Lấy dữ liệu bác sĩ đã được cập nhật sau khi xóa thành công
+          const updatedData = await fetchDataFromAPI("/dr_detail.php");
+          setDoctorData(updatedData);
+    
+          // Xóa các ID đã chọn sau khi xóa
+          setSelectedRowIds([]);
+        } catch (error) {
+          console.error("Lỗi khi tải dữ liệu:", error);
+          setError("Lỗi khi tải dữ liệu: " + error.message);
         }
-
-        // Fetch updated doctor data after successful deletion
-        const updatedData = await fetchDataFromAPI("/dr_detail.php");
-        setDoctorData(updatedData);
-
-        // Clear the selected IDs after deletion
-        setSelectedRowIds([]);
-      } catch (error) {
-        console.error("Error during fetch:", error);
-        setError("Error during fetch: " + error.message);
       }
     };
+    
 
     const handleEditClick = () => {
       // Lấy dữ liệu của hàng được chọn
@@ -79,12 +85,7 @@
           updatedData
         );
         console.log(`Successfully updated item with ID ${updatedData.id}`);
-        window.location.reload();
-        // Fetch updated doctor data after successful update
-        // const updatedDoctorData = await fetchDataFromAPI("/dr_detail.php");
-        // setDoctorData(updatedDoctorData);
-    
-        // Đóng modal sau khi cập nhật thành công
+        setIsUpdate(!isUpdate);
         setIsModalOpen(false);
       } catch (error) {
         console.error("Error during update:", error);
@@ -108,7 +109,7 @@
         cellClassName: "skill-column--cell",
         renderCell: (params) => {
           const skills = roomDetails.map((room) => {
-            const doctorDetail = doctorDetails.find(
+            const doctorDetail = doctorData.find(
               (doctor) => doctor.id === params.row.id
             );
             const level = doctorDetail ? doctorDetail[`R${room.id}`] : "0";
@@ -151,27 +152,13 @@
     ];
 
     useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const data = await fetchDataFromAPI("/dr_detail.php");
-          setDoctorData(data);
-          setLoading(false);
-        } catch (error) {
-          setError(error.message);
-          setLoading(false);
-        }
-      };
-      fetchData();
-    }, []);
-
-    useEffect(() => {
-      const fetchRoomAndDoctorDetails = async () => {
+      const fetchRoomAnddoctorData = async () => {
         try {
           const roomResponse = await fetchDataFromAPI("/room_detail.php");
           const doctorResponse = await fetchDataFromAPI("/dr_detail.php");
 
           setRoomDetails(roomResponse);
-          setDoctorDetails(doctorResponse);
+          setDoctorData(doctorResponse);
           setLoading(false);
         } catch (error) {
           setError(error.message);
@@ -179,8 +166,8 @@
         }
       };
 
-      fetchRoomAndDoctorDetails();
-    }, []); 
+      fetchRoomAnddoctorData();
+    }, [isUpdate]); 
 
     useEffect(() => {
       // Code để fetch và cập nhật doctorData

@@ -65,6 +65,7 @@ const WorkAssignment = () => {
 
       // Hiển thị modal chỉnh sửa với thông tin của bản ghi được chọn
       setSelectedRowData(selectedRow);
+      console.log(555, selectedRowData);
       setIsModalOpen(true);
     } catch (error) {
       console.error("Error during fetch:", error);
@@ -78,9 +79,9 @@ const WorkAssignment = () => {
         `/assignment_update.php?id=${updatedData.id}`,
         updatedData
       );
-      console.log(`Successfully updated room with ID ${updatedData.id}`);
-      const updatedWorkAssignments  = await fetchDataFromAPI("/work_detail.php");
-      setWorkAssignments(updatedWorkAssignments );
+      console.log(updatedData);
+      const updatedWorkAssignments = await fetchDataFromAPI("/work_detail.php");
+      setWorkAssignments(updatedWorkAssignments);
     } catch (error) {
       console.error("Error during update:", error);
     }
@@ -88,7 +89,7 @@ const WorkAssignment = () => {
 
   useEffect(() => {
     // Gọi API để lấy chi tiết các phòng và cập nhật vào state roomData
-    const fetchroomData = async () => {
+    const fetchRoomData = async () => {
       try {
         const response = await fetchDataFromAPI("/room_detail.php");
         // console.log("room", response);
@@ -117,13 +118,26 @@ const WorkAssignment = () => {
       }
     };
 
-    fetchroomData();
+    fetchRoomData();
     fetchDoctorDetails();
     fetchWorkAssignments();
   }, []);
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
+    {
+      field: "doctor",
+      headerName: "Tên Bác sĩ",
+      flex: 1,
+      valueGetter: (params) => {
+        // Lấy tên bác sĩ từ API hoặc từ một nguồn dữ liệu đã có
+        const doctorInfo = doctorDetails.find(
+          (doctor) => doctor.id === params.row.doctor_id
+        );
+        // console.log(1111, params.row);
+        return doctorInfo ? doctorInfo.Name : "";
+      },
+    },
     {
       field: "room",
       headerName: "Tên Phòng",
@@ -147,16 +161,13 @@ const WorkAssignment = () => {
       },
     },
     {
-      field: "doctor",
-      headerName: "Tên Bác sĩ",
+      field: "shift",
+      headerName: "Buổi đăng ký",
       flex: 1,
       valueGetter: (params) => {
-        // Lấy tên bác sĩ từ API hoặc từ một nguồn dữ liệu đã có
-        const doctorInfo = doctorDetails.find(
-          (doctor) => doctor.id === params.row.doctor_id
-        );
-        // console.log(1111, params.row);
-        return doctorInfo ? doctorInfo.Name : "";
+        // console.log(555, params.row);
+        const shift = parseInt(params.row.session) % 2 === 0 ? "Sáng" : "Chiều";
+        return shift ? shift : "";
       },
     },
   ];
