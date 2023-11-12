@@ -7,6 +7,7 @@ from Room import Room
 import copy
 
 num_day = 14
+num_doctor = 30
 
 
 def read_input () -> Data:
@@ -14,8 +15,8 @@ def read_input () -> Data:
     l_doctors = []
     l_rooms = []
     day_off = []
-    day_ol = []
-    room_ol = []
+    day_ol = [[] for i in range(num_doctor)]
+    room_ol = [[] for i in range(num_doctor)]
     workLoad = []
 
 
@@ -92,13 +93,15 @@ def read_input () -> Data:
         reader = csv.reader(file3)
         next(reader, None)
         for row in reader:       
-            room_ol.append(int (row[1]))
-            day_ol.append(int (row[2]))
+            if (int(row[1]) == -1) :
+                continue
+            room_ol[int(row[0])].append(int (row[1]))
+            day_ol[int(row[0])].append(int (row[2]))
 
-            if (int(row[0]) not in ol[int(row[1])]):
-                ol[int (row[1])].append(int (row[0]))
-            else :
-                ol[int (row[1])] = int (row[0])
+            # if (int(row[0]) not in ol[int(row[1])]):
+            #     ol[int (row[1])].append(int (row[0]))
+            # else :
+            #     ol[int (row[1])] = int (row[0])
 
 
     return Data(l_doctors, l_rooms, off, day_ol, room_ol, workLoad)

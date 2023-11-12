@@ -24,8 +24,8 @@ if __name__ == '__main__':
 
     # data.display_stats()
     # print (data.workLoad)
-    # solver.build_initial_solution(solver.best_solution)
-    solver.schedule()
+    solver.build_initial_solution(solver.best_solution)
+    # solver.schedule()
     # print(solver.best_solution.get_obj())
     # print (solver.room_weights)
     # print (data.workLoad)

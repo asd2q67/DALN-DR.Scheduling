@@ -200,11 +200,11 @@ class Solver:
         
 
     def build_initial_solution (self, s : Solution):
-        # self.init_matrix(s)
+        self.init_matrix(s)
         # self.solution.export_solution()
         for shift in range (self.data.horizon):
 
-            if (shift == 13):
+            if (shift == 3):
                 print ("")
 
 
@@ -224,6 +224,8 @@ class Solver:
             if (shift % 2 == 0) :
 
                 for doctor in list_doctor_sorted :
+                    if (doctor.doctorId == 6) :
+                        print(" ")
                     if (self.is_assigned(shift,doctor, s) == True) :
                         continue
 
@@ -234,7 +236,8 @@ class Solver:
                     # then assign same room in the afternoon
 
                     level = self.getLevelSupply(doctor,check,shift + 1,s) 
-                    if (self.check_off(shift,doctor.doctorId) != 1 or self.check_ol (shift,doctor.doctorId,s) != 1 or level != -1) :
+                    a = self.check_off(shift + 1,doctor.doctorId)
+                    if (self.check_off(shift + 1,doctor.doctorId) != 1 and self.check_ol (shift + 1,doctor.doctorId,s) != 1 and level != -1) :
                         self.update(doctor.doctorId,shift + 1, check, level, s)
 
 
@@ -257,7 +260,7 @@ class Solver:
                         if (check == -1):
                             continue
             
-            # s.export_solution()
+            s.export_solution()
         s.cal_obj()
 
     def check_room_is_feasible (self, doctor : Doctor, roomID, shift, s : Solution) :
@@ -347,27 +350,28 @@ class Solver:
 
 
     def init_matrix (self, s : Solution):
-        for i in range (self.data.get_num_doctors()):
+        for j in range (self.data.get_num_doctors()):
 
 
-            if (self.data.day_ol[i] != -1):
-                date = self.data.day_ol[i]
-                room = self.data.room_ol[i]
+            if (len(self.data.day_ol[j]) != 0):
+                date = self.data.day_ol[j]
+                room = self.data.room_ol[j]
 
-                skill = self.check_skill(s.data.l_doctors[i],room)
+                for i in range (len(date)):
+                    skill = self.check_skill(s.data.l_doctors[j],room[i])
 
-                demand1, demand2 = self.data.l_rooms[room].demand1, self.data.l_rooms[room].demand2
+                    demand1, demand2 = self.data.l_rooms[room[i]].demand1, self.data.l_rooms[room[i]].demand2
 
-                if (skill == 0 or skill == 1):
-                    if (demand1 != 0):
-                        skill = 1
-                    else :
-                        skill = 2
-                else:
-                    if (demand2 == 0):
-                        skill = 1
-                    
-                self.update(i,date,room, skill, s)
+                    if (skill == 0 or skill == 1):
+                        if (demand1 != 0):
+                            skill = 1
+                        else :
+                            skill = 2
+                    else:
+                        if (demand2 == 0):
+                            skill = 1
+                        
+                    self.update(j,date[i],room[i], skill, s)
 
     
     def update (self, doctorID, date, roomID, level, s : Solution):
