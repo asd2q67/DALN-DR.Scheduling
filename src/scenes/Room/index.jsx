@@ -36,18 +36,23 @@ const Room = () => {
   };
 
   const handleDeleteClick = async () => {
-    try {
-      for (const id of selectedRowIds) {
-        await deleteDataFromAPI(`/room_delete.php?id=${id}`);
-        console.log(`Successfully deleted room with ID ${id}`);
-      }
+    const confirmed = window.confirm(
+      "Bạn có chắc chắn muốn xóa các mục đã chọn?"
+    );
+    if (confirmed) {
+      try {
+        for (const id of selectedRowIds) {
+          await deleteDataFromAPI(`/room_delete.php?id=${id}`);
+          console.log(`Successfully deleted room with ID ${id}`);
+        }
 
-      const updatedData = await fetchDataFromAPI("/room_detail.php");
-      setRoomData(updatedData);
-      setSelectedRowIds([]);
-    } catch (error) {
-      console.error("Error during fetch:", error);
-      setError("Error during fetch: " + error.message);
+        const updatedData = await fetchDataFromAPI("/room_detail.php");
+        setRoomData(updatedData);
+        setSelectedRowIds([]);
+      } catch (error) {
+        console.error("Error during fetch:", error);
+        setError("Error during fetch: " + error.message);
+      }
     }
   };
 
@@ -66,7 +71,10 @@ const Room = () => {
 
   const updateToAPI = async (updatedData) => {
     try {
-      const response = await updateDataToAPI(`/room_update.php?id=${updatedData.id}`, updatedData);
+      const response = await updateDataToAPI(
+        `/room_update.php?id=${updatedData.id}`,
+        updatedData
+      );
       console.log(`Successfully updated room with ID ${updatedData.id}`);
       const updatedRoomData = await fetchDataFromAPI("/room_detail.php");
       setRoomData(updatedRoomData);
@@ -99,7 +107,7 @@ const Room = () => {
       }
       // console.log(typeof roomData);
     };
-  
+
     fetchData();
   }, []);
 

@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Button, Select, Table, Tag, Tooltip, notification } from "antd";
 import { tokens } from "../../theme";
 import dayjs from "dayjs";
-import { fetchDataFromAPI, fetchServerAPI } from "../../data/api";
+import {
+  fetchDataFromAPI,
+  fetchServerAPI,
+  initCalendar,
+  postDataToServer,
+  saveToServer,
+} from "../../data/api";
 import Header from "../../components/Header";
 import "./styles.css";
 import { Box, Button as Btn, useTheme } from "@mui/material";
@@ -28,7 +34,6 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
   const [roomId, setRoomId] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(undefined);
   const [assignDoctors, setAssignDoctors] = useState({});
-  const [initialState, setInitialState] = useState([]);
   const [doctorSchedule, setDoctorSchedule] = useState([]);
 
   // const { exec } = require("child_process");
@@ -46,10 +51,11 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
           fetchDataFromAPI("/dr_detail.php"),
           fetchDataFromAPI("/room_detail.php"),
           fetchDataFromAPI("/work_detail.php"),
-          fetchServerAPI("/api/doctor-schedules")
+          fetchServerAPI("/api/doctor-schedules"),
         ]);
         setDoctorData(drData);
-        setDoctorSchedule(res);
+        setDoctorSchedule(JSON.parse(JSON.stringify(res)));
+        // console.log(222, doctorSchedule);
         if (JSON.stringify(rmData) !== JSON.stringify(roomData)) {
           setRoomData(rmData);
         }
@@ -125,12 +131,6 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
             };
           });
           setCalendarData(formattedData);
-          if (initialState.length === 0) {
-            setInitialState(JSON.parse(JSON.stringify(formattedData)));
-          }
-          // console.log(1111, calendarData);
-          // console.log(1234, initialState);
-
           setLoading(false);
           // console.log("Data from API:", response);
         }
@@ -143,29 +143,6 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
 
     fetchData();
   }, [roomData]); // Thêm roomData vào dependency array để useEffect chỉ chạy khi roomData thay đổi
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await Promise.all([fetchServerAPI("/api/noti")]);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       setError(error.message);
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchData();
-  // }, [updateCheck]);
-
-  // const dayOfWeekInVietnamese = {
-  //   Monday: "Thứ 2",
-  //   Tuesday: "Thứ 3",
-  //   Wednesday: "Thứ 4",
-  //   Thursday: "Thứ 5",
-  //   Friday: "Thứ 6",
-  //   Saturday: "Thứ 7",
-  //   Sunday: "Chủ Nhật",
-  // };
 
   const dayColumns = Array.from({ length: daysPerWeek }, (_, dayIndex) => {
     const dayName = dayjs(startDate).add(dayIndex, "day").format("dddd"); // Use startDate to calculate dayName
@@ -372,51 +349,27 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
     return finalData.join("\n");
   };
 
-  const saveToServer = async (csvData) => {
-    try {
-      const response = await fetch("http://localhost:3001/save-csv", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: csvData }),
-      });
-      const result = await response.text();
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-  const save2Server = async (csvContent) => {
-    try {
-      const response = await fetch("http://localhost:3001/export-csv", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: csvContent }),
-      });
+  const updateDataToServer = async (csvData, doctorSchedulesCSVData) => {
+    // Example usage for saving general CSV
+    saveToServer("save-csv", csvData)
+      .then((result) => console.log(result))
+      .catch((error) => console.error("Error:", error));
 
-      const result = await response.text();
-      console.log(result); // Hiển thị thông điệp từ máy chủ
-    } catch (error) {
-      console.error("Lỗi khi gửi yêu cầu tới máy chủ:", error);
-    }
+    // Example usage for saving doctor schedules CSV
+    saveToServer("save-doctor-csv", doctorSchedulesCSVData)
+      .then((result) => console.log(result))
+      .catch((error) => console.error("Error:", error));
+  };
+
+  const saveCSV = async (csvContent) => {
+    saveToServer("export-csv", csvContent)
+      .then((result) => console.log(result))
+      .catch((error) => console.error("Error:", error));
   };
   const savePersonalCSV = async (csvContent) => {
-    try {
-      const response = await fetch("http://localhost:3001/personal-csv", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: csvContent }),
-      });
-
-      const result = await response.text();
-      console.log(result); // Hiển thị thông điệp từ máy chủ
-    } catch (error) {
-      console.error("Lỗi khi gửi yêu cầu tới máy chủ:", error);
-    }
+    saveToServer("personal-csv", csvContent)
+      .then((result) => console.log(result))
+      .catch((error) => console.error("Error:", error));
   };
 
   const handleRunChecker = async () => {
@@ -443,6 +396,19 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
     if (selectedDoctor && selectedCell !== null && roomId !== null) {
       const updatedCalendarData = [...calendarData];
       const currentDoctors = updatedCalendarData[roomId][doctorId];
+      const updateDoctorSchedule = [...doctorSchedule];
+      doctorData.map((doctor, index) => {
+        if (doctor.Name === selectedDoctor) {
+          const array = JSON.parse(updateDoctorSchedule[index][doctorId]);
+          if (!array.includes(roomId)) {
+            array.push(roomId);
+          }
+          updateDoctorSchedule[index][doctorId] = JSON.stringify(array);
+          setDoctorSchedule(updateDoctorSchedule);
+        }
+      });
+      // console.log(roomId - 1, updateDoctorSchedule[0][2]);
+      // const currentDay = updateDoctorSchedule[doctor][doctorId]
 
       if (currentDoctors && Array.isArray(currentDoctors)) {
         // Check if the selected doctor is not already in the shift
@@ -464,8 +430,8 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
       setIsModalVisible(false);
       setSelectedDoctor(null);
       const csvData = convertData(calendarData);
-      saveToServer(csvData);
-      // console.log(999, initialState);
+      // console.log(999, doctorSchedule);
+      updateDataToServer(csvData, doctorSchedule);
       handleRunChecker();
     }
   };
@@ -487,9 +453,10 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
     const doctorIndex = selectedDoctorInfo.findIndex(
       (doctor) => doctor === doctorName
     );
-
     // Kiểm tra xem bác sĩ có tồn tại trong mảng hay không
     if (doctorIndex !== -1) {
+      // console.log(doctorSchedule[doctorIndex][doctorId]);
+      deleteDoctorSchedule(doctorIndex, doctorId);
       // Xóa bác sĩ khỏi mảng selectedDoctorInfo
       const updatedDoctorInfo = [...selectedDoctorInfo];
       updatedDoctorInfo.splice(doctorIndex, 1);
@@ -502,7 +469,7 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
 
       // Chuyển đổi và lưu dữ liệu CSV lên máy chủ
       const csvData = convertData(updatedCalendarData);
-      saveToServer(csvData);
+      updateDataToServer(csvData, doctorSchedule);
     }
   };
 
@@ -518,7 +485,7 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
       headerRow += `${shiftType} ${dayIndex},`;
     }
     headerRow = headerRow.slice(0, -1);
-    console.log(1111, headerRow);
+    // console.log(1111, headerRow);
 
     csvRows.push(headerRow);
 
@@ -537,8 +504,8 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
 
     // Ghi file CSV
     const csvContent = csvRows.join("\n");
-    // console.log(5555, csvContent);
-    save2Server(csvContent);
+    console.log(5555, csvContent);
+    saveCSV(csvContent);
   };
   const dataGen = () => {
     const roomMap = roomData.reduce((acc, room, index) => {
@@ -592,7 +559,7 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
     // const doctorSchedules = dataGen();
     try {
       const res = await Promise.all([fetchServerAPI("/api/doctor-schedules")]);
-      console.log(777, res);
+      // console.log(777, res);
       setDoctorSchedule(res);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -630,50 +597,44 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
     headerRow = headerRow.slice(0, -1);
 
     csvRows.push(headerRow);
-    console.log(111, doctorMap);
+    // console.log(111, doctorMap);
     doctorSchedule.map((list, index) => {
-      console.log(doctorSchedule, list);
-      let csvRow =  "";
+      // console.log(doctorSchedule, list);
+      let csvRow = "";
       const doctorName = doctorMap[index].Name;
       csvRow += `${doctorName},`;
-      const dataArray = Object.values(list).map(item => {
+      const dataArray = Object.values(list).map((item) => {
         // Sử dụng JSON.parse() để chuyển chuỗi JSON thành mảng
         const parsedArray = JSON.parse(item);
         // Nếu parsedArray là mảng, trả về mảng, ngược lại trả về mảng có một phần tử với giá trị parsedArray
         return Array.isArray(parsedArray) ? parsedArray : [parsedArray];
       });
+      // console.log(444, dataArray);
       for (let i = 0; i < dataArray.length; i++) {
         const currentArray = dataArray[i];
+        // console.log(555, dataArray, currentArray);
+
         let tempArray = [];
         for (let j = 0; j < currentArray.length; j++) {
           const currentValue = currentArray[j];
-          console.log(777, doctorMap[i].Room[currentValue].Name);
+          if (j > 0) {
+            console.log(777, tempArray);
+            tempArray[j - 1] += "\n";
+          }
           tempArray.push(doctorMap[i].Room[currentValue].Name);
         }
-        csvRow += tempArray.join(",") + ",";
+        if (currentArray.length > 1) csvRow += `"${tempArray.join("")}"` + ",";
+        else csvRow += tempArray.join("") + ",";
       }
       csvRows.push(csvRow + "\n");
     });
-    console.log(444, csvRows);
     const csvContent = csvRows.join("\n");
+    // console.log(666, csvContent);
     savePersonalCSV(csvContent);
   };
 
-  const handleInitCalendar = () => {
-    fetch("http://localhost:5000/init-calendar", {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data); // Hiển thị dữ liệu trả về từ API
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+  const handleInitCalendar = async () => {
+    const res = await initCalendar("init-calendar");
     handleRunChecker();
     setTimeout(() => {
       setUpdateCheck(true);
@@ -683,15 +644,17 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
 
   useEffect(() => {
     // console.log(1000, isCollapsed);
-  }, [initialState, isCollapsed]);
+  }, [isCollapsed]);
 
-  const cancelChanges = () => {
-    // console.log(5555, initialState);
-    const csvData = convertData(initialState);
-    console.log(666, csvData);
-    saveToServer(csvData);
+  const cancelChanges = async () => {
+    const res = await postDataToServer("/api/restore-doctor-schedules");
+    const data = await postDataToServer("/api/restore-data");
     handleRunChecker();
     window.location.reload();
+  };
+  const saveChanges = async () => {
+    const res = await postDataToServer("/api/backup-doctor-schedules");
+    const data = await postDataToServer("/api/backup-data");
   };
 
   const getDoctorStatus = (schedule, roomId) => {
@@ -704,6 +667,13 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
     });
 
     return roomList.length > 0 ? roomList : "Available";
+  };
+  const deleteDoctorSchedule = (doctorId, shift) => {
+    const schedule = [...doctorSchedule];
+    const array = JSON.parse(schedule[doctorId][shift]);
+    const newArray = array.filter((id) => id !== doctorId);
+    schedule[doctorId][shift] = JSON.stringify(newArray);
+    setDoctorSchedule(schedule);
   };
   //dropDownBar component
   const DoctorDropdown = () => {
@@ -722,7 +692,7 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
       <div>
         <div>
           <Select
-            style={{ width: 200, marginBottom: 16, width: "100%" }}
+            style={{ width: "100%", marginBottom: 16 }}
             placeholder="Chọn Bác Sĩ"
             onChange={handleDoctorChange}
             value={selectedDoctor}
@@ -771,10 +741,6 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
 
   return (
     <div style={{ margin: "20px" }}>
-      {/* {console.log(2222, calendarData)} */}
-      {/* <div className={`custom-alert ${updateCheck ? "" : "hide-alert"}`}>
-        {notifications[0]}
-      </div> */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="CALENDAR" subtitle="Lịch làm việc trong tháng" />
         <Box>
@@ -790,6 +756,19 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
             onClick={cancelChanges}
           >
             Hủy các thay đổi
+          </Btn>
+          <Btn
+            style={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+              marginRight: "10px",
+            }}
+            onClick={saveChanges}
+          >
+            Lưu các thay đổi
           </Btn>
           <Btn
             style={{
@@ -874,6 +853,8 @@ const Calendar = ({ isCollapsed, updateCheck, setUpdateCheck }) => {
 
               let backgroundColor = getTagBackgroundColor(skill);
               let color = getColor(skill);
+
+              // console.log(doctorId, doctorInfo, doctorSchedule);
 
               Object.values(assignDoctors).map((assignment) => {
                 if (

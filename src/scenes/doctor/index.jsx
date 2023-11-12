@@ -41,24 +41,30 @@
     };
 
     const handleDeleteClick = async () => {
-      try {
-        for (const id of selectedRowIds) {
-          // Use deleteDataFromAPI function to delete data by ID
-          await deleteDataFromAPI(`/dr_delete.php?id=${id}`);
-          console.log(`Successfully deleted item with ID ${id}`);
+      // Kiểm tra xem người dùng đã xác nhận muốn xóa hay không
+      const confirmed = window.confirm("Bạn có chắc chắn muốn xóa các mục đã chọn?");
+      
+      if (confirmed) {
+        try {
+          for (const id of selectedRowIds) {
+            // Sử dụng hàm deleteDataFromAPI để xóa dữ liệu theo ID
+            await deleteDataFromAPI(`/dr_delete.php?id=${id}`);
+            console.log(`Successfully deleted item with ID ${id}`);
+          }
+    
+          // Lấy dữ liệu bác sĩ đã được cập nhật sau khi xóa thành công
+          const updatedData = await fetchDataFromAPI("/dr_detail.php");
+          setDoctorData(updatedData);
+    
+          // Xóa các ID đã chọn sau khi xóa
+          setSelectedRowIds([]);
+        } catch (error) {
+          console.error("Lỗi khi tải dữ liệu:", error);
+          setError("Lỗi khi tải dữ liệu: " + error.message);
         }
-
-        // Fetch updated doctor data after successful deletion
-        const updatedData = await fetchDataFromAPI("/dr_detail.php");
-        setDoctorData(updatedData);
-
-        // Clear the selected IDs after deletion
-        setSelectedRowIds([]);
-      } catch (error) {
-        console.error("Error during fetch:", error);
-        setError("Error during fetch: " + error.message);
       }
     };
+    
 
     const handleEditClick = () => {
       // Lấy dữ liệu của hàng được chọn

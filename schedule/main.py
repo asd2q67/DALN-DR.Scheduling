@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,'F:\Document\DALN\DALN1\DALN-DR.Scheduling\schedule')
+sys.path.insert(0,'D:\Workspace\Doanliennganh\DALN-DR.Scheduling\schedule')
 from Data import Data
 from read_input import read_input
 import csv
@@ -17,8 +17,6 @@ if __name__ == '__main__':
     # print (data.get_num_doctors())
     # print (data.get_num_rooms())
 
-    # print(data.day_ol)
-    # print()
     # print (data.orizon)
     # print (data.get_num_demands())
     # print (data.l_doctors[0].name)
@@ -27,23 +25,18 @@ if __name__ == '__main__':
     # data.display_stats()
     # print (data.workLoad)
     # solver.build_initial_solution(solver.best_solution)
-    
+    solver.schedule()
+    # print (solver.room_weights)
+    # print (data.workLoad)
+    solver.best_solution.statis()
+    solver.best_solution.export_by_doctor()
+
+    solver.best_solution.export_solution()
     # print (solver.current_solution.dump)
     # export_solution()
 
     # print (data.workLoad)
 
     # print(solver.best_solution.room_weights)
-    # print (solver.room_weights)
-    # print (data.workLoad)
-
-
-
-    solver.schedule()
-
-    solver.best_solution.statis()
-    solver.best_solution.export_by_doctor()
-
-    solver.best_solution.export_solution()
   
 

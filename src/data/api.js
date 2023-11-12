@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_BASE_URL, API_NODE_URL } from "./config";
+import { API_BASE_URL, API_NODE_URL, API_PYTHON_URL } from "./config";
 
 
 export const fetchServerAPI = async (endpoint) => {
@@ -40,6 +40,14 @@ export const postDataToAPI = async (endpoint, data) => {
     throw error; // Handle errors in the component where the function is used
   }
 };
+export const postDataToServer = async (endpoint, data) => {
+  try {
+    const response = await axios.post(`${API_NODE_URL}${endpoint}`, data);
+    return response.data;
+  } catch (error) {
+    throw error; // Handle errors in the component where the function is used
+  }
+};
 
 // Function to update data using PUT request
 export const updateDataToAPI = async (endpoint, data) => {
@@ -49,4 +57,27 @@ export const updateDataToAPI = async (endpoint, data) => {
   } catch (error) {
     throw error; // Handle errors in the component where the function is used
   }
+};
+
+export const saveToServer = (endpoint, csvData) => {
+  return new Promise((resolve, reject) => {
+    axios.post(`${API_NODE_URL}/${endpoint}`, { data: csvData }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => resolve(response.data))
+    .catch((error) => reject(error));
+  });
+};
+export const initCalendar = (endpoint) => {
+  return new Promise((resolve, reject) => {
+    axios.post(`${API_PYTHON_URL}/${endpoint}`, null, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => resolve(response.data))
+    .catch((error) => reject(error));
+  });
 };

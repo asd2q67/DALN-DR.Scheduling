@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     print ("\n")
     checker.check()
-    checker.print_demand()
+    # checker.print_demand()
     # print (data.day_off)
 
 

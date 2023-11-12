@@ -18,15 +18,18 @@ const Topbar = ({setIsSidebar, updateCheck, setUpdateCheck}) => {
   const colorMode = useContext(ColorModeContext);
   const [notifications, setNotifications] = useState([]);
   const [roomData, setRoomData] = useState([]);
+  const [doctorData, setDoctorData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [rmData, response] = await Promise.all([
+        const [rmData, docData, response] = await Promise.all([
           fetchDataFromAPI("/room_detail.php"),
+          fetchDataFromAPI("/dr_detail.php"),
           fetchServerAPI("/api/noti"),
         ]);
         setRoomData(rmData);
+        setDoctorData(docData);
         setNotifications(response);
         // console.log(111, rmData);
       } catch (error) {
@@ -65,6 +68,7 @@ const Topbar = ({setIsSidebar, updateCheck, setUpdateCheck}) => {
         <NotificationComponent
           notifications={notifications}
           roomData={roomData}
+          doctorData={doctorData}
           setNotifications={setNotifications}
         />
         <IconButton>

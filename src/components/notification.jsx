@@ -3,10 +3,12 @@ import { Button, notification } from "antd";
 import { Box, IconButton, useTheme } from "@mui/material";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import { tokens } from "../theme";
+import { postDataToServer } from "../data/api";
 
 const NotificationComponent = ({
   notifications,
   roomData,
+  doctorData,
   setNotifications,
 }) => {
   const theme = useTheme();
@@ -50,7 +52,7 @@ const NotificationComponent = ({
     differentStrings.map((string) => {
       if ((string !== null, string.length > 0)) {
         showNote(string);
-        console.log(222, string);
+        // console.log(222, string);
       }
     });
     // console.log(111, (notifications[0]));
@@ -92,6 +94,20 @@ const NotificationComponent = ({
         );
       }
     }
+
+    // Tìm và thay thế tất cả các khớp với doctorRegex trong notification
+    const doctorRegex = /Bác sĩ (\d+)/g;
+    let doctorMatch;
+    while ((doctorMatch = doctorRegex.exec(notification)) !== null) {
+      console.log(doctorData);
+      const doctorNumber = parseInt(doctorMatch[1], 10);
+      if (doctorNumber >= 0 && doctorNumber < doctorData.length) {
+        updatedNotification = updatedNotification.replace(
+          `Bác sĩ ${doctorNumber}`,
+          `Bác sĩ ${doctorData[doctorNumber].Name}`
+        );
+      }
+    }
     return updatedNotification;
   };
 
@@ -129,6 +145,8 @@ const NotificationComponent = ({
             onClick={() => {
               setNotifications([]); // Cài đặt lại notifications thành mảng rỗng
               notification.destroy(key); // Đóng thông báo khi nút "Xóa" được nhấp
+              //call api to clearout noti.txt
+              postDataToServer("/api/noti-write", notifications);
             }}
           >
             Xóa
@@ -139,8 +157,8 @@ const NotificationComponent = ({
   };
 
   return (
-    <IconButton>
-      <NotificationsOutlinedIcon onClick={openNotification} />
+    <IconButton onClick={openNotification}>
+      <NotificationsOutlinedIcon />
     </IconButton>
   );
 };

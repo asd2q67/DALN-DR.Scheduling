@@ -1,53 +1,194 @@
-﻿Phòng,Sáng thứ 2,Chiều thứ 2,Sáng thứ 3,Chiều thứ 3,Sáng thứ 4,Chiều thứ 4,Sáng thứ 5,Chiều thứ 5,Sáng thứ 6,Chiều thứ 6,Sáng thứ 7,Chiều thứ 7,Sáng Chủ nhật,Chiều Chủ nhật,Sáng thứ 9,Chiều thứ 9,Sáng thứ 10,Chiều thứ 10,Sáng thứ 11,Chiều thứ 11,Sáng thứ 12,Chiều thứ 12,Sáng thứ 13,Chiều thứ 13,Sáng thứ 14,Chiều thứ 14,Sáng thứ 15,Chiều thứ 15,Sáng thứ 16,Chiều thứ 16
-Phòng 309 (KKB)  TH1,"Kiều Văn Tuấn
-Trần Tuấn Việt","Kiều Văn Tuấn
-Trần Tuấn Việt","Kiều Văn Tuấn
-Trần Tuấn Việt","Kiều Văn Tuấn
-Trần Tuấn Việt","Kiều Văn Tuấn
-Trần Tuấn Việt","Kiều Văn Tuấn
-Trần Tuấn Việt","Kiều Văn Tuấn
+﻿Phòng,Sáng thứ 2,Chiều thứ 2,Sáng thứ 3,Chiều thứ 3,Sáng thứ 4,Chiều thứ 4,Sáng thứ 5,Chiều thứ 5,Sáng thứ 6,Chiều thứ 6,Sáng thứ 7,Chiều thứ 7,Sáng Chủ nhật,Chiều Chủ nhật
+Phòng 309 (KKB)  TH1,"Phạm Thị Thu Hiền
+Trần Tuấn Anh
+Hồng Thu Hà","Kiều Văn Tuấn
+Trần Tuấn Việt
 Trần Tuấn Anh","Kiều Văn Tuấn
-Trần Tuấn Việt","Kiều Văn Tuấn
-Trần Tuấn Việt","Kiều Văn Tuấn
-Trần Tuấn Việt","Kiều Văn Tuấn
-Trần Tuấn Việt","Kiều Văn Tuấn
-Trần Tuấn Việt","Phạm Thị Thu Hiền
-Trần Tuấn Việt","Kiều Văn Tuấn
-Trần Tuấn Việt"
-Phòng 309 (KKB)  TH2,"Phạm Thị Thu Hiền","Phạm Thị Thu Hiền","Trần Tuấn Anh","Phạm Thị Thu Hiền","Phạm Thị Thu Hiền","Phạm Thị Thu Hiền","Phạm Thị Thu Hiền","Phạm Thị Thu Hiền","Phạm Thị Thu Hiền","Phạm Thị Thu Hiền","Phạm Thị Thu Hiền","Phạm Thị Thu Hiền","Vũ Mạnh Hà","Phạm Thị Thu Hiền"
-Phòng 309 (KKB)  TH3,"Lưu Thị Minh Diệp","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam","Nguyễn Hoài Nam"
-PK nhà K1 703,"Nguyễn Thế Phương","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn","Nguyễn Trường Sơn"
-PK nhà K1 704,"Lê Tú Anh","Lê Tú Anh","Lê Tú Anh","Lê Tú Anh","Lê Tú Anh","Lê Tú Anh","Nguyễn Thị Thu Hiền","Lê Tú Anh","Lê Tú Anh","Lê Tú Anh","Lê Tú Anh","Lê Tú Anh","Lê Tú Anh","Lê Tú Anh"
-PK nhà K1 705,"Đỗ Anh Giang","Đỗ Anh Giang","Đỗ Anh Giang","Hồng Thu Hà","Đỗ Anh Giang","Đỗ Anh Giang","Đỗ Anh Giang","Đỗ Anh Giang","Đỗ Anh Giang","Đỗ Anh Giang","Đỗ Anh Giang","Đỗ Anh Giang","Đỗ Anh Giang","Đỗ Anh Giang"
-PK nhà K1 707,"Đinh Thị Quỳnh Hương
-Vũ Thái Hòa","Lưu Thị Minh Diệp
-Nguyễn Thế Phương","Lưu Thị Minh Diệp
-Nguyễn Thế Phương","Lưu Thị Minh Diệp
-Đinh Thị Quỳnh Hương","Lưu Thị Minh Diệp
-Nguyễn Thế Phương","Lưu Thị Minh Diệp
-Nguyễn Thế Phương","Nguyễn Thế Phương
-Vũ Thái Hòa","Lưu Thị Minh Diệp
-Nguyễn Thế Phương","Lưu Thị Minh Diệp
-Nguyễn Thế Phương","Lưu Thị Minh Diệp
-Nguyễn Thế Phương","Lưu Thị Minh Diệp
-Nguyễn Thế Phương","Lưu Thị Minh Diệp
-Nguyễn Thế Phương","Lưu Thị Minh Diệp
-Nguyễn Thế Phương","Lưu Thị Minh Diệp
-Nguyễn Thế Phương"
-PK nhà K1 708,"Trần Tuấn Anh
-Thang Văn Năm","Đinh Thị Quỳnh Hương
-Thang Văn Năm","Vũ Mạnh Hà
-Vũ Hải Hậu","Vũ Mạnh Hà
-Vũ Hải Hậu","Đinh Thị Quỳnh Hương
-Thang Văn Năm","Đinh Thị Quỳnh Hương
-Thang Văn Năm","Đinh Thị Quỳnh Hương
-Thang Văn Năm","Đinh Thị Quỳnh Hương
-Thang Văn Năm","Đinh Thị Quỳnh Hương
-Thang Văn Năm","Đinh Thị Quỳnh Hương
-Vũ Hải Hậu","Đinh Thị Quỳnh Hương
-Thang Văn Năm","Đinh Thị Quỳnh Hương
-Thang Văn Năm","Đinh Thị Quỳnh Hương
-Thang Văn Năm","Đinh Thị Quỳnh Hương
-Thang Văn Năm"
-PK nhà K1 709,"Hồng Thu Hà","Hồng Thu Hà","Thang Văn Năm","Thang Văn Năm","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà","Hồng Thu Hà"
-Điều trị tầng 9 K1,"Trần Việt Hùng","Trần Việt Hùng","Trần Việt Hùng","Trần Việt Hùng","Trần Việt Hùng","Trần Việt Hùng","Trần Việt Hùng","Trần Việt Hùng","Trần Việt Hùng","Vũ Mạnh Hà","Trần Việt Hùng","Trần Việt Hùng","Trần Việt Hùng","Trần Việt Hùng"
+Trần Tuấn Anh
+Hồng Thu Hà","Kiều Văn Tuấn
+Trần Tuấn Anh
+Hồng Thu Hà","Kiều Văn Tuấn
+Trần Tuấn Việt
+Trần Tuấn Anh","Kiều Văn Tuấn
+Trần Tuấn Việt
+Trần Tuấn Anh","Kiều Văn Tuấn
+Trần Tuấn Việt
+Trần Tuấn Anh","Kiều Văn Tuấn
+Trần Tuấn Việt
+Trần Tuấn Anh","Kiều Văn Tuấn
+Trần Tuấn Việt
+Trần Tuấn Anh","Kiều Văn Tuấn
+Trần Tuấn Việt
+Trần Tuấn Anh","Kiều Văn Tuấn
+Trần Tuấn Việt
+Trần Tuấn Anh","Kiều Văn Tuấn
+Trần Tuấn Việt
+Trần Tuấn Anh","Kiều Văn Tuấn
+Trần Tuấn Anh
+Hồng Thu Hà","Kiều Văn Tuấn
+Trần Tuấn Anh
+Hồng Thu Hà"
+Phòng 309 (KKB)  TH2,"Trần Tuấn Việt
+Nguyễn Thị Thu Duyên
+Lê Tú Anh","Phạm Thị Thu Hiền
+Nguyễn Thị Thu Duyên
+Lê Tú Anh
+Kiều Văn Tuấn","Vũ Mạnh Hà
+Trần Tuấn Việt
+Nguyễn Thị Thu Duyên","Vũ Mạnh Hà
+Trần Tuấn Việt
+Nguyễn Thị Thu Duyên","Phạm Thị Thu Hiền
+Nguyễn Thị Thu Duyên
+Lê Tú Anh","Phạm Thị Thu Hiền
+Nguyễn Thị Thu Duyên
+Lê Tú Anh","Phạm Thị Thu Hiền
+Nguyễn Thị Thu Duyên
+Lê Tú Anh","Phạm Thị Thu Hiền
+Nguyễn Thị Thu Duyên
+Lê Tú Anh","Phạm Thị Thu Hiền
+Nguyễn Thị Thu Duyên
+Lê Tú Anh","Phạm Thị Thu Hiền
+Nguyễn Thị Thu Duyên
+Lê Tú Anh","Phạm Thị Thu Hiền
+Nguyễn Thị Thu Duyên
+Lê Tú Anh","Phạm Thị Thu Hiền
+Nguyễn Thị Thu Duyên
+Lê Tú Anh","Trần Việt Hùng
+Phạm Thị Thu Hiền
+Nguyễn Thị Thu Duyên","Phạm Thị Thu Hiền
+Trần Việt Hùng
+Nguyễn Thị Thu Duyên"
+Phòng 309 (KKB)  TH3,"Nguyễn Hoài Nam
+Nguyễn Thị Thu Hiền
+Nguyễn Nghệ Tĩnh","Nguyễn Hoài Nam
+Hồng Thu Hà
+Nguyễn Thị Thu Hiền","Nguyễn Hoài Nam
+Nguyễn Thị Thu Hiền
+Nguyễn Nghệ Tĩnh","Nguyễn Hoài Nam
+Nguyễn Thị Thu Hiền
+Nguyễn Nghệ Tĩnh","Nguyễn Hoài Nam
+Hồng Thu Hà
+Nguyễn Thị Thu Hiền","Nguyễn Hoài Nam
+Hồng Thu Hà
+Nguyễn Thị Thu Hiền","Nguyễn Hoài Nam
+Hồng Thu Hà
+Nguyễn Thị Thu Hiền","Nguyễn Hoài Nam
+Hồng Thu Hà
+Nguyễn Thị Thu Hiền","Nguyễn Hoài Nam
+Hồng Thu Hà
+Nguyễn Thị Thu Hiền","Nguyễn Hoài Nam
+Nguyễn Thị Thu Hiền
+Nguyễn Nghệ Tĩnh","Nguyễn Hoài Nam
+Hồng Thu Hà
+Nguyễn Thị Thu Hiền","Nguyễn Hoài Nam
+Hồng Thu Hà
+Nguyễn Thị Thu Hiền","Nguyễn Hoài Nam
+Nguyễn Thị Thu Hiền
+Nguyễn Nghệ Tĩnh","Nguyễn Hoài Nam
+Nguyễn Thị Thu Hiền
+Nguyễn Nghệ Tĩnh"
+PK nhà K1 703,"Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Phạm Bình Nguyên","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Phạm Bình Nguyên","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Lê Tú Anh","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Lê Tú Anh","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Phạm Bình Nguyên","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Phạm Bình Nguyên","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Phạm Bình Nguyên","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Phạm Bình Nguyên","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Phạm Bình Nguyên","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Phạm Bình Nguyên","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Phạm Bình Nguyên","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Phạm Bình Nguyên","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Lê Tú Anh","Nguyễn Trường Sơn
+Lưu Thị Minh Diệp
+Lê Tú Anh"
+PK nhà K1 704,"Đỗ Anh Giang
+Đinh Thị Quỳnh Hương
+Vũ Công Thắng","Đỗ Anh Giang
+Đinh Thị Quỳnh Hương
+Vũ Công Thắng","Đỗ Anh Giang
+Phạm Thị Thu Hiền
+Vũ Công Thắng","Đỗ Anh Giang
+Phạm Thị Thu Hiền
+Vũ Công Thắng","Đỗ Anh Giang
+Đinh Thị Quỳnh Hương
+Vũ Công Thắng","Đỗ Anh Giang
+Đinh Thị Quỳnh Hương
+Vũ Công Thắng","Đỗ Anh Giang
+Đinh Thị Quỳnh Hương
+Vũ Công Thắng","Đỗ Anh Giang
+Đinh Thị Quỳnh Hương
+Vũ Công Thắng","Đỗ Anh Giang
+Đinh Thị Quỳnh Hương
+Vũ Công Thắng","Đỗ Anh Giang
+Đinh Thị Quỳnh Hương
+Vũ Công Thắng","Đỗ Anh Giang
+Đinh Thị Quỳnh Hương
+Vũ Công Thắng","Đỗ Anh Giang
+Đinh Thị Quỳnh Hương
+Vũ Công Thắng","Đỗ Anh Giang
+Đinh Thị Quỳnh Hương
+Vũ Công Thắng","Đỗ Anh Giang
+Đinh Thị Quỳnh Hương
+Vũ Công Thắng"
+PK nhà K1 705,"Vũ Thái Hòa","Vũ Thái Hòa","Vũ Thái Hòa","Vũ Thái Hòa","Vũ Thái Hòa","Vũ Thái Hòa","Vũ Thái Hòa","Vũ Thái Hòa","Vũ Thái Hòa","Vũ Thái Hòa","Vũ Thái Hòa","Vũ Thái Hòa","Vũ Thái Hòa","Vũ Thái Hòa"
+PK nhà K1 707,"Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương","Nguyễn Thế Phương
+Nguyễn Thị Phương"
+PK nhà K1 708,"Vũ Mạnh Hà","Vũ Mạnh Hà","Đinh Thị Quỳnh Hương","Đinh Thị Quỳnh Hương","Vũ Mạnh Hà","Vũ Mạnh Hà","Vũ Mạnh Hà","Vũ Mạnh Hà","Vũ Mạnh Hà","Vũ Mạnh Hà","Vũ Mạnh Hà","Vũ Mạnh Hà","Vũ Mạnh Hà","Vũ Mạnh Hà"
+PK nhà K1 709,"Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu","Thang Văn Năm
+Vũ Hải Hậu"
+Điều trị tầng 9 K1,"Trần Việt Hùng
+Đặng Trung Hiếu","Trần Việt Hùng
+Đặng Trung Hiếu","Trần Việt Hùng
+Đặng Trung Hiếu","Trần Việt Hùng
+Đặng Trung Hiếu","Trần Việt Hùng
+Đặng Trung Hiếu","Trần Việt Hùng
+Đặng Trung Hiếu","Trần Việt Hùng
+Đặng Trung Hiếu","Trần Việt Hùng
+Đặng Trung Hiếu","Trần Việt Hùng
+Đặng Trung Hiếu","Trần Việt Hùng
+Đặng Trung Hiếu","Trần Việt Hùng
+Đặng Trung Hiếu","Trần Việt Hùng
+Đặng Trung Hiếu","Trần Tuấn Việt
+Đặng Trung Hiếu","Trần Tuấn Việt
+Đặng Trung Hiếu"
